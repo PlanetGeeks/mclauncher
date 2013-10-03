@@ -26,6 +26,7 @@ public class Launcher
         	MemoryUtils.loadMemories();
         	launcherFrame = new LauncherFrame();
         	launcherFrame.setVisible(true);
+        	
     	}
     	else
     	{
