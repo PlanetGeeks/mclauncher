@@ -1,9 +1,11 @@
 package it.planetgeeks.mclauncher;
 
 import it.planetgeeks.mclauncher.frames.LauncherFrame;
+import it.planetgeeks.mclauncher.frames.MemoryFrame;
 import it.planetgeeks.mclauncher.frames.ProfileFrame;
 import it.planetgeeks.mclauncher.updater.LauncherUpdater;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
+import it.planetgeeks.mclauncher.utils.Memory;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
@@ -15,6 +17,7 @@ public class Launcher
 {
 	private static LauncherFrame launcherFrame;
 	private static ProfileFrame profileFrame;
+	private static MemoryFrame memoryFrame;
 	
     public static void main(String[]args)
     {
@@ -68,7 +71,13 @@ public class Launcher
     {
     	profileFrame = new ProfileFrame(profile);
     	profileFrame.setVisible(true);
-    }   
+    }  
+    
+    public static void openMemoryEditor(int parent, Object extra)
+    {
+    	memoryFrame = new MemoryFrame(parent, extra);
+    	memoryFrame.setVisible(true);
+    }  
     
     public static LauncherFrame getLauncherFrame()
     {

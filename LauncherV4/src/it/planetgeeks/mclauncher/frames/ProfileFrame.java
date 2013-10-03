@@ -3,6 +3,7 @@ package it.planetgeeks.mclauncher.frames;
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.settings.Settings;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
+import it.planetgeeks.mclauncher.utils.MemoryUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 
@@ -57,10 +58,10 @@ public class ProfileFrame extends JFrame
 		cancelBtn = new JButton();
 		modifyBtn = new JButton();
 		createBtn = new JButton();
+	    this.setTitle(LanguageUtils.getTranslated("launcher.profile.title"));
 
 		usernameField.addKeyListener(new KeyListener()
 		{
-
 			@Override
 			public void keyPressed(KeyEvent arg0)
 			{
@@ -135,8 +136,21 @@ public class ProfileFrame extends JFrame
 
 		cancelBtn.setText(LanguageUtils.getTranslated("launcher.profile.delete"));
 
-		comboBoxRam.setModel(new DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+		setComboboxRam();
+		
+		comboBoxRam.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+                if(String.valueOf(comboBoxRam.getSelectedItem()).equals("< " + LanguageUtils.getTranslated("launcher.memorybox.createMem") + " >"))
+                {
+                	Launcher.openMemoryEditor(1, profile);
+                	setVisible(false);
+                }
+			}
+		});
+		
 		profileNameLbl.setText(LanguageUtils.getTranslated("launcher.profile.profilenamelbl") + " :");
 
 		modifyBtn.setText(LanguageUtils.getTranslated("launcher.profile.modify"));
@@ -147,7 +161,14 @@ public class ProfileFrame extends JFrame
 			usernameField.setText(profile.username);
 			passwordField.setText(profile.password);
 			profileNameField.setText(profile.profileName);
-			// RAM??
+		    comboBoxRam.setSelectedItem(profile.ram);
+		    if(!comboBoxRam.getSelectedItem().equals(profile.ram))
+		    {
+		    	if(comboBoxRam.getItemAt(1) != null)
+		    	{
+		    		comboBoxRam.setSelectedIndex(1);
+		    	}
+		    }
 			checkBoxPsw.setSelected(profile.rememberPsw);
 			setModifyLayout();
 		}
@@ -185,7 +206,14 @@ public class ProfileFrame extends JFrame
 					{
 						profile.username = usernameField.getText();
 						profile.password = String.valueOf(passwordField.getPassword());
-					    profile.ram = (String) comboBoxRam.getSelectedItem();
+						if(!String.valueOf(comboBoxRam.getSelectedItem()).equals("< " + LanguageUtils.getTranslated("launcher.memorybox.createMem") + " >"))
+						{
+							profile.ram = (String) comboBoxRam.getSelectedItem();
+						}
+						else
+						{
+							profile.ram = "null";
+						}
 					    profile.rememberPsw = checkBoxPsw.isSelected();
 						ProfilesUtils.modifyProfile(this.latestProfName, profileNameField.getText(), profile);
 						profile = null;
@@ -269,6 +297,20 @@ public class ProfileFrame extends JFrame
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(28, 28, 28).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(usernameLbl).addComponent(usernameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(passwordLbl).addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(profileNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(profileNameLbl)).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(comboBoxRam, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(ramLbl)).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addComponent(checkBoxPsw).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(cancelBtn).addComponent(modifyBtn)).addGap(14, 14, 14)));
 	}
 
+	private void setComboboxRam()
+	{
+		
+		String[] items = MemoryUtils.getMemoryNames();
+		String[] withCreateItems = new String[items.length + 1];
+		for(int i = 0; i < items.length; i++)
+		{
+			withCreateItems[i + 1] = items[i];
+		}
+		
+		withCreateItems[0] = "< " + LanguageUtils.getTranslated("launcher.memorybox.createMem") + " >";
+		comboBoxRam.setModel(new DefaultComboBoxModel(withCreateItems));
+	}
+	
 	private JButton createBtn;
 	private JCheckBox checkBoxPsw;
 	private JComboBox comboBoxRam;

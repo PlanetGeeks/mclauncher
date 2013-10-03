@@ -20,3 +20,11 @@ launcher.connectbtn=Connettiti
 launcher.websitelink=Sito Web
 launcher.profile.profilenotcreate.title=Errore!
 launcher.profile.profilenotcreate.message=Un profilo con questo nome gia' esiste!
+launcher.memory.namelbl=Nome
+launcher.memory.dimensionlbl=Dimensione
+launcher.memory.createbtn=Crea
+launcher.memory.deletebtn=Cancella
+launcher.memory.modifybtn=Modifica
+launcher.memory.title=Memoria
+launcher.memorybox.createMem=Crea Memoria
+

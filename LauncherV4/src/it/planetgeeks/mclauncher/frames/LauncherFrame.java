@@ -71,7 +71,7 @@ public class LauncherFrame extends JFrame
         
 		jPanel1 = new JPanel();
 		jPanel2 = new JPanel();
-		connectBtn = new JButton();
+		memoriesBtn = new JButton();
 		comboBoxProfile = new JComboBox();
 		profilesBtn = new JButton();
 		profileLabel = new JLabel();
@@ -139,17 +139,14 @@ public class LauncherFrame extends JFrame
 		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGap(0, 0, Short.MAX_VALUE));
 		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGap(0, 0, Short.MAX_VALUE));
 
-		connectBtn.setText("Connettiti");
-
-		connectBtn.addActionListener(new ActionListener()
+		memoriesBtn.addActionListener(new ActionListener()
 		{
 
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
+                  
 			}
-
 		});
 
 		setComboboxProfiles();
@@ -168,15 +165,15 @@ public class LauncherFrame extends JFrame
 			}
 		});
 		
-		comboBoxRam.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-                MemoryUtils.setCurrentMem((String)comboBoxRam.getSelectedItem());
-			}
-		});
-
+		if(((String)comboBoxRam.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.memorybox.createMem")))
+        {
+        	memoriesBtn.setText(LanguageUtils.getTranslated("launcher.memory.createbtn"));
+        }
+        else
+        {
+        	memoriesBtn.setText(LanguageUtils.getTranslated("launcher.memory.modifybtn"));
+        }
+		
 		profilesBtn.setText(String.valueOf(comboBoxProfile.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
 		
 		profilesBtn.addActionListener(new ActionListener()
@@ -209,8 +206,8 @@ public class LauncherFrame extends JFrame
 
 		GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
 		jPanel1.setLayout(jPanel1Layout);
-		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(profileLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(memoryLabel, GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(comboBoxProfile, 0, 130, Short.MAX_VALUE).addComponent(comboBoxRam, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(websiteLabel, GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(connectBtn, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE).addComponent(profilesBtn, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))).addContainerGap()));
-		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addGroup(jPanel1Layout.createSequentialGroup().addGap(20, 20, 20).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(comboBoxProfile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(profileLabel)).addComponent(profilesBtn)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(connectBtn).addComponent(comboBoxRam, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(memoryLabel)).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addComponent(websiteLabel).addGap(0, 14, Short.MAX_VALUE))).addContainerGap()));
+		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(profileLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(memoryLabel, GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(comboBoxProfile, 0, 130, Short.MAX_VALUE).addComponent(comboBoxRam, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(websiteLabel, GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(memoriesBtn, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE).addComponent(profilesBtn, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))).addContainerGap()));
+		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addGroup(jPanel1Layout.createSequentialGroup().addGap(20, 20, 20).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(comboBoxProfile, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(profileLabel)).addComponent(profilesBtn)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(memoriesBtn).addComponent(comboBoxRam, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(memoryLabel)).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addComponent(websiteLabel).addGap(0, 14, Short.MAX_VALUE))).addContainerGap()));
 
 		tabbedPane.addTab("tab1", scrollPane1);
 		tabbedPane.addTab("tab2", scrollPane2);
@@ -272,7 +269,7 @@ public class LauncherFrame extends JFrame
 		repaint();
 	}
 
-	private JButton connectBtn;
+	private JButton memoriesBtn;
 	private JButton profilesBtn;
 	private JButton skinRightBtn;
 	private JButton skinLeftBtn;
