@@ -127,6 +127,11 @@ public class MemoryUtils
 			newPos = memories.size() - 1;
 		}
 		
+		if(newPos == memories.size())
+		{
+			newPos = 0;
+		}
+		
 		Memory memory1 = memories.get(pos);
 		Memory memory2 = memories.get(newPos);
 		

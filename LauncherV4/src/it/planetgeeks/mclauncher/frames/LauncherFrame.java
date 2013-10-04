@@ -10,21 +10,27 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
@@ -68,7 +74,7 @@ public class LauncherFrame extends JFrame
 	{
 
 		this.setTitle(LanguageUtils.getTranslated("launcher.title"));
-        
+
 		jPanel1 = new JPanel();
 		jPanel2 = new JPanel();
 		memoriesBtn = new JButton();
@@ -124,14 +130,14 @@ public class LauncherFrame extends JFrame
 		menuBar = new JMenuBar();
 		menu1 = new JMenu();
 		menu2 = new JMenu();
-		
+
 		setComboboxRam();
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setMaximumSize(new java.awt.Dimension(840, 530));
 		setMinimumSize(new java.awt.Dimension(840, 530));
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setLocation(screenSize.width / 2 - 840/2, screenSize.height / 2 - 530/2);
+		this.setLocation(screenSize.width / 2 - 840 / 2, screenSize.height / 2 - 530 / 2);
 		jPanel1.setBackground(new java.awt.Color(153, 153, 153));
 
 		GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
@@ -145,7 +151,7 @@ public class LauncherFrame extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-                  
+
 			}
 		});
 
@@ -156,43 +162,43 @@ public class LauncherFrame extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-                String s = (String) comboBoxProfile.getSelectedItem();
-                if(s.equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")))
-                {
-                	Launcher.openProfileEditor(null);
-                }
-                profilesBtn.setText(String.valueOf(comboBoxProfile.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
+				String s = (String) comboBoxProfile.getSelectedItem();
+				if (s.equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")))
+				{
+					Launcher.openProfileEditor(null);
+				}
+				profilesBtn.setText(String.valueOf(comboBoxProfile.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
 			}
 		});
-		
-		if(((String)comboBoxRam.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.memorybox.createMem")))
-        {
-        	memoriesBtn.setText(LanguageUtils.getTranslated("launcher.memory.createbtn"));
-        }
-        else
-        {
-        	memoriesBtn.setText(LanguageUtils.getTranslated("launcher.memory.modifybtn"));
-        }
-		
+
+		if (((String) comboBoxRam.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.memorybox.createMem")))
+		{
+			memoriesBtn.setText(LanguageUtils.getTranslated("launcher.memory.createbtn"));
+		}
+		else
+		{
+			memoriesBtn.setText(LanguageUtils.getTranslated("launcher.memory.modifybtn"));
+		}
+
 		profilesBtn.setText(String.valueOf(comboBoxProfile.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
-		
+
 		profilesBtn.addActionListener(new ActionListener()
 		{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				if(String.valueOf(comboBoxProfile.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")))
+				if (String.valueOf(comboBoxProfile.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")))
 				{
 					Launcher.openProfileEditor(null);
 				}
 				else
 				{
-				    String profileName = (String)comboBoxProfile.getSelectedItem();
-				    Profile profile = ProfilesUtils.getProfile(profileName);
-				    Launcher.openProfileEditor(profile);
+					String profileName = (String) comboBoxProfile.getSelectedItem();
+					Profile profile = ProfilesUtils.getProfile(profileName);
+					Launcher.openProfileEditor(profile);
 				}
-			}	
+			}
 		});
 
 		profileLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -217,14 +223,16 @@ public class LauncherFrame extends JFrame
 
 		skinLeftBtn.setText("<");
 
-		menu1.setText("File");
+		
 		menuBar.add(menu1);
 
-		menu2.setText("Edit");
+		
 		menuBar.add(menu2);
 
 		setJMenuBar(menuBar);
 
+		setMenu();
+		
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(18, 18, 18).addComponent(skinLeftBtn, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE).addComponent(skinRightBtn, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 560, GroupLayout.PREFERRED_SIZE).addContainerGap()));
@@ -249,7 +257,7 @@ public class LauncherFrame extends JFrame
 		comboBoxProfile.setModel(new DefaultComboBoxModel(str));
 		profilesBtn.setText(String.valueOf(comboBoxProfile.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
 	}
-	
+
 	public void setComboboxRam()
 	{
 		comboBoxRam.setModel(new DefaultComboBoxModel(MemoryUtils.getMemoryNames()));
@@ -267,6 +275,67 @@ public class LauncherFrame extends JFrame
 		// 108, 50, skinsButton, skinMode, false);
 		validate();
 		repaint();
+	}
+
+	private void setMenu()
+	{
+		menu1.setText("File");
+		menu2.setText(LanguageUtils.getTranslated("launcher.bar.options"));
+		
+		Object items[][] = { { LanguageUtils.getTranslated("launcher.memorybox.createMem"), KeyEvent.VK_N, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK) }, { "separator" }, { "Esci", null, null } };
+		
+		menuItemCreation(menu2, items, "normal");
+		
+		menu2.setMnemonic(KeyEvent.VK_O);	
+	    
+		menu2.getItem(0).addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				Launcher.openMemoryEditor(0, null);
+			}
+			
+		});
+	}
+
+	private void menuItemCreation(JMenu menu, Object data[][], String type)
+	{
+		ButtonGroup bg = new ButtonGroup();
+		JMenuItem item = null;
+
+		for (int i = 0; i < data.length; i++)
+		{
+			if (type.equals("normal"))
+			{
+				item = new JMenuItem();
+			}
+			else if (type.equals("radio"))
+			{
+				item = new JRadioButtonMenuItem();
+				bg.add(item);
+			}
+			else if (type.equals("check"))
+			{
+				item = new JCheckBoxMenuItem();
+			}
+			
+			String data0 = (String) data[i][0];
+			if (data0.equals("separator"))
+				menu.addSeparator();
+			else
+			{
+				String text = data0;
+				Integer mnemonic = data[i][1] != null ? (Integer) data[i][1] : KeyEvent.VK_UNDEFINED;
+				KeyStroke accelerator = data[i][2] != null ? (KeyStroke) data[i][2] : null;
+
+				item.setText(text);
+				item.setMnemonic(mnemonic);
+				item.setAccelerator(accelerator);
+				
+				menu.add(item);
+			}
+		}
 	}
 
 	private JButton memoriesBtn;

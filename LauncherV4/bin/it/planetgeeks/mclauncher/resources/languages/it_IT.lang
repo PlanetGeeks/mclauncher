@@ -26,5 +26,5 @@ launcher.memory.createbtn=Crea
 launcher.memory.deletebtn=Cancella
 launcher.memory.modifybtn=Modifica
 launcher.memory.title=Memoria
-launcher.memorybox.createMem=Crea Memoria
-
+launcher.memorybox.createMem=Gestisci Memorie
+launcher.bar.options=Opzioni
