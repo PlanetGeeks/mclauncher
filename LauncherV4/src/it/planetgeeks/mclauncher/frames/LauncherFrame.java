@@ -1,6 +1,7 @@
 package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.Launcher;
+import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
@@ -11,6 +12,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -223,16 +225,14 @@ public class LauncherFrame extends JFrame
 
 		skinLeftBtn.setText("<");
 
-		
 		menuBar.add(menu1);
 
-		
 		menuBar.add(menu2);
 
 		setJMenuBar(menuBar);
 
 		setMenu();
-		
+
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(18, 18, 18).addComponent(skinLeftBtn, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE).addComponent(skinRightBtn, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 560, GroupLayout.PREFERRED_SIZE).addContainerGap()));
@@ -281,45 +281,73 @@ public class LauncherFrame extends JFrame
 	{
 		menu1.setText("File");
 		menu2.setText(LanguageUtils.getTranslated("launcher.bar.options"));
-		
-		Object items[][] = { { LanguageUtils.getTranslated("launcher.memorybox.createMem"), KeyEvent.VK_N, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK) }, { "separator" }, { "Esci", null, null } };
-		
-		menuItemCreation(menu2, items, "normal");
-		
-		menu2.setMnemonic(KeyEvent.VK_O);	
-	    
-		menu2.getItem(0).addActionListener(new ActionListener(){
+
+		Object items[][] = { { LanguageUtils.getTranslated("launcher.bar.options.manageMem"), KeyEvent.VK_N, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.options.showConsole"), null, null, "check" }, { "separator" }, { "Esci", null, null, "normal" } };
+
+		menuItemCreation(menu2, items);
+
+		menu2.setMnemonic(KeyEvent.VK_O);
+
+		menu2.getItem(0).addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
 				Launcher.openMemoryEditor(0, null);
+				
 			}
-			
 		});
+		
+		menu2.getItem(1).addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+			    Launcher.openOrCloseConsole(!Launcher.isConsoleOpened());
+			}
+		});
+
+		menu2.addMouseListener(new CustomMouseListener()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				((JCheckBoxMenuItem) menu2.getItem(1)).setSelected(Launcher.isConsoleOpened());
+			}
+		});
+
 	}
 
-	private void menuItemCreation(JMenu menu, Object data[][], String type)
+	private void menuItemCreation(JMenu menu, Object data[][])
 	{
 		ButtonGroup bg = new ButtonGroup();
 		JMenuItem item = null;
 
 		for (int i = 0; i < data.length; i++)
 		{
-			if (type.equals("normal"))
+			if (data[i].length > 1)
+			{
+				if (data[i][3].equals("normal"))
+				{
+					item = new JMenuItem();
+				}
+				else if (data[i][3].equals("radio"))
+				{
+					item = new JRadioButtonMenuItem();
+					bg.add(item);
+				}
+				else if (data[i][3].equals("check"))
+				{
+					item = new JCheckBoxMenuItem();
+				}
+			}
+			else
 			{
 				item = new JMenuItem();
 			}
-			else if (type.equals("radio"))
-			{
-				item = new JRadioButtonMenuItem();
-				bg.add(item);
-			}
-			else if (type.equals("check"))
-			{
-				item = new JCheckBoxMenuItem();
-			}
-			
+
 			String data0 = (String) data[i][0];
 			if (data0.equals("separator"))
 				menu.addSeparator();
@@ -332,7 +360,7 @@ public class LauncherFrame extends JFrame
 				item.setText(text);
 				item.setMnemonic(mnemonic);
 				item.setAccelerator(accelerator);
-				
+
 				menu.add(item);
 			}
 		}
