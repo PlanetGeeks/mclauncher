@@ -14,15 +14,14 @@ public class MemoryUtils
 {
 	private static ArrayList<Memory> memories = new ArrayList<Memory>();
 	private static File memoryFolder = new File(DirUtils.getLauncherDirectory() + File.separator + "memories");
-	
+
 	public static ArrayList<Memory> loadMemories()
 	{
 		memories = new ArrayList<Memory>();
-		
+
 		ArrayList<String> list = getFileNames();
-		
-		
-		if(list == null || list.size() == 0)
+
+		if (list == null || list.size() == 0)
 		{
 			createCustom("258 MB", "258");
 			createCustom("512 MB", "512");
@@ -37,24 +36,24 @@ public class MemoryUtils
 		else
 		{
 			int i;
-			
-			for(i = 0; i < list.size(); i++)
+
+			for (i = 0; i < list.size(); i++)
 			{
-				if(list.get(i).endsWith(".memory"))
+				if (list.get(i).endsWith(".memory"))
 				{
 					File cur = new File(getMemoriesFolder() + File.separator + list.get(i));
-					if(cur.exists())
+					if (cur.exists())
 					{
 						Memory memory = loadMemoryFile(cur);
-						
-						if(memory != null)
+
+						if (memory != null)
 						{
 							memories.add(memory);
 						}
 					}
 				}
 			}
-			if(i > 0)
+			if (i > 0)
 			{
 				LauncherLogger.log(LauncherLogger.INFO, "Loaded " + i + " memory files!");
 			}
@@ -63,58 +62,128 @@ public class MemoryUtils
 				LauncherLogger.log(LauncherLogger.INFO, "No memory file loaded!");
 			}
 		}
-		
+
 		return memories;
-	}
+    }
 	
+	public static boolean deleteCustom(String name)
+	{
+		for(int i = 0; i < memories.size(); i++)
+		{
+			if(memories.get(i).name.equals(name))
+			{
+				memories.remove(i);
+				File file = new File(getMemoriesFolder() + File.separator + name + ".memory");
+				if(file.exists())
+				{
+					file.delete();
+					writeListNames();
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public static boolean createCustom(String name, String size)
 	{
-		for(Memory current : memories)
+		for (Memory current : memories)
 		{
-			if(current.name.equals(name))
+			if (current.name.equals(name))
 			{
 				return false;
 			}
 		}
 		memories.add(new Memory(name, Integer.valueOf(size)));
 		writeMemoryFile(name, size);
-        writeListNames();
+		writeListNames();
 		return true;
+	}
+
+	public static boolean modifyCustom(String name, String size)
+	{
+		for (Memory current : memories)
+		{
+			if (current.name.equals(name))
+			{
+				current.size = Integer.valueOf(size);
+				writeMemoryFile(name, size);
+				writeListNames();
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static int moveCustom(boolean up, int pos)
+	{
+		ArrayList<Memory> newMemories = new ArrayList<Memory>();
+		
+		int newPos = up ? pos - 1 : pos + 1;
+		
+		if(newPos < 0)
+		{
+			newPos = memories.size() - 1;
+		}
+		
+		Memory memory1 = memories.get(pos);
+		Memory memory2 = memories.get(newPos);
+		
+		for(int i = 0; i < memories.size(); i++)
+		{
+			if(i == newPos)
+			{
+				newMemories.add(memory1);
+			}
+			else if(i == pos)
+			{
+				newMemories.add(memory2);
+			}
+			else
+			{
+				newMemories.add(memories.get(i));
+			}
+		}
+		
+		memories = newMemories;
+		writeListNames();
+		return newPos;
 	}
 	
 	public static Memory getMem(String name)
 	{
-		for(Memory mem : memories)
+		for (Memory mem : memories)
 		{
-			if(mem.name.equals(name))
+			if (mem.name.equals(name))
 			{
 				return mem;
 			}
 		}
 		return null;
 	}
-	
-    public static String[] getMemoryNames()
-    {
-    	String[] list = new String[memories.size()];
-    	for(int i = 0; i < list.length; i++)
-    	{
-    		list[i] = memories.get(i).name;
-    	}
-    	
-    	return list;
-    }
-	
+
+	public static String[] getMemoryNames()
+	{
+		String[] list = new String[memories.size()];
+		for (int i = 0; i < list.length; i++)
+		{
+			list[i] = memories.get(i).name;
+		}
+
+		return list;
+	}
+
 	private static void writeMemoryFile(String memoryName, String memorySize)
 	{
 		File file = new File(getMemoriesFolder() + File.separator + memoryName + ".memory");
-	    BufferedWriter bw;
+		BufferedWriter bw;
 		try
 		{
 			bw = new BufferedWriter(new FileWriter(file));
 			bw.write("memoryName:" + memoryName);
 			bw.newLine();
-			bw.write("memorySize:" + memorySize); 
+			bw.write("memorySize:" + memorySize);
 			bw.close();
 		}
 		catch (IOException e)
@@ -123,45 +192,45 @@ public class MemoryUtils
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static Memory loadMemoryFile(File memoryFile)
 	{
 		BufferedReader br;
-		Memory mem = new Memory("",512);
+		Memory mem = new Memory("", 512);
 		try
 		{
 			br = new BufferedReader(new FileReader(memoryFile));
-            String readed = br.readLine();
-            while(readed != null)
-            {
-            	if(readed.startsWith("memoryName"))
-            	{
-            		for(int i = 1; i < readed.split(":").length; i++)
-            		{
-            			mem.name += readed.split(":")[i];
-            		}
-            	}
-            	else if(readed.startsWith("memorySize"))
-            	{
-            		String memorySize = "";
-            		for(int i = 1; i < readed.split(":").length; i++)
-            		{
-            			memorySize += readed.split(":")[i];
-            		}
-            		try
-            		{
-            			mem.size = Integer.valueOf(memorySize);
-            		}
-            		catch(NumberFormatException e)
-            		{
-            		}
-            		
-            	}
-            	readed = br.readLine();
-            }
-            br.close();
+			String readed = br.readLine();
+			while (readed != null)
+			{
+				if (readed.startsWith("memoryName"))
+				{
+					for (int i = 1; i < readed.split(":").length; i++)
+					{
+						mem.name += readed.split(":")[i];
+					}
+				}
+				else if (readed.startsWith("memorySize"))
+				{
+					String memorySize = "";
+					for (int i = 1; i < readed.split(":").length; i++)
+					{
+						memorySize += readed.split(":")[i];
+					}
+					try
+					{
+						mem.size = Integer.valueOf(memorySize);
+					}
+					catch (NumberFormatException e)
+					{
+					}
+
+				}
+				readed = br.readLine();
+			}
+			br.close();
 		}
-		catch(IOException e)
+		catch (IOException e)
 		{
 			LauncherLogger.log(LauncherLogger.GRAVE, "Error on loading '" + memoryFile.getName() + "' file!");
 			e.printStackTrace();
@@ -169,49 +238,49 @@ public class MemoryUtils
 		}
 		return mem;
 	}
-	
+
 	private static ArrayList<String> getFileNames()
 	{
 		try
 		{
 			File file = new File(getMemoriesFolder() + File.separator + "memories.list");
-			if(!file.exists())
+			if (!file.exists())
 			{
-			    return null;	
+				return null;
 			}
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String readed = br.readLine();
 			ArrayList<String> returned = new ArrayList<String>();
-			while(readed != null)
+			while (readed != null)
 			{
-			    returned.add(readed);
-			    readed = br.readLine();
+				returned.add(readed);
+				readed = br.readLine();
 			}
 			br.close();
 			return returned;
 		}
 		catch (IOException e)
 		{
-		    LauncherLogger.log(LauncherLogger.GRAVE, "Error on reading memories list!");
+			LauncherLogger.log(LauncherLogger.GRAVE, "Error on reading memories list!");
 			e.printStackTrace();
 		}
-	    return null;
+		return null;
 	}
-	
+
 	private static void writeListNames()
 	{
 		try
 		{
 			File file = new File(getMemoriesFolder() + File.separator + "memories.list");
-			if(file.exists())
+			if (file.exists())
 			{
-			    file.delete();
+				file.delete();
 			}
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-			
-			for(int i = 0; i < memories.size(); i++)
+
+			for (int i = 0; i < memories.size(); i++)
 			{
-				if(i > 0)
+				if (i > 0)
 				{
 					bw.newLine();
 				}
@@ -221,14 +290,14 @@ public class MemoryUtils
 		}
 		catch (IOException e)
 		{
-		    LauncherLogger.log(LauncherLogger.GRAVE, "Error on writing memories list!");
+			LauncherLogger.log(LauncherLogger.GRAVE, "Error on writing memories list!");
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static File getMemoriesFolder()
 	{
-		if(!memoryFolder.exists())
+		if (!memoryFolder.exists())
 		{
 			memoryFolder.mkdirs();
 		}
