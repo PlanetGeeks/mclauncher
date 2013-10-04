@@ -32,7 +32,6 @@ import javax.swing.WindowConstants;
 
 public class MemoryFrame extends JFrame
 {
-
 	private static final long serialVersionUID = 1L;
 
 	private int parentFrame;
@@ -43,6 +42,7 @@ public class MemoryFrame extends JFrame
 
 	public MemoryFrame(int parentFrame, Object extra)
 	{
+		this.extra = extra;
 		xSize = 256;
 		ySize = 340;
 		this.parentFrame = parentFrame;
