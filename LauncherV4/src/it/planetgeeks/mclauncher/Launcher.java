@@ -5,7 +5,6 @@ import it.planetgeeks.mclauncher.frames.MemoryFrame;
 import it.planetgeeks.mclauncher.frames.ProfileFrame;
 import it.planetgeeks.mclauncher.updater.LauncherUpdater;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
-import it.planetgeeks.mclauncher.utils.Memory;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
