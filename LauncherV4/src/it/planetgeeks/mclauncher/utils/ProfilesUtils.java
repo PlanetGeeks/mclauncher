@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProfilesUtils
 {
@@ -71,6 +72,8 @@ public class ProfilesUtils
 						{
 							prof.password += readed.split(":")[a];
 						}
+						
+						prof.password = EncrypterUtils.decrypt(prof.password, getResourcemap());
 					}
 					if (readed.startsWith("rememberPsw") && readed.contains(":"))
 					{
@@ -188,7 +191,7 @@ public class ProfilesUtils
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 			bw.write("username:" + profile.username);
 			bw.newLine();
-			bw.write("password:" + profile.password);
+			bw.write("password:" + EncrypterUtils.encrypt(profile.password, getResourcemap()));
 			bw.newLine();
 			bw.write("ram:" + profile.ram);
 			bw.newLine();
@@ -202,6 +205,13 @@ public class ProfilesUtils
 		}
 	}
 
+	private static HashMap<String, String> getResourcemap()
+	{
+		HashMap<String, String> resourcemap = new HashMap<String, String>();
+		resourcemap.put("encrypt.key", "dqwpodsodwugncaodqwos");
+		return resourcemap;
+	}
+	
 	private static File getProfilesDir()
 	{
 		if(!profileFolder.exists())

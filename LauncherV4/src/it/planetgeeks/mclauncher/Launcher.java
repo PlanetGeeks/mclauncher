@@ -1,5 +1,6 @@
 package it.planetgeeks.mclauncher;
 
+
 import it.planetgeeks.mclauncher.frames.ConsoleFrame;
 import it.planetgeeks.mclauncher.frames.LauncherFrame;
 import it.planetgeeks.mclauncher.frames.MemoryFrame;
@@ -19,13 +20,16 @@ public class Launcher
 	private static ProfileFrame profileFrame;
 	private static MemoryFrame memoryFrame;
 	private static ConsoleFrame consoleFrame;
+	private static ConsoleOutput outConsole;
 	
     public static void main(String[]args)
     {
     	if(args.length > 0 && args[0].equals("start"))
     	{
+    		loadLookAndFeel();
+    		consoleFrame = new ConsoleFrame(outConsole);
     		LanguageUtils.loadLanguages();
-        	loadLookAndFeel();
+    		consoleFrame.updateComponents();
         	ProfilesUtils.loadProfiles();
         	MemoryUtils.loadMemories();
         	launcherFrame = new LauncherFrame();
@@ -82,18 +86,13 @@ public class Launcher
     
     public static void openOrCloseConsole(boolean open)
     {
-    	if(open && (consoleFrame == null || !consoleFrame.isVisible()))
+    	if(open)
     	{
-    		consoleFrame = new ConsoleFrame();
         	consoleFrame.setVisible(true);	
     	}
     	else
     	{
-    		if(consoleFrame != null)
-    		{
-    		    consoleFrame.setVisible(false);	
-    		}
-    		consoleFrame = null;
+    	    consoleFrame.setVisible(false);	
     	}
     }
     
