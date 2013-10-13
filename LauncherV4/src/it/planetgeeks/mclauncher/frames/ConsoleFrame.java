@@ -2,13 +2,16 @@ package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.ConsoleOutput;
 import it.planetgeeks.mclauncher.Launcher;
+import it.planetgeeks.mclauncher.LauncherLogger;
 import it.planetgeeks.mclauncher.frames.utils.CustomWindowListener;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.io.PrintStream;
+import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -23,19 +26,17 @@ import javax.swing.WindowConstants;
 public class ConsoleFrame extends JFrame
 {
 	private static final long serialVersionUID = 1L;
+	public static ConsoleOutput out;
+	public ArrayList<String[]> lines = new ArrayList<String[]>();
 
-	public ConsoleFrame(ConsoleOutput outConsole)
+	public ConsoleFrame()
 	{
 		initComponents();
-		outConsole = new ConsoleOutput(consolePanel);
-		System.setOut(new PrintStream(outConsole));
+		out = new ConsoleOutput();
 	}
 
 	private void initComponents()
 	{
-
-		this.setTitle(LanguageUtils.getTranslated("launcher.console.title"));
-
 		scrollPanel = new JScrollPane();
 		consolePanel = new JTextArea();
 		saveLogBtn = new JButton();
@@ -64,14 +65,56 @@ public class ConsoleFrame extends JFrame
 				Launcher.openOrCloseConsole(false);
 			}
 		});
+
+		saveLogBtn.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				LauncherLogger.saveLog(consolePanel);
+			}
+		});
+
+		clearBtn.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				consolePanel.setText("");
+			}
+		});
+		
+		consoleTypeBox.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				updateTextArea();
+			}
+		});
+		
 		pack();
 	}
-	
+
 	public void updateComponents()
 	{
 		saveLogBtn.setText(LanguageUtils.getTranslated("launcher.console.savelog"));
 		clearBtn.setText(LanguageUtils.getTranslated("launcher.console.clear"));
 		consoleTypeBox.setModel(new DefaultComboBoxModel(new String[] { LanguageUtils.getTranslated("launcher.console.box.all"), LanguageUtils.getTranslated("launcher.console.box.launcher"), LanguageUtils.getTranslated("launcher.console.box.minecraft") }));
+		setTitle(LanguageUtils.getTranslated("launcher.console.title"));
+	}
+	
+	public void updateTextArea()
+	{
+		consolePanel.setText("");
+		
+		for(int i = 0; i < lines.size(); i++)
+		{
+			if(consoleTypeBox.getSelectedIndex() == 0 || (lines.get(i)[0].equals("LAUNCHER") && consoleTypeBox.getSelectedIndex() == 1) || (lines.get(i)[0].equals("MINECRAFT") && consoleTypeBox.getSelectedIndex() == 2))
+			{
+				consolePanel.append(lines.get(i)[1]);
+			}
+		}
 	}
 
 	private JButton saveLogBtn;

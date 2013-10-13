@@ -19,15 +19,15 @@ public class Launcher
 	private static LauncherFrame launcherFrame;
 	private static ProfileFrame profileFrame;
 	private static MemoryFrame memoryFrame;
-	private static ConsoleFrame consoleFrame;
-	private static ConsoleOutput outConsole;
+	public static ConsoleFrame consoleFrame;
 	
     public static void main(String[]args)
     {
     	if(args.length > 0 && args[0].equals("start"))
     	{
     		loadLookAndFeel();
-    		consoleFrame = new ConsoleFrame(outConsole);
+    		consoleFrame = new ConsoleFrame();
+    		LauncherLogger.loadLogger();
     		LanguageUtils.loadLanguages();
     		consoleFrame.updateComponents();
         	ProfilesUtils.loadProfiles();

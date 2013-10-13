@@ -1,66 +1,156 @@
 package it.planetgeeks.mclauncher;
 
+import it.planetgeeks.mclauncher.frames.ConsoleFrame;
 import it.planetgeeks.mclauncher.utils.DirUtils;
+import it.planetgeeks.mclauncher.utils.LanguageUtils;
+import it.planetgeeks.mclauncher.utils.LogPrintStream;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+
 public enum LauncherLogger
 {
-	
-	INFO("[INFO]"),
-	GRAVE("[GRAVE]"),
+
+	INFO("[INFO]"), 
+	GRAVE("[GRAVE]"), 
 	SEVERE("[SEVERE]");
-	
+
 	String type;
-	
+
 	LauncherLogger(String type)
 	{
-	    this.type = type;	
+		this.type = type;
 	}
-	
-	public static File logFolder = new File(DirUtils.getLauncherDirectory() + File.separator + "logs");
-	
+
+	private static File logFolder = new File(DirUtils.getLauncherDirectory() + File.separator + "logs");
+
+	private static File currentLog;
+
 	private static String getDate(String regex)
 	{
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat(regex);
 		return sdf.format(cal.getTime());
 	}
-	
-    public static void log(LauncherLogger log, String str)
-    {
-    	System.out.println("[" + getDate("HH:mm:ss") + "]" + log.type + " : " + str);
-    }
-    
-    public static void saveLog(File toSave)
-    {
-    	//File toSave = new File(getLogFolder() + File.separator + "log-" + getDate("yyyy.MM.dd.HH.mm.ss") + ".log");
-    	try
+
+	public static void log(LauncherLogger log, String str)
+	{
+		System.out.println("[" + getDate("HH:mm:ss") + "]" + log.type + " : " + str);
+	}
+
+	public static void saveLog(JTextArea consolePanel)
+	{
+		try
 		{
-			BufferedWriter bw = new BufferedWriter(new FileWriter(toSave));
-			
-			
-			bw.close();
+			JFileChooser saveFile = new JFileChooser();
+			if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+			{
+				File toSave = saveFile.getSelectedFile();
+				if (toSave.exists())
+				{
+					if (JOptionPane.showConfirmDialog(null, LanguageUtils.getTranslated("launcher.savelogoverwritemessage"), "launcher.savelogtitle", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+					{
+						return;
+					}
+				}
+				else
+				{
+					toSave.createNewFile();
+				}
+
+				BufferedWriter bw = new BufferedWriter(new FileWriter(toSave));
+				bw.write(consolePanel.getText());
+				bw.close();
+
+				JOptionPane.showMessageDialog(null, LanguageUtils.getTranslated("launcher.savelogmessage"), LanguageUtils.getTranslated("launcher.savelogtitle"), JOptionPane.OK_CANCEL_OPTION);
+			}
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
+			LauncherLogger.log(LauncherLogger.SEVERE, "Error on saving log!");
 		}
-        
-    }
-    	
-    
-    public static File getLogFolder()
-    {
-    	if(!logFolder.exists())
-    	{
-    		logFolder.mkdirs();
-    	}
-    	return logFolder;
-    }
+	}
+
+	private static File getLogFolder()
+	{
+		if (!logFolder.exists())
+		{
+			logFolder.mkdirs();
+		}
+		return logFolder;
+	}
+
+	public static void loadLogger()
+	{
+		try
+		{
+			currentLog = new File(getLogFolder() + File.separator + "log-" + getDate("yyyy.MM.dd.HH.mm.ss"));
+			File[] logs = getLogFolder().listFiles();
+			if (logs != null && logs.length == 5)
+			{
+				File toDelete = null;
+				for (int a = 0; a < 6; a++)
+				{
+					boolean breaked = false;
+					for (int i = 0; i < logs.length; i++)
+					{
+						String[] date = logs[i].getName().substring(4).split(".");
+						if (date.length != 6)
+						{
+							toDelete = logs[i];
+							break;
+						}
+						int first = 0;
+						try
+						{
+							first = Integer.valueOf(date[a]);
+						}
+						catch (NumberFormatException e)
+						{
+							toDelete = logs[i];
+							break;
+						}
+						if (toDelete != null)
+						{
+							String[] current = logs[i].getName().substring(4).split(".");
+
+							if (first < Integer.valueOf(current[a]))
+							{
+								toDelete = logs[i];
+							}
+						}
+						else
+						{
+							toDelete = logs[i];
+						}
+					}
+					if (breaked)
+					{
+						break;
+					}
+				}
+				toDelete.delete();
+			}
+			FileOutputStream file = new FileOutputStream(currentLog.getAbsolutePath());
+			LogPrintStream lpr = new LogPrintStream(file, System.out, new PrintStream(ConsoleFrame.out));
+			System.setOut(lpr);
+			System.setErr(lpr);
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+	}
 }

@@ -36,3 +36,6 @@ launcher.console.box.minecraft=Minecraft
 launcher.console.box.launcher=Launcher
 launcher.console.box.all=Tutto
 launcher.console.title=Console
+launcher.savelogmessage=Log salvato correttamente!
+launcher.savelogtitle=Informazione
+launcher.savelogoverwritemessage=Vuoi sovrascrivere il file?

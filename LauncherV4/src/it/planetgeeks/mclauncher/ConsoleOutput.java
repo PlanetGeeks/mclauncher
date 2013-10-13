@@ -2,18 +2,14 @@ package it.planetgeeks.mclauncher;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 public class ConsoleOutput extends OutputStream
 {
-
-	private final JTextArea textArea;
 	private final StringBuilder sb = new StringBuilder();
 
-	public ConsoleOutput(final JTextArea textArea)
+	public ConsoleOutput()
 	{
-		this.textArea = textArea;
 		sb.append("");
 	}
 
@@ -41,7 +37,8 @@ public class ConsoleOutput extends OutputStream
 			{
 				public void run()
 				{
-					textArea.append(text);
+					Launcher.consoleFrame.lines.add(new String[] { "LAUNCHER", text });
+					Launcher.consoleFrame.updateTextArea();
 				}
 			});
 			sb.setLength(0);

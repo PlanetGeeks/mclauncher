@@ -7,17 +7,21 @@ import java.io.PrintStream;
 public class LogPrintStream extends PrintStream
 { 
     private final PrintStream second;
+    private final PrintStream third;
     
-    public LogPrintStream(OutputStream main, PrintStream second)
+    public LogPrintStream(OutputStream main, PrintStream second, PrintStream third)
     {
     	super(main);
     	this.second = second;
+    	this.third = third;
     }
     
     @Override
     public void close()
     {
     	super.close();
+    	second.close();
+    	third.close();
     }
     
     @Override
@@ -25,6 +29,7 @@ public class LogPrintStream extends PrintStream
     {
     	super.flush();
     	second.flush();
+    	third.close();
     }
    
     @Override
@@ -32,6 +37,7 @@ public class LogPrintStream extends PrintStream
     {
     	super.write(buf, off, len);
     	second.write(buf, off , len);
+    	third.write(buf, off, len);
     }
     
     @Override
@@ -39,6 +45,7 @@ public class LogPrintStream extends PrintStream
     {
     	super.write(b);
     	second.write(b);
+    	third.write(b);
     }
     
     @Override
@@ -46,5 +53,6 @@ public class LogPrintStream extends PrintStream
     {
     	super.write(b);
     	second.write(b);
+    	third.write(b);
     }
 }
