@@ -130,4 +130,33 @@ public class LanguageUtils
     	}
     	return translated;
     }
+    
+    public static String[] getNames()
+    {
+    	String[] str = new String[langs.size()];
+    	
+    	for(int i = 0; i < str.length; i++)
+    	{
+    		str[i] = langs.get(i).packName;
+    	}
+    	
+    	return str;
+    }
+    
+    public static void setLanguage(int index)
+    {
+    	currentPack = langs.get(index) != null ? langs.get(index) : currentPack;
+    }
+    
+    public static int getCurrentLangIndex()
+    {
+    	for(int i = 0; i < langs.size(); i++)
+    	{
+    		if(currentPack.packName.equals(langs.get(i).packName))
+    		{
+    			return i;
+    		}
+    	}
+    	return 0;
+    }
 }

@@ -282,10 +282,10 @@ public class LauncherFrame extends JFrame
 		menu1.setText("File");
 		menu2.setText(LanguageUtils.getTranslated("launcher.bar.options"));
 
-		Object items[][] = { { LanguageUtils.getTranslated("launcher.bar.options.manageMem"), KeyEvent.VK_N, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.options.showConsole"), null, null, "check" }, { "separator" }, { "Esci", null, null, "normal" } };
+		Object items[][] = { { LanguageUtils.getTranslated("launcher.bar.options.manageMem"), KeyEvent.VK_M, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.options.showConsole"), KeyEvent.VK_K, KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.CTRL_MASK), "check" }, { "separator" }, { "Esci", KeyEvent.VK_E, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK), "normal" } };
 
 		menuItemCreation(menu2, items);
-
+		
 		menu2.setMnemonic(KeyEvent.VK_O);
 
 		menu2.getItem(0).addActionListener(new ActionListener()
@@ -317,7 +317,44 @@ public class LauncherFrame extends JFrame
 				((JCheckBoxMenuItem) menu2.getItem(1)).setSelected(Launcher.isConsoleOpened());
 			}
 		});
-
+		
+        String langs[] = LanguageUtils.getNames();
+		
+	    items = new String[langs.length][4];
+	    
+	    for(int i = 0; i < langs.length; i++)
+	    {
+	       items[i][0] = langs[i];
+	       items[i][1] = null;
+	       items[i][2] = null;
+	       items[i][3] = "check";
+	    }
+	    
+        menulanguage = new JMenu(LanguageUtils.getTranslated("launcher.bar.options.language"));
+		
+        menulanguage.setMnemonic(KeyEvent.VK_L);
+		
+        menuItemCreation(menulanguage, items);
+        
+        for(int i = 0; i < langs.length; i++)
+        {
+        	temp = i;
+        	menulanguage.getItem(i).addActionListener(new ActionListener()
+     		{
+     			@Override
+     			public void actionPerformed(ActionEvent arg0)
+     			{
+     			    LanguageUtils.setLanguage(temp);
+     			}
+     		});
+        	temp = 0;
+        }
+       
+        menulanguage.getItem(LanguageUtils.getCurrentLangIndex()).setSelected(true);
+        
+        
+        
+		menu2.add(menulanguage, 2);
 	}
 
 	private void menuItemCreation(JMenu menu, Object data[][])
@@ -377,6 +414,7 @@ public class LauncherFrame extends JFrame
 	private JLabel websiteLabel;
 	private JMenu menu1;
 	private JMenu menu2;
+	private JMenu menulanguage;
 	private JMenuBar menuBar;
 	private JPanel jPanel1;
 	private JPanel jPanel2;
@@ -384,4 +422,5 @@ public class LauncherFrame extends JFrame
 	private JScrollPane scrollPane2;
 	private JScrollPane scrollPane3;
 	private JTabbedPane tabbedPane;
+	private int temp;
 }

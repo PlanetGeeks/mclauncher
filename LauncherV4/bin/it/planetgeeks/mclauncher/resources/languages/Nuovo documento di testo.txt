@@ -1,3 +1,0 @@
-premium attivabile da dentro al launcher
-mouse cursore modificabile icona
-creazione "cache" immagini launcher

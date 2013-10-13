@@ -30,6 +30,7 @@ launcher.memorybox.createMem=Gestisci Memorie
 launcher.bar.options=Opzioni
 launcher.bar.options.manageMem=Gestisci Memorie
 launcher.bar.options.showConsole=Mostra console
+launcher.bar.options.language=Lingua
 launcher.console.savelog=Salva log
 launcher.console.clear=Pulisci
 launcher.console.box.minecraft=Minecraft
