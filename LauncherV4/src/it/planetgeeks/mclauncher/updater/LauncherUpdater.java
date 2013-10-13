@@ -18,7 +18,6 @@ public class LauncherUpdater
 {
 	public static void startCheck()
 	{
-		
 		File launcher = new File(DirUtils.getWorkingDirectory() + File.separator + "launcher" + File.separator + "launcher.jar");
 		if (launcher.exists())
 		{

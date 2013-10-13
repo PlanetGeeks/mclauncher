@@ -1,14 +1,16 @@
-package it.planetgeeks.mclauncher;
+package it.planetgeeks.mclauncher.utils;
+
+import it.planetgeeks.mclauncher.Launcher;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import javax.swing.SwingUtilities;
 
-public class ConsoleOutput extends OutputStream
+public class ConsoleOutStream extends OutputStream
 {
 	private final StringBuilder sb = new StringBuilder();
 
-	public ConsoleOutput()
+	public ConsoleOutStream()
 	{
 		sb.append("");
 	}
@@ -37,7 +39,14 @@ public class ConsoleOutput extends OutputStream
 			{
 				public void run()
 				{
-					Launcher.consoleFrame.lines.add(new String[] { "LAUNCHER", text });
+					if(text.startsWith("[MINECRAFT]"))
+					{
+						Launcher.consoleFrame.lines.add(new String[] { "MINECRAFT", text.substring(11) });
+					}
+					else
+					{
+						Launcher.consoleFrame.lines.add(new String[] { "LAUNCHER", text });
+					}
 					Launcher.consoleFrame.updateTextArea();
 				}
 			});

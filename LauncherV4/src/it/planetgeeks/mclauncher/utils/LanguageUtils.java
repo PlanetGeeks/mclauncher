@@ -1,7 +1,7 @@
 package it.planetgeeks.mclauncher.utils;
 
+import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.LauncherLogger;
-import it.planetgeeks.mclauncher.resources.ResourcesUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class LanguageUtils
     {
     	try
     	{
-    		InputStream input = new ResourcesUtils().getInputStream("languages/languages.list");
+    		InputStream input = Launcher.resources.getInputStream("languages/languages.list");
     		if(input != null)
     		{
     			BufferedReader br = new BufferedReader(new InputStreamReader(input));
@@ -67,7 +67,7 @@ public class LanguageUtils
     {
     	try
     	{
-    		InputStream input = new ResourcesUtils().getInputStream("languages/" + fileName);
+    		InputStream input = Launcher.resources.getInputStream("languages/" + fileName);
             if(input != null)
             {
             	  BufferedReader br = new BufferedReader(new InputStreamReader(input));

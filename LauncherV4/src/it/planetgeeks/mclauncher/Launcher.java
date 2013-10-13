@@ -5,6 +5,8 @@ import it.planetgeeks.mclauncher.frames.ConsoleFrame;
 import it.planetgeeks.mclauncher.frames.LauncherFrame;
 import it.planetgeeks.mclauncher.frames.MemoryFrame;
 import it.planetgeeks.mclauncher.frames.ProfileFrame;
+import it.planetgeeks.mclauncher.resources.ResourcesUtils;
+import it.planetgeeks.mclauncher.settings.Settings;
 import it.planetgeeks.mclauncher.updater.LauncherUpdater;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
@@ -20,6 +22,7 @@ public class Launcher
 	private static ProfileFrame profileFrame;
 	private static MemoryFrame memoryFrame;
 	public static ConsoleFrame consoleFrame;
+	public static ResourcesUtils resources = new ResourcesUtils();
 	
     public static void main(String[]args)
     {
@@ -28,6 +31,8 @@ public class Launcher
     		loadLookAndFeel();
     		consoleFrame = new ConsoleFrame();
     		LauncherLogger.loadLogger();
+    		printLauncherInfo();
+    		handleUpdaterErrors(args);
     		LanguageUtils.loadLanguages();
     		consoleFrame.updateComponents();
         	ProfilesUtils.loadProfiles();
@@ -104,5 +109,24 @@ public class Launcher
     public static LauncherFrame getLauncherFrame()
     {
     	return launcherFrame;
+    }
+    
+    private static void handleUpdaterErrors(String[] args)
+    {
+    	if(args.length > 1)
+    	{
+    		for(int i = 1; i < args.length; i++)
+    		{
+    			if(args[i].equals("ERROR1"))
+    			{
+    				LauncherLogger.log(LauncherLogger.GRAVE, "Error on downloading latest launcher version!");
+    			}
+    		}
+    	}
+    }
+    
+    private static void printLauncherInfo()
+    {
+    	LauncherLogger.log(LauncherLogger.INFO, Settings.launcherName + " | " + "Version " + Settings.launcherVersion + " | " + "Owned by " + Settings.launcherOwner);
     }
 }

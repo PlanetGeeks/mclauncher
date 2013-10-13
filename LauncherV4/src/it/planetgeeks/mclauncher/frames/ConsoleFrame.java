@@ -1,9 +1,9 @@
 package it.planetgeeks.mclauncher.frames;
 
-import it.planetgeeks.mclauncher.ConsoleOutput;
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.LauncherLogger;
 import it.planetgeeks.mclauncher.frames.utils.CustomWindowListener;
+import it.planetgeeks.mclauncher.utils.ConsoleOutStream;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 
 import java.awt.Color;
@@ -26,13 +26,13 @@ import javax.swing.WindowConstants;
 public class ConsoleFrame extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	public static ConsoleOutput out;
+	public static ConsoleOutStream out;
 	public ArrayList<String[]> lines = new ArrayList<String[]>();
 
 	public ConsoleFrame()
 	{
 		initComponents();
-		out = new ConsoleOutput();
+		out = new ConsoleOutStream();
 	}
 
 	private void initComponents()
