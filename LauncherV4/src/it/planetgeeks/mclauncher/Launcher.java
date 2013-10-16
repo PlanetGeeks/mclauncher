@@ -32,7 +32,7 @@ public class Launcher
     		consoleFrame = new ConsoleFrame();
     		LauncherLogger.loadLogger();
     		printLauncherInfo();
-    		handleUpdaterErrors(args);
+    		dropUpdaterErrors(args);
     		LanguageUtils.loadLanguages();
     		consoleFrame.updateComponents();
         	ProfilesUtils.loadProfiles();
@@ -111,7 +111,7 @@ public class Launcher
     	return launcherFrame;
     }
     
-    private static void handleUpdaterErrors(String[] args)
+    private static void dropUpdaterErrors(String[] args)
     {
     	if(args.length > 1)
     	{
@@ -119,7 +119,7 @@ public class Launcher
     		{
     			if(args[i].equals("ERROR1"))
     			{
-    				LauncherLogger.log(LauncherLogger.GRAVE, "Error on downloading latest launcher version!");
+    				LauncherLogger.log(LauncherLogger.GRAVE, "Error on updating launcher!");
     			}
     		}
     	}
