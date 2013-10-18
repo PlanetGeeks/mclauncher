@@ -1,0 +1,10 @@
+Schermata base con bordi normali o con bordi personalizzati
+
+Schermata base senza skin
+Schermata base con skin
+Schermata base senza skin con più news
+Schermata base con skin con più news
+Schermata base senza skin con modpack
+Schermata base senza skin con più news con modpack
+Schermata base con skin con modpack
+Schermata base con skin con più news con modpack

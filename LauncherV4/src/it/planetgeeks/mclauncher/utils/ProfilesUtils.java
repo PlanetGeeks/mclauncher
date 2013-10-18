@@ -73,7 +73,7 @@ public class ProfilesUtils
 							prof.password += readed.split(":")[a];
 						}
 						
-						prof.password = EncrypterUtils.decrypt(prof.password, getResourcemap());
+						prof.password = prof.password != "" ? EncrypterUtils.decrypt(prof.password, getResourcemap()) : "";
 					}
 					if (readed.startsWith("rememberPsw") && readed.contains(":"))
 					{
@@ -191,7 +191,7 @@ public class ProfilesUtils
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 			bw.write("username:" + profile.username);
 			bw.newLine();
-			bw.write("password:" + EncrypterUtils.encrypt(profile.password, getResourcemap()));
+			bw.write("password:" + profile.password != null && !profile.password.equals("") ? EncrypterUtils.encrypt(profile.password, getResourcemap()) : "");
 			bw.newLine();
 			bw.write("ram:" + profile.ram);
 			bw.newLine();
@@ -208,7 +208,7 @@ public class ProfilesUtils
 	private static HashMap<String, String> getResourcemap()
 	{
 		HashMap<String, String> resourcemap = new HashMap<String, String>();
-		resourcemap.put("encrypt.key", "dqwpodsodwugncaodqwos");
+		resourcemap.put("encrypt.key", "as32scfg43dcowo3i4jgjcks");
 		return resourcemap;
 	}
 	

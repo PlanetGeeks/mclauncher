@@ -1,6 +1,7 @@
 package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.Launcher;
+import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.settings.Settings;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
@@ -14,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -138,12 +140,12 @@ public class ProfileFrame extends JFrame
 
 		setComboboxRam();
 		
-		comboBoxRam.addActionListener(new ActionListener()
+		comboBoxRam.addMouseListener(new CustomMouseListener()
 		{
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void mousePressed(MouseEvent e)
 			{
-                if(String.valueOf(comboBoxRam.getSelectedItem()).equals("< " + LanguageUtils.getTranslated("launcher.memorybox.createMem") + " >"))
+				if(String.valueOf(comboBoxRam.getSelectedItem()).equals("< " + LanguageUtils.getTranslated("launcher.memorybox.createMem") + " >"))
                 {
                 	Launcher.openMemoryEditor(1, profile);
                 	setVisible(false);
@@ -193,7 +195,7 @@ public class ProfileFrame extends JFrame
 					ProfilesUtils.deleteProfile(this.latestProfName, true);
 					profile = null;
 					this.setVisible(false);
-					Launcher.getLauncherFrame().setComboboxProfiles();
+					Launcher.getLauncherFrame().loginPanel.setComboboxProfiles();
 				}
 				break;
 			}
@@ -218,7 +220,7 @@ public class ProfileFrame extends JFrame
 						ProfilesUtils.modifyProfile(this.latestProfName, profileNameField.getText(), profile);
 						profile = null;
 						this.setVisible(false);
-						Launcher.getLauncherFrame().setComboboxProfiles();
+						Launcher.getLauncherFrame().loginPanel.setComboboxProfiles();
 					}
 				}
 				break;
@@ -236,7 +238,7 @@ public class ProfileFrame extends JFrame
 					{
 						profile = null;
 						this.setVisible(false);
-						Launcher.getLauncherFrame().setComboboxProfiles();
+						Launcher.getLauncherFrame().loginPanel.setComboboxProfiles();
 					}
 				}
 				break;
@@ -309,6 +311,7 @@ public class ProfileFrame extends JFrame
 		
 		withCreateItems[0] = "< " + LanguageUtils.getTranslated("launcher.memorybox.createMem") + " >";
 		comboBoxRam.setModel(new DefaultComboBoxModel(withCreateItems));
+		comboBoxRam.setSelectedIndex(1);
 	}
 	
 	private JButton createBtn;

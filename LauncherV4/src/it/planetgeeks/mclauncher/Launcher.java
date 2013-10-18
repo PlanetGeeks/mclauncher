@@ -1,6 +1,5 @@
 package it.planetgeeks.mclauncher;
 
-
 import it.planetgeeks.mclauncher.frames.ConsoleFrame;
 import it.planetgeeks.mclauncher.frames.LauncherFrame;
 import it.planetgeeks.mclauncher.frames.MemoryFrame;
@@ -23,32 +22,32 @@ public class Launcher
 	private static MemoryFrame memoryFrame;
 	public static ConsoleFrame consoleFrame;
 	public static ResourcesUtils resources = new ResourcesUtils();
-	
-    public static void main(String[]args)
-    {
-    	if(args.length > 0 && args[0].equals("start"))
-    	{
-    		loadLookAndFeel();
-    		consoleFrame = new ConsoleFrame();
-    		LauncherLogger.loadLogger();
-    		printLauncherInfo();
-    		dropUpdaterErrors(args);
-    		LanguageUtils.loadLanguages();
-    		consoleFrame.updateComponents();
-        	ProfilesUtils.loadProfiles();
-        	MemoryUtils.loadMemories();
-        	launcherFrame = new LauncherFrame();
-        	launcherFrame.setVisible(true);
-    	}
-    	else
-    	{
-    		LauncherUpdater.startCheck();
-    	}
-    }
-    
-    private static void loadLookAndFeel()
-    {
-    	try
+
+	public static void main(String[] args)
+	{
+		if (args.length > 0 && args[0].equals("start"))
+		{
+			loadLookAndFeel();
+			consoleFrame = new ConsoleFrame();
+			LauncherLogger.loadLogger();
+			printLauncherInfo();
+			dropUpdaterErrors(args);
+			LanguageUtils.loadLanguages();
+			consoleFrame.updateComponents();
+			ProfilesUtils.loadProfiles();
+			MemoryUtils.loadMemories();
+			launcherFrame = new LauncherFrame();
+			launcherFrame.setVisible(true);
+		}
+		else
+		{
+			LauncherUpdater.startCheck();
+		}
+	}
+
+	private static void loadLookAndFeel()
+	{
+		try
 		{
 			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
 			{
@@ -75,58 +74,63 @@ public class Launcher
 		{
 			java.util.logging.Logger.getLogger(LauncherFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
-    }
-    
-    public static void openProfileEditor(Profile profile)
-    {
-    	profileFrame = new ProfileFrame(profile);
-    	profileFrame.setVisible(true);
-    }  
-    
-    public static void openMemoryEditor(int parent, Object extra)
-    {
-    	memoryFrame = new MemoryFrame(parent, extra);
-    	memoryFrame.setVisible(true);
-    }  
-    
-    public static void openOrCloseConsole(boolean open)
-    {
-    	if(open)
-    	{
-        	consoleFrame.setVisible(true);	
-    	}
-    	else
-    	{
-    	    consoleFrame.setVisible(false);	
-    	}
-    }
-    
-    public static boolean isConsoleOpened()
-    {
-    	return consoleFrame != null ? (consoleFrame.isVisible() ? true : false) : false;
-    }
-    
-    public static LauncherFrame getLauncherFrame()
-    {
-    	return launcherFrame;
-    }
-    
-    private static void dropUpdaterErrors(String[] args)
-    {
-    	if(args.length > 1)
-    	{
-    		for(int i = 1; i < args.length; i++)
-    		{
-    			if(args[i].equals("ERROR1"))
-    			{
-    				LauncherLogger.log(LauncherLogger.GRAVE, "Error on updating launcher!");
-    			}
-    		}
-    	}
-    }
-    
-    private static void printLauncherInfo()
-    {
-    	LauncherLogger.log(LauncherLogger.INFO, Settings.launcherName + " | " + "Version " + Settings.launcherVersion + " | " + "Owned by " + Settings.launcherOwner);
-    }
+	}
+
+	public static void openProfileEditor(Profile profile)
+	{
+		profileFrame = new ProfileFrame(profile);
+		profileFrame.setVisible(true);
+	}
+
+	public static void openMemoryEditor(int parent, Object extra)
+	{
+		memoryFrame = new MemoryFrame(parent, extra);
+		memoryFrame.setVisible(true);
+	}
+
+	public static void openOrCloseConsole(boolean open)
+	{
+		if (open)
+		{
+			consoleFrame.setVisible(true);
+		}
+		else
+		{
+			consoleFrame.setVisible(false);
+		}
+	}
+
+	public static boolean isConsoleOpened()
+	{
+		return consoleFrame != null ? (consoleFrame.isVisible() ? true : false) : false;
+	}
+
+	public static LauncherFrame getLauncherFrame()
+	{
+		return launcherFrame;
+	}
+
+	private static void dropUpdaterErrors(String[] args)
+	{
+		if (args.length > 1)
+		{
+			for (int i = 1; i < args.length; i++)
+			{
+				if (args[i].equals("ERROR1"))
+				{
+					LauncherLogger.log(LauncherLogger.GRAVE, "Error on updating launcher!");
+				}
+			}
+		}
+	}
+
+	private static void printLauncherInfo()
+	{
+		LauncherLogger.log(LauncherLogger.INFO, Settings.launcherName + " | " + "Version " + Settings.launcherVersion + " | " + "Owned by " + Settings.launcherOwner);
+	}
+
+	public static void closeLauncher()
+	{
+        System.exit(0);
+	}
 }
