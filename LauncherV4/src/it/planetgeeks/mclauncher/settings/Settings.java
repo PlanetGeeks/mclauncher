@@ -32,6 +32,8 @@ public class Settings
 	/** Proprietario del launcher **/
 	public static String launcherOwner = "Flood2d";
 	
+	/** Link del pannello informazioni **/
+	public static String linkInfo = "http://www.google.it/";
 	
 	// IMPOSTAZIONI LAUNCHER UPDATER //  
 	
@@ -55,6 +57,9 @@ public class Settings
     
     /** Colore di errore del label "profile" nel profile editor **/
     public static int colorProfileFrameLabelErrored = 0xFF0000;
+    
+    /** Colore label di collegamento ( hyperlinks ) **/
+    public static int colorHyperLinks = 0x0000CF;
     
     /** link news 1 **/
     public static String newsLink1 = "http://mcupdate.tumblr.com/‎";
