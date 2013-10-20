@@ -12,7 +12,6 @@ import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
-
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -27,6 +26,7 @@ public class Launcher
 
 	public static void main(String[] args)
 	{
+		
 		if (args.length > 0 && args[0].equals("start"))
 		{
 			loadLookAndFeel();
