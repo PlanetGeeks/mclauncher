@@ -64,8 +64,6 @@ public class LauncherFrame extends JFrame
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(loginPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(loginPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)));
-
-		setSize(840, 530);
 		
 		pack();
 	}
@@ -164,6 +162,22 @@ public class LauncherFrame extends JFrame
         menuLanguage.getItem(LanguageUtils.getCurrentLangIndex()).setSelected(true);
         
 		menu2.add(menuLanguage, 2);
+		
+        Object items3[][] = { { LanguageUtils.getTranslated("launcher.bar.info.website"), KeyEvent.VK_W, KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.info.info"), KeyEvent.VK_I, KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK), "normal" } };
+		
+		menuItemCreation(menu3, items3);
+		
+		menu3.setMnemonic(KeyEvent.VK_QUOTE);
+		
+		menu3.getItem(1).addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				Launcher.openInfoFrame();
+			}
+		});
 	}
 
 	private void menuItemCreation(JMenu menu, Object data[][])
