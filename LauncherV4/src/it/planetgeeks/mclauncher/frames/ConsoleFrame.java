@@ -62,7 +62,7 @@ public class ConsoleFrame extends JFrame
 			@Override
 			public void windowClosing(WindowEvent arg0)
 			{
-				Launcher.openOrCloseConsole(false);
+				Launcher.openOrCloseConsole();
 			}
 		});
 

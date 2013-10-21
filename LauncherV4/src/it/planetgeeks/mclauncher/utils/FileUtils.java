@@ -51,6 +51,7 @@ public class FileUtils
 		{
 			URL url = new URL(pathUrl);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
 			float totalDataRead = 0;
 			BufferedInputStream in = new java.io.BufferedInputStream(connection.getInputStream());
 			FileOutputStream fos = new FileOutputStream(dest);

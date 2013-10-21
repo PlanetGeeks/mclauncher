@@ -1,4 +1,4 @@
-package it.planetgeeks.mclauncher.settings;
+package it.planetgeeks.mclauncher;
 
 import it.planetgeeks.mclauncher.frames.EnumLayouts;
 

@@ -1,7 +1,7 @@
 package it.planetgeeks.mclauncher.frames.utils;
 
-import it.planetgeeks.mclauncher.settings.Settings;
-import it.planetgeeks.mclauncher.utils.ConnectionUtils;
+import it.planetgeeks.mclauncher.Settings;
+import it.planetgeeks.mclauncher.utils.DesktopUtils;
 
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -56,7 +56,7 @@ public class LinkLabel extends JLabel
 
 	protected void fireActionPerformed(ActionEvent evt)
 	{
-	    ConnectionUtils.openWebPage(this.getNormalText());
+	    DesktopUtils.openWebPage(this.getNormalText());
 	}
 
 }

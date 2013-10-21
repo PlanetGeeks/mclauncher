@@ -133,8 +133,11 @@ public class MemoryFrame extends JFrame
 				}
 				else
 				{
-					MemoryUtils.createCustom(textField.getText().trim(), String.valueOf(spinnerSize.getValue()));
-					updateComponents(2);
+					if(!textField.getText().trim().equals(""))
+					{
+						MemoryUtils.createCustom(textField.getText().trim(), String.valueOf(spinnerSize.getValue()));
+						updateComponents(2);
+					}
 				}
 			}
 		});

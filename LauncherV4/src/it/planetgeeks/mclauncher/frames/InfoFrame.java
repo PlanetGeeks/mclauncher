@@ -1,7 +1,7 @@
 package it.planetgeeks.mclauncher.frames;
 
+import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.utils.LinkLabel;
-import it.planetgeeks.mclauncher.settings.Settings;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 
 import java.awt.Dimension;

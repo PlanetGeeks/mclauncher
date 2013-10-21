@@ -1,6 +1,6 @@
 package it.planetgeeks.mclauncher.utils;
 
-import it.planetgeeks.mclauncher.settings.Settings;
+import it.planetgeeks.mclauncher.Settings;
 
 import java.io.File;
 

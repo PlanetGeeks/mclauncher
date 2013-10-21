@@ -1,7 +1,7 @@
 package it.planetgeeks.mclauncher.updater;
 
 import it.planetgeeks.mclauncher.Launcher;
-import it.planetgeeks.mclauncher.settings.Settings;
+import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.FileUtils;
 

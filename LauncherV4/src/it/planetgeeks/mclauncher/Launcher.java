@@ -4,9 +4,9 @@ import it.planetgeeks.mclauncher.frames.ConsoleFrame;
 import it.planetgeeks.mclauncher.frames.InfoFrame;
 import it.planetgeeks.mclauncher.frames.LauncherFrame;
 import it.planetgeeks.mclauncher.frames.MemoryFrame;
+import it.planetgeeks.mclauncher.frames.OptionsFrame;
 import it.planetgeeks.mclauncher.frames.ProfileFrame;
 import it.planetgeeks.mclauncher.resources.ResourcesUtils;
-import it.planetgeeks.mclauncher.settings.Settings;
 import it.planetgeeks.mclauncher.updater.LauncherUpdater;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
@@ -22,17 +22,18 @@ public class Launcher
 	private static MemoryFrame memoryFrame;
 	private static InfoFrame infoFrame;
 	public static ConsoleFrame consoleFrame;
+	public static OptionsFrame optionsFrame;
 	public static ResourcesUtils resources = new ResourcesUtils();
 
 	public static void main(String[] args)
 	{
-		
 		if (args.length > 0 && args[0].equals("start"))
 		{
 			loadLookAndFeel();
 			consoleFrame = new ConsoleFrame();
 			LauncherLogger.loadLogger();
 			printLauncherInfo();
+			LauncherProperties.loadProperties();
 			dropUpdaterErrors(args);
 			LanguageUtils.loadLanguages();
 			consoleFrame.updateComponents();
@@ -90,30 +91,57 @@ public class Launcher
 		memoryFrame.setVisible(true);
 	}
 	
-	public static void openInfoFrame()
+	public static void openOrCloseInfoFrame()
 	{
-		if(infoFrame == null || !infoFrame.isVisible())
+		if(isInfoOpened())
+		{
+			infoFrame.setVisible(false);
+		}
+		else
 		{
 			infoFrame = new InfoFrame();
 			infoFrame.setVisible(true);
 		}
 	}
 
-	public static void openOrCloseConsole(boolean open)
+	public static void openOrCloseConsole()
 	{
-		if (open)
+		if (isConsoleOpened())
 		{
-			consoleFrame.setVisible(true);
+			consoleFrame.setVisible(false);
 		}
 		else
 		{
-			consoleFrame.setVisible(false);
+			consoleFrame.setVisible(true);
+		}
+	}
+	
+	public static void openOrCloseOptionsFrame()
+	{
+		if(isAdvOptionsOpened())
+		{
+			optionsFrame.setVisible(false);
+		}
+		else
+		{
+			optionsFrame = new OptionsFrame();
+			optionsFrame.setVisible(true);
 		}
 	}
 
 	public static boolean isConsoleOpened()
 	{
 		return consoleFrame != null ? (consoleFrame.isVisible() ? true : false) : false;
+	}
+	
+	public static boolean isAdvOptionsOpened()
+	{
+		return optionsFrame != null ? (optionsFrame.isVisible() ? true : false) : false;
+	}
+	
+	public static boolean isInfoOpened()
+	{
+		return infoFrame != null ? (infoFrame.isVisible() ? true : false) : false;
 	}
 
 	public static LauncherFrame getLauncherFrame()

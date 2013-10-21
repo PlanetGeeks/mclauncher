@@ -1,7 +1,7 @@
 package it.planetgeeks.mclauncher.frames.panels;
 
+import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.EnumLayouts;
-import it.planetgeeks.mclauncher.settings.Settings;
 
 import java.awt.Dimension;
 import java.net.MalformedURLException;

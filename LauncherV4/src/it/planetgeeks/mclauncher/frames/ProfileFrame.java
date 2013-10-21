@@ -1,8 +1,8 @@
 package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.Launcher;
+import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
-import it.planetgeeks.mclauncher.settings.Settings;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
