@@ -68,7 +68,7 @@ public class Settings
     public static String newsLink2 = "http://www.google.it/"; 
     
     /** link news 3 **/
-    public static String newsLink3 = "http://relyze.com/planetgeeks/";
+    public static String newsLink3 = "http://www.youtube.com/PlanetGeeks/";
     
     /** Launcher Frame layout mode 
     Questo parametro permette di scegliere un layout ( disposizione dei componenti ) per il launcher, Qui la lista dei layout
@@ -86,4 +86,7 @@ public class Settings
     - MULTI_NEWS_SKIN_MODPACK;    -> 3 News + Skin + Modpack
     **/
     public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS;
+    
+    /** Per usare bordi della finestra personalizzati **/
+    public static boolean customBorder = false;
 }

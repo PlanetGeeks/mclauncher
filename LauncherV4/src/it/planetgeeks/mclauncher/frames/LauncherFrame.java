@@ -1,21 +1,19 @@
 package it.planetgeeks.mclauncher.frames;
 
-import java.awt.Dimension;
+import it.planetgeeks.mclauncher.Launcher;
+import it.planetgeeks.mclauncher.frames.panels.LoginPanel;
+import it.planetgeeks.mclauncher.frames.panels.MainPanel;
+import it.planetgeeks.mclauncher.frames.utils.CustomJFrame;
+import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
+import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import it.planetgeeks.mclauncher.Launcher;
-import it.planetgeeks.mclauncher.frames.panels.LoginPanel;
-import it.planetgeeks.mclauncher.frames.panels.MainPanel;
-import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
-import it.planetgeeks.mclauncher.utils.LanguageUtils;
-
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -24,23 +22,19 @@ import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 
-public class LauncherFrame extends JFrame
+public class LauncherFrame extends CustomJFrame
 {
 	private static final long serialVersionUID = 1L;
 
 	public LauncherFrame()
 	{
-		dim = new Dimension();
-		dim.width = 840;
-		dim.height = 530;
+		super(840,530);
 		initComponents();
 	}
 
 	private void initComponents()
 	{
 		setTitle(LanguageUtils.getTranslated("launcher.title"));
-
-		this.setMinimumSize(dim);
 
 		loginPanel = new LoginPanel();
 		mainPanel = new MainPanel();
@@ -244,8 +238,7 @@ public class LauncherFrame extends JFrame
 			}
 		}
 	}
-
-	private Dimension dim;
+	
 	private JMenu menu1;
 	private JMenu menu2;
 	private JMenu menu3;
