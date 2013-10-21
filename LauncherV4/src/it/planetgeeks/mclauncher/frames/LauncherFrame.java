@@ -194,7 +194,7 @@ public class LauncherFrame extends JFrame
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				((JCheckBoxMenuItem) menu2.getItem(1)).setSelected(Launcher.isInfoOpened());
+				((JCheckBoxMenuItem) menu3.getItem(1)).setSelected(Launcher.isInfoOpened());
 			}
 		});
 	}
