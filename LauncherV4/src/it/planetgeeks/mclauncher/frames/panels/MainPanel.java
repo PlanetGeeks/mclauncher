@@ -18,7 +18,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -99,11 +98,12 @@ public class MainPanel extends JPanel
 			loadNewsComponents();
 
 			loadSkinComponents();
-
+			jfxPanels[0].setPreferredSize(new Dimension(200, 200));
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
 			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(25, 25, 25).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(27, 27, 27).addComponent(jfxPanels[0], GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE).addContainerGap()));
 			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(jfxPanels[0], GroupLayout.Alignment.TRAILING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(0, 327, Short.MAX_VALUE).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(rightSkin).addComponent(leftSkin)).addGap(30, 30, 30)))));
+
 		}
 		else if (current == EnumLayouts.MULTI_NEWS)
 		{
@@ -121,7 +121,12 @@ public class MainPanel extends JPanel
 			loadSkinComponents();
 
 			loadMultiNewsComponents();
-
+			
+			for(int i = 0; i < 3 ; i++)
+			{
+				jfxPanels[i].setPreferredSize(new Dimension(200, 200));
+			}
+			
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
 			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(25, 25, 25).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(27, 27, 27).addComponent(tabbedPanel, GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE).addContainerGap()));
@@ -147,6 +152,8 @@ public class MainPanel extends JPanel
 
 			loadModPackComponents();
 
+			jfxPanels[0].setPreferredSize(new Dimension(200, 200));
+			
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
 			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpScrollPanel, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(jfxPanels[0])).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpBtn2))).addContainerGap()));
@@ -159,6 +166,11 @@ public class MainPanel extends JPanel
 
 			loadModPackComponents();
 
+			for(int i = 0; i < 3 ; i++)
+			{
+				jfxPanels[i].setPreferredSize(new Dimension(200, 200));
+			}
+			
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
 			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpScrollPanel, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(tabbedPanel)).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpBtn2))).addContainerGap()));
@@ -172,6 +184,11 @@ public class MainPanel extends JPanel
 
 			loadModPackComponents();
 
+			for(int i = 0; i < 3 ; i++)
+			{
+				jfxPanels[i].setPreferredSize(new Dimension(200, 200));
+			}
+			
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
 			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(26, 26, 26).addComponent(tabbedPanel, GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpFilterBtn, GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpBtn2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))).addContainerGap()));
@@ -200,18 +217,12 @@ public class MainPanel extends JPanel
 
 		loadURL(Settings.newsLink1, 0);
 		loadURL(Settings.newsLink2, 1);
-		 loadURL(Settings.newsLink3, 2);
+		loadURL(Settings.newsLink3, 2);
 	}
 
 	private void loadNewsComponents()
 	{
 		createScene();
-
-		editorPanel = new JEditorPane();
-		Dimension d = new Dimension();
-		d.width = 400;
-		d.height = 200;
-		editorPanel.setPreferredSize(d);
 
 		loadURL(Settings.newsLink1, 0);
 	}
@@ -228,7 +239,7 @@ public class MainPanel extends JPanel
 		mpFilterBtn = new JButton();
 		mpFilterLbl = new JLabel();
 
-		if (Settings.layoutMode == EnumLayouts.MULTI_NEWS_MODPACK || Settings.layoutMode == EnumLayouts.NEWS_MODPACK)
+		if (Settings.layoutMode == EnumLayouts.MULTI_NEWS_MODPACK || Settings.layoutMode == EnumLayouts.NEWS_MODPACK || Settings.layoutMode == EnumLayouts.BG_MODPACK)
 		{
 			mpList = new JList();
 
@@ -335,7 +346,6 @@ public class MainPanel extends JPanel
 	private JLabel mpFilterLbl;
 	private JList mpList;
 	private JScrollPane mpScrollPanel;
-	private JEditorPane editorPanel;
 	private JButton leftSkin;
 	private JButton rightSkin;
 	private JTabbedPane tabbedPanel;

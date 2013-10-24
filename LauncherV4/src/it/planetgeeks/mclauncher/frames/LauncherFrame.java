@@ -56,7 +56,8 @@ public class LauncherFrame extends CustomJFrame
 
 		barPanel.setLayout(new BorderLayout());
 		barPanel.add(menuBar , BorderLayout.NORTH);
-
+		
+		
 		setMenu();
 
 		GroupLayout layout = new GroupLayout(getContentPane());
@@ -64,24 +65,6 @@ public class LauncherFrame extends CustomJFrame
 		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(loginPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(barPanel, GroupLayout.DEFAULT_SIZE, 840, Short.MAX_VALUE));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(barPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(0, 0, 0).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(loginPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)));
 
-		/**
-		 * GroupLayout layout = new GroupLayout(getContentPane());
-		 * getContentPane().setLayout(layout);
-		 * layout.setHorizontalGroup(layout.createParallelGroup
-		 * (GroupLayout.Alignment.LEADING).addComponent(loginPanel,
-		 * GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-		 * Short.MAX_VALUE).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE,
-		 * GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-		 * layout.setVerticalGroup(layout
-		 * .createParallelGroup(GroupLayout.Alignment
-		 * .LEADING).addGroup(GroupLayout.Alignment.TRAILING,
-		 * layout.createSequentialGroup().addComponent(mainPanel,
-		 * GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-		 * Short.MAX_VALUE).addPreferredGap
-		 * (LayoutStyle.ComponentPlacement.RELATED).addComponent(loginPanel,
-		 * GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-		 * GroupLayout.PREFERRED_SIZE)));
-		 **/
 		pack();
 	}
 

@@ -82,13 +82,13 @@ public class Settings
     - MULTI_NEWS_SKIN,            -> 3 News + Skin
     - NEWS_MODPACK,               -> News + Modpack
     - NEWS_SKIN_MODPACK,          -> News + Skin + Modpack
-    - MULTI_NEWS_MODPACK,         -> 3 News + Modpack
+    - MULTI_NEWS_MODPACK,         -> 3 News + Modpack //bugged
     - MULTI_NEWS_SKIN_MODPACK;    -> 3 News + Skin + Modpack
     **/
-    public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS;
+    public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS_SKIN_MODPACK; 
     
     /** Per usare bordi della finestra personalizzati **/
-    public static boolean customBorder = false;
+    public static boolean customBorder = true;
     
     public static int barHeight = 28;
     
