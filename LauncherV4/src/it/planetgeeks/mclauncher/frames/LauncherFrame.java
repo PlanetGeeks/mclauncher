@@ -6,6 +6,8 @@ import it.planetgeeks.mclauncher.frames.panels.MainPanel;
 import it.planetgeeks.mclauncher.frames.utils.CustomJFrame;
 import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
+
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,6 +19,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.LayoutStyle;
@@ -28,7 +31,7 @@ public class LauncherFrame extends CustomJFrame
 
 	public LauncherFrame()
 	{
-		super(840,530);
+		super(840, 530);
 		initComponents();
 	}
 
@@ -38,7 +41,8 @@ public class LauncherFrame extends CustomJFrame
 
 		loginPanel = new LoginPanel();
 		mainPanel = new MainPanel();
-
+        barPanel = new JPanel();
+		
 		menuBar = new JMenuBar();
 		menu1 = new JMenu();
 		menu2 = new JMenu();
@@ -50,15 +54,34 @@ public class LauncherFrame extends CustomJFrame
 		menuBar.add(menu2);
 		menuBar.add(menu3);
 
-		setJMenuBar(menuBar);
+		barPanel.setLayout(new BorderLayout());
+		barPanel.add(menuBar , BorderLayout.NORTH);
 
 		setMenu();
 
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(loginPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(loginPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)));
+		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(loginPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(barPanel, GroupLayout.DEFAULT_SIZE, 840, Short.MAX_VALUE));
+		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(barPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(0, 0, 0).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(loginPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)));
 
+		/**
+		 * GroupLayout layout = new GroupLayout(getContentPane());
+		 * getContentPane().setLayout(layout);
+		 * layout.setHorizontalGroup(layout.createParallelGroup
+		 * (GroupLayout.Alignment.LEADING).addComponent(loginPanel,
+		 * GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+		 * Short.MAX_VALUE).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE,
+		 * GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+		 * layout.setVerticalGroup(layout
+		 * .createParallelGroup(GroupLayout.Alignment
+		 * .LEADING).addGroup(GroupLayout.Alignment.TRAILING,
+		 * layout.createSequentialGroup().addComponent(mainPanel,
+		 * GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+		 * Short.MAX_VALUE).addPreferredGap
+		 * (LayoutStyle.ComponentPlacement.RELATED).addComponent(loginPanel,
+		 * GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+		 * GroupLayout.PREFERRED_SIZE)));
+		 **/
 		pack();
 	}
 
@@ -116,7 +139,7 @@ public class LauncherFrame extends CustomJFrame
 		{
 			@Override
 			public void actionPerformed(ActionEvent arg0)
-			{ 
+			{
 				Launcher.openOrCloseOptionsFrame();
 			}
 		});
@@ -182,7 +205,7 @@ public class LauncherFrame extends CustomJFrame
 				Launcher.openOrCloseInfoFrame();
 			}
 		});
-		
+
 		menu3.addMouseListener(new CustomMouseListener()
 		{
 			@Override
@@ -238,12 +261,13 @@ public class LauncherFrame extends CustomJFrame
 			}
 		}
 	}
-	
+
 	private JMenu menu1;
 	private JMenu menu2;
 	private JMenu menu3;
 	private JMenuBar menuBar;
 	public MainPanel mainPanel;
 	public LoginPanel loginPanel;
+	private JPanel barPanel;
 	private int temp;
 }

@@ -89,4 +89,8 @@ public class Settings
     
     /** Per usare bordi della finestra personalizzati **/
     public static boolean customBorder = false;
+    
+    public static int barHeight = 28;
+    
+    public static int titleColor = 0xFFFFFF;
 }
