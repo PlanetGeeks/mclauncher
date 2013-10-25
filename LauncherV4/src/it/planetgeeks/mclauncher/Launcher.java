@@ -12,6 +12,7 @@ import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 

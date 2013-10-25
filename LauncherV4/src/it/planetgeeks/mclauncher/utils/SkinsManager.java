@@ -5,6 +5,9 @@ package it.planetgeeks.mclauncher.utils;
  *
  */
 
+import it.planetgeeks.mclauncher.Launcher;
+import it.planetgeeks.mclauncher.frames.panels.MainPanel;
+
 import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -15,10 +18,63 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+class DownloadSkinThread implements Runnable
+{
+	private JPanel contentPane;
+	private ActionListener actionListener;
+	private String url;
+	private BufferedImage img;
+	private int x;
+	private int y;
+	private List<JButton> buttons;
+	private int mode;
+	private boolean forceUrl;
+
+	public DownloadSkinThread(JPanel contentPane, ActionListener listener,
+			String url, BufferedImage img, int x, int y, List<JButton> buttons,
+			int mode, boolean forceUrl)
+	{
+		this.contentPane = contentPane;
+		this.actionListener = listener;
+		this.url = url;
+		this.img = img;
+		this.x = x;
+		this.y = y;
+		this.buttons = buttons;
+		this.mode = mode;
+		this.forceUrl = forceUrl;
+	}
+
+	@Override
+	public void run()
+	{
+		SkinsManager.operating = true;
+		SkinsManager.drawCharacter(contentPane, actionListener, url, img, x, y, buttons, mode, forceUrl);
+
+	}
+
+}
+
 public class SkinsManager
 {
 
-	public static void drawCharacter(JPanel contentPane, ActionListener listener, String url, BufferedImage img, int x, int y, List<JButton> buttons, int mode, boolean forceUrl)
+	public static void startLoadingThread(JPanel contentPane, ActionListener listener, String url, BufferedImage img, int x, int y, List<JButton> buttons, int mode, boolean forceUrl)
+	{
+		if (originalImage == null)
+		{
+			if(!operating)
+			{
+				Thread thread = new Thread(new DownloadSkinThread(contentPane, listener, url, img, x, y, buttons, mode, forceUrl));
+				thread.start();
+			}	
+		}
+		else
+		{
+			drawCharacter(contentPane, listener, url, img, x, y, buttons, mode, forceUrl);
+		}
+	}
+
+	protected static void drawCharacter(JPanel contentPane, ActionListener listener, String url, BufferedImage img, int x, int y, List<JButton> buttons, int mode, boolean forceUrl)
 	{
 		try
 		{
@@ -30,23 +86,24 @@ public class SkinsManager
 			{
 				if (originalImage == null)
 				{
+
 					try
 					{
 						originalImage = ImageIO.read(new URL(url));
 					}
 					catch (Exception e)
 					{
-						originalImage = ImageIO.read(new URL("http://epicrealm.it/game/skins/char.png"));
+						originalImage = Launcher.resources.getResourceBuffered("char.png");
 					}
 				}
 			}
 
-			if(mode == 0)
+			if (mode == 0)
 			{
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 40, 8, 48, 16, x - 4, y - 5, 8));
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 8, 8, 16, 16, x, y, 7));
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 20, 20, 28, 32, x, y + 56, 7));
-			    buttons.add(drawCropped(contentPane, listener, originalImage, 2, 44, 20, 48, 32, x - 28, y + 56, 7));
+				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 44, 20, 48, 32, x - 28, y + 56, 7));
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 44, 20, 48, 32, x + 56, y + 56, 7, true));
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 4, 20, 8, 32, x, y + 140, 7));
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 4, 20, 8, 32, x + 28, y + 140, 7, true));
@@ -64,9 +121,9 @@ public class SkinsManager
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 24, 8, 32, 16, x, y, 7));
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 32, 20, 40, 32, x, y + 56, 7));
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 52, 20, 56, 32, x - 28, y + 56, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 52, 20, 56, 32, x + 56, y + 56, 7, true));
+				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 52, 20, 56, 32, x + 56, y + 56, 7));
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 12, 20, 16, 32, x, y + 140, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 12, 20, 16, 32, x + 28, y + 140, 7, true));
+				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 12, 20, 16, 32, x + 28, y + 140, 7));
 			}
 			else if (mode == 3)
 			{
@@ -75,21 +132,27 @@ public class SkinsManager
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 52, 20, 56, 32, x + 14, y + 56, 7));
 				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 8, 20, 12, 32, x + 14, y + 140, 7));
 			}
-		  
+
 		}
-		 
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+
+		MainPanel panel = (MainPanel) contentPane;
+		if(operating)
+		{
+			operating = false;
+			panel.updateSkin();
+		}
 	}
 
-	public static JButton drawCropped(JPanel contentPane, ActionListener listener, BufferedImage img, int type, int sx1, int sy1, int sx2, int sy2, int x, int y, int scale)
+	protected static JButton drawCropped(JPanel contentPane, ActionListener listener, BufferedImage img, int type, int sx1, int sy1, int sx2, int sy2, int x, int y, int scale)
 	{
 		return drawCropped(contentPane, listener, img, type, sx1, sy1, sx2, sy2, x, y, scale, false);
 	}
 
-	public static JButton drawCropped(JPanel contentPane, ActionListener listener, BufferedImage img, int type, int sx1, int sy1, int sx2, int sy2, int x, int y, int scale, boolean reflect)
+	protected static JButton drawCropped(JPanel contentPane, ActionListener listener, BufferedImage img, int type, int sx1, int sy1, int sx2, int sy2, int x, int y, int scale, boolean reflect)
 	{
 		BufferedImage resizedImage = new BufferedImage((sx2 - sx1) * scale, (sy2 - sy1) * scale, type);
 		Graphics2D g = resizedImage.createGraphics();
@@ -122,4 +185,5 @@ public class SkinsManager
 	public static JButton tmp;
 	public static BufferedImage originalImage;
 	public static BufferedImage tempSkin;
+	public static boolean operating;
 }

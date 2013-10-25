@@ -70,6 +70,8 @@ public class Settings
     /** link news 3 **/
     public static String newsLink3 = "http://www.youtube.com/PlanetGeeks/";
     
+    public static String websiteLink = "http://www.youtube.com/PlanetGeeks/";
+    
     /** Launcher Frame layout mode 
     Questo parametro permette di scegliere un layout ( disposizione dei componenti ) per il launcher, Qui la lista dei layout
     - BG                          -> backgroud
@@ -88,7 +90,7 @@ public class Settings
     public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS_SKIN_MODPACK; 
     
     /** Per usare bordi della finestra personalizzati **/
-    public static boolean customBorder = true;
+    public static boolean customBorder = false;
     
     public static int barHeight = 28;
     

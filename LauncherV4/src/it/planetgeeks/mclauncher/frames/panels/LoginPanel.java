@@ -1,13 +1,19 @@
 package it.planetgeeks.mclauncher.frames.panels;
 
 import it.planetgeeks.mclauncher.Launcher;
+import it.planetgeeks.mclauncher.Settings;
+import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
+import it.planetgeeks.mclauncher.utils.DesktopUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -15,39 +21,61 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 
-public class LoginPanel extends JPanel
+public class LoginPanel extends CustomJPanel
 {
 	private static final long serialVersionUID = 1L;
 	
 	public LoginPanel()
     {
+		super(true, "southBar.png");
 		initComponents();
     }
     
     public void initComponents()
     {
     	logo = new JLabel();
-		controlsPanel = new JPanel();
+    	logo.setIcon(Launcher.resources.getResource("logo.png"));
+    	
+		controlsPanel = new CustomJPanel(false, "controlsBg.png");
+		controlsPanel.setRightAlign();
 		profileButton = new JButton();
 		profileComboBox = new JComboBox();
 		profileLbl = new JLabel();
 		launchButton = new JButton();
 		linkLbl = new JLabel();
-		logo.setBackground(new Color(255, 255, 255));
+		logo.setBackground(new Color(0,0,0,0));
 		logo.setHorizontalAlignment(SwingConstants.LEFT);
-		logo.setOpaque(true);
+		logo.setOpaque(false);
 		setBackground(new Color(153, 153, 153));
-        controlsPanel.setBackground(new Color(153, 153, 153));
+        controlsPanel.setBackground(new Color(153, 153, 153, 0));
+        controlsPanel.setOpaque(false);
 		profileLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		launchButton.setText(LanguageUtils.getTranslated("launcher.connectbtn"));
 		linkLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		linkLbl.setText(LanguageUtils.getTranslated("launcher.websitelink"));
 		
 		setComboboxProfiles();
+		
+		logo.addMouseListener(new MouseAdapter()
+		{
+			public void mousePressed(MouseEvent me)
+			{
+				DesktopUtils.openWebPage(Settings.websiteLink);
+			}
+
+			public void mouseEntered(MouseEvent me)
+			{
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+
+			public void mouseExited(MouseEvent me)
+			{
+				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+		});
 		
 		profileComboBox.addActionListener(new ActionListener()
 		{
@@ -95,6 +123,8 @@ public class LoginPanel extends JPanel
 		setLayout(footerPanelLayout);
 		footerPanelLayout.setHorizontalGroup(footerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(footerPanelLayout.createSequentialGroup().addContainerGap().addComponent(logo, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(controlsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		footerPanelLayout.setVerticalGroup(footerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, footerPanelLayout.createSequentialGroup().addContainerGap().addComponent(logo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addContainerGap()).addComponent(controlsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE));
+    
+   
     }
     
     public void setComboboxProfiles()
@@ -114,7 +144,7 @@ public class LoginPanel extends JPanel
 		profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
 	}
     
-    private JPanel controlsPanel;
+    private CustomJPanel controlsPanel;
     private JButton profileButton;
 	private JButton launchButton;
 	private JComboBox profileComboBox;

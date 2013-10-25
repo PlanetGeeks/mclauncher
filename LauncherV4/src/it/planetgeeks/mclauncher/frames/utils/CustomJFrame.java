@@ -41,13 +41,12 @@ public class CustomJFrame extends JFrame
 		
 		if(Settings.customBorder)
 		{
-		
 			setUndecorated(true);
 			
 			setModalExclusionType(null);
-			setContentPane(new CustomJPanel("corner.png"));
+			setContentPane(new CustomJPanel(false , "corner.png"));
 			setPreferredSize(new Dimension(width + 2*spx, height + 2*spx));
-			contentPanel = new JPanel();
+			contentPanel = new CustomJPanel(true, "bg.png");
 		    contentPanel.setBounds(spx, spx, width, height);
 		    super.getContentPane().setLayout(null);
 		    closeBtn = new JLabel();
@@ -151,6 +150,7 @@ public class CustomJFrame extends JFrame
 		}
 		else
 		{
+			this.setContentPane(new CustomJPanel(true, "bg.png"));
 			this.setPreferredSize(new Dimension(width, height + 37));
 			this.setMinimumSize(new Dimension(width, height + 37));
 		}
