@@ -1,10 +1,8 @@
 package it.planetgeeks.mclauncher.updater;
 
 import it.planetgeeks.mclauncher.Launcher;
-import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.FileUtils;
-
 import java.io.File;
 class UpdateThread implements Runnable
 {
@@ -38,13 +36,14 @@ public class Updater
 
 	private static boolean downloadLauncher()
 	{
-		File launcher = new File(DirUtils.getWorkingDirectory() + File.separator + "launcher" + File.separator + "launcher.jar");
+		File launcher = new File(DirUtils.getLauncherDirectory() + File.separator + "launcher.jar");
 		if (launcher.exists())
 		{
 			launcher.delete();
 		}
 
-		return FileUtils.downloadFile(Settings.launcherLink, launcher);
+		return FileUtils.downloadFile(LauncherUpdater.downloadUrl, launcher);
 	}
-
+	
+	
 }

@@ -2,6 +2,8 @@ package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.LauncherLogger;
+import it.planetgeeks.mclauncher.Settings;
+import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
 import it.planetgeeks.mclauncher.frames.utils.CustomWindowListener;
 import it.planetgeeks.mclauncher.utils.ConsoleOutStream;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
@@ -37,20 +39,26 @@ public class ConsoleFrame extends JFrame
 
 	private void initComponents()
 	{
+		CustomJPanel panel = new CustomJPanel(true, "bg.png");
+		panel.setOpaque(false);
+		setContentPane(panel);
+		
 		scrollPanel = new JScrollPane();
 		consolePanel = new JTextArea();
 		saveLogBtn = new JButton();
-		consoleTypeBox = new JComboBox();
+		saveLogBtn.setForeground(new Color(Settings.buttonsForeground));
+		consoleTypeBox = new JComboBox<Object>();
 		clearBtn = new JButton();
+		clearBtn.setForeground(new Color(Settings.buttonsForeground));
 
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
 		scrollPanel.setViewportView(consolePanel);
 
 		consolePanel.setEditable(false);
-		consolePanel.setBackground(new Color(0, 0, 0));
+		consolePanel.setBackground(new Color(Settings.consoleBackground));
 		consolePanel.setFont(new Font("sansserif", 1, 12));
-		consolePanel.setForeground(new Color(0x45CE06));
+		consolePanel.setForeground(new Color(Settings.consoleForeground));
 
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -100,7 +108,7 @@ public class ConsoleFrame extends JFrame
 	{
 		saveLogBtn.setText(LanguageUtils.getTranslated("launcher.console.savelog"));
 		clearBtn.setText(LanguageUtils.getTranslated("launcher.console.clear"));
-		consoleTypeBox.setModel(new DefaultComboBoxModel(new String[] { LanguageUtils.getTranslated("launcher.console.box.all"), LanguageUtils.getTranslated("launcher.console.box.launcher"), LanguageUtils.getTranslated("launcher.console.box.minecraft") }));
+		consoleTypeBox.setModel(new DefaultComboBoxModel<Object>(new String[] { LanguageUtils.getTranslated("launcher.console.box.all"), LanguageUtils.getTranslated("launcher.console.box.launcher"), LanguageUtils.getTranslated("launcher.console.box.minecraft") }));
 		setTitle(LanguageUtils.getTranslated("launcher.console.title"));
 	}
 	
@@ -119,7 +127,7 @@ public class ConsoleFrame extends JFrame
 
 	private JButton saveLogBtn;
 	private JButton clearBtn;
-	private JComboBox consoleTypeBox;
+	private JComboBox<Object> consoleTypeBox;
 	private JTextArea consolePanel;
 	private JScrollPane scrollPanel;
 }

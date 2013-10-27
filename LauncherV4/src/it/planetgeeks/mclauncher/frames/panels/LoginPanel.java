@@ -3,6 +3,7 @@ package it.planetgeeks.mclauncher.frames.panels;
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
+import it.planetgeeks.mclauncher.frames.utils.LinkLabel;
 import it.planetgeeks.mclauncher.utils.DesktopUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
@@ -42,10 +43,14 @@ public class LoginPanel extends CustomJPanel
 		controlsPanel = new CustomJPanel(false, "controlsBg.png");
 		controlsPanel.setRightAlign();
 		profileButton = new JButton();
-		profileComboBox = new JComboBox();
+		profileButton.setForeground(new Color(Settings.buttonsForeground));
+		profileComboBox = new JComboBox<String>();
 		profileLbl = new JLabel();
+		profileLbl.setForeground(new Color(Settings.southBarLabelsForeground));
 		launchButton = new JButton();
-		linkLbl = new JLabel();
+		launchButton.setForeground(new Color(Settings.buttonsForeground));
+		linkLbl = new LinkLabel(LanguageUtils.getTranslated("launcher.websitelink"), Settings.websiteLink);
+		linkLbl.setForeground(new Color(Settings.southBarLabelsForeground));
 		logo.setBackground(new Color(0,0,0,0));
 		logo.setHorizontalAlignment(SwingConstants.LEFT);
 		logo.setOpaque(false);
@@ -53,9 +58,9 @@ public class LoginPanel extends CustomJPanel
         controlsPanel.setBackground(new Color(153, 153, 153, 0));
         controlsPanel.setOpaque(false);
 		profileLbl.setHorizontalAlignment(SwingConstants.RIGHT);
+		profileLbl.setForeground(new Color(Settings.southBarLabelsForeground));
 		launchButton.setText(LanguageUtils.getTranslated("launcher.connectbtn"));
 		linkLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		linkLbl.setText(LanguageUtils.getTranslated("launcher.websitelink"));
 		
 		setComboboxProfiles();
 		
@@ -140,14 +145,14 @@ public class LoginPanel extends CustomJPanel
 		{
 			str[i] = profileList.get(i);
 		}
-		profileComboBox.setModel(new DefaultComboBoxModel(str));
+		profileComboBox.setModel(new DefaultComboBoxModel<String>(str));
 		profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
 	}
     
     private CustomJPanel controlsPanel;
     private JButton profileButton;
 	private JButton launchButton;
-	private JComboBox profileComboBox;
+	private JComboBox<String> profileComboBox;
 	private JLabel logo;
 	private JLabel profileLbl;
 	private JLabel linkLbl;

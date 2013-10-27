@@ -2,6 +2,7 @@ package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.Settings;
+import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
 import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
@@ -39,6 +40,9 @@ public class ProfileFrame extends JFrame
 
 	public ProfileFrame(Profile profile)
 	{
+		CustomJPanel panel = new CustomJPanel(true, "bg.png");
+		panel.setOpaque(false);
+		setContentPane(panel);
 		this.profile = profile;
 		this.setResizable(false);
 		initComponents();
@@ -52,14 +56,17 @@ public class ProfileFrame extends JFrame
 		usernameField = new JTextField();
 		passwordLbl = new JLabel();
 		passwordField = new JPasswordField();
-		comboBoxRam = new JComboBox();
+		comboBoxRam = new JComboBox<Object>();
 		ramLbl = new JLabel();
 		checkBoxPsw = new JCheckBox();
 		profileNameField = new JTextField();
 		profileNameLbl = new JLabel();
 		cancelBtn = new JButton();
+		cancelBtn.setForeground(new Color(Settings.buttonsForeground));
 		modifyBtn = new JButton();
+		modifyBtn.setForeground(new Color(Settings.buttonsForeground));
 		createBtn = new JButton();
+		createBtn.setForeground(new Color(Settings.buttonsForeground));
 	    this.setTitle(LanguageUtils.getTranslated("launcher.profile.title"));
 
 		usernameField.addKeyListener(new KeyListener()
@@ -310,13 +317,13 @@ public class ProfileFrame extends JFrame
 		}
 		
 		withCreateItems[0] = "< " + LanguageUtils.getTranslated("launcher.memorybox.createMem") + " >";
-		comboBoxRam.setModel(new DefaultComboBoxModel(withCreateItems));
+		comboBoxRam.setModel(new DefaultComboBoxModel<Object>(withCreateItems));
 		comboBoxRam.setSelectedIndex(1);
 	}
 	
 	private JButton createBtn;
 	private JCheckBox checkBoxPsw;
-	private JComboBox comboBoxRam;
+	private JComboBox<Object> comboBoxRam;
 	private JLabel usernameLbl;
 	private JLabel passwordLbl;
 	private JLabel ramLbl;

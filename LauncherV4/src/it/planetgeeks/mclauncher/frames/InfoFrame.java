@@ -1,6 +1,7 @@
 package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.Settings;
+import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
 import it.planetgeeks.mclauncher.frames.utils.LinkLabel;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 
@@ -25,6 +26,10 @@ public class InfoFrame extends JFrame
 
 	private void initComponents()
 	{
+		CustomJPanel panel = new CustomJPanel(true, "bg.png");
+		panel.setOpaque(false);
+		setContentPane(panel);
+		
 		this.setSize(300, 320);
 		this.setResizable(false);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -49,7 +54,7 @@ public class InfoFrame extends JFrame
 		}
 
 		creditsLabels[0].setText(LanguageUtils.getTranslated("launcher.info.credits"));
-		creditsLabels[1] = new LinkLabel(LanguageUtils.getTranslated("launcher.info.creditslink"));
+		creditsLabels[1] = new LinkLabel(LanguageUtils.getTranslated("launcher.info.creditslink"),LanguageUtils.getTranslated("launcher.info.creditslink"));
 		creditsLabels[1].setHorizontalAlignment(SwingConstants.CENTER);
 
 		infoLabels[0].setText(LanguageUtils.getTranslated("launcher.info.launcherName"));
@@ -64,7 +69,7 @@ public class InfoFrame extends JFrame
 
 		infoLabels[5].setText(Settings.launcherOwner);
 
-		infoLabels[6] = new LinkLabel(Settings.linkInfo);
+		infoLabels[6] = new LinkLabel(Settings.linkInfo,Settings.linkInfo);
 		infoLabels[6].setHorizontalAlignment(SwingConstants.CENTER);
 
 		GroupLayout layout = new GroupLayout(this.getContentPane());

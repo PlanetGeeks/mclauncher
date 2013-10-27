@@ -212,7 +212,9 @@ public class MainPanel extends JPanel
 	private void loadSkinComponents()
 	{
 		leftSkin = new JButton();
+		leftSkin.setForeground(new Color(Settings.buttonsForeground));
 		rightSkin = new JButton();
+		rightSkin.setForeground(new Color(Settings.buttonsForeground));
 		leftSkin.setText("<");
 		rightSkin.setText(">");
 
@@ -285,15 +287,18 @@ public class MainPanel extends JPanel
 	private void loadModPackComponents()
 	{
 		mpBtn1 = new JButton();
+		mpBtn1.setForeground(new Color(Settings.buttonsForeground));
 		mpBtn2 = new JButton();
+		mpBtn2.setForeground(new Color(Settings.buttonsForeground));
 		mpFilterBtn = new JButton();
+		mpFilterBtn.setForeground(new Color(Settings.buttonsForeground));
 		mpFilterLbl = new JLabel();
 
 		if (Settings.layoutMode == EnumLayouts.MULTI_NEWS_MODPACK || Settings.layoutMode == EnumLayouts.NEWS_MODPACK || Settings.layoutMode == EnumLayouts.BG_MODPACK)
 		{
-			mpList = new JList();
+			mpList = new JList<Object>();
 
-			mpList.setModel(new AbstractListModel()
+			mpList.setModel(new AbstractListModel<Object>()
 			{
 				private static final long serialVersionUID = 1L;
 
@@ -316,8 +321,8 @@ public class MainPanel extends JPanel
 		}
 		else
 		{
-			mpCombobox = new JComboBox();
-			mpCombobox.setModel(new DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+			mpCombobox = new JComboBox<String>();
+			mpCombobox.setModel(new DefaultComboBoxModel<String>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 		}
 
 		mpBtn1.setText("Download Server");
@@ -441,9 +446,9 @@ public class MainPanel extends JPanel
 	private JButton mpBtn1;
 	private JButton mpBtn2;
 	private JButton mpFilterBtn;
-	private JComboBox mpCombobox;
+	private JComboBox<String> mpCombobox;
 	private JLabel mpFilterLbl;
-	private JList mpList;
+	private JList<Object> mpList;
 	private JScrollPane mpScrollPanel;
 	private JButton leftSkin;
 	private JButton rightSkin;

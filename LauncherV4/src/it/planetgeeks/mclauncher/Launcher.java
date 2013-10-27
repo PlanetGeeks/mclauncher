@@ -1,5 +1,7 @@
 package it.planetgeeks.mclauncher;
 
+import java.awt.Color;
+
 import it.planetgeeks.mclauncher.frames.ConsoleFrame;
 import it.planetgeeks.mclauncher.frames.InfoFrame;
 import it.planetgeeks.mclauncher.frames.LauncherFrame;
@@ -58,6 +60,12 @@ public class Launcher
 				if ("Nimbus".equals(info.getName()))
 				{
 					UIManager.setLookAndFeel(info.getClassName());
+					UIManager.put("nimbusBlueGrey", (new Color(Settings.buttonsBackground)));
+					UIManager.put("nimbusBase", (new Color(Settings.colorBase)));
+					UIManager.put("control", (new Color(Settings.control)));
+					UIManager.put("nimbusLightBackground", (new Color(Settings.lightBackground)));
+					UIManager.put("nimbusFocus", (new Color(Settings.focus)));
+					UIManager.put("text", (new Color(Settings.textDefault)));
 					break;
 				}
 			}
@@ -156,9 +164,13 @@ public class Launcher
 		{
 			for (int i = 1; i < args.length; i++)
 			{
-				if (args[i].equals("ERROR1"))
+				if (args[i].equals("ERROR0"))
 				{
-					LauncherLogger.log(LauncherLogger.GRAVE, "Error on updating launcher!");
+					LauncherLogger.log(LauncherLogger.GRAVE, "Error on reading launcher check file!");
+				}
+				else if (args[i].equals("ERROR1"))
+				{
+					LauncherLogger.log(LauncherLogger.GRAVE, "Error on downloading launcher!");
 				}
 			}
 		}

@@ -2,10 +2,13 @@ package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.LauncherProperties;
+import it.planetgeeks.mclauncher.Settings;
+import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
 import it.planetgeeks.mclauncher.utils.DesktopUtils;
 import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -31,6 +34,10 @@ public class OptionsFrame extends JFrame
 
 	private void initComponents()
 	{
+		CustomJPanel panel = new CustomJPanel(true, "bg.png");
+		panel.setOpaque(false);
+		setContentPane(panel);
+		
 		setTitle(LanguageUtils.getTranslated("launcher.options.title"));
 		setSize(287, 320);
 		setResizable(false);
@@ -42,9 +49,13 @@ public class OptionsFrame extends JFrame
 		paramSpinner = new JTextField();
 		paramLbl = new JLabel();
 		saveBtn = new JButton();
+		saveBtn.setForeground(new Color(Settings.buttonsForeground));
 		cancelBtn = new JButton();
+		cancelBtn.setForeground(new Color(Settings.buttonsForeground));
 		gameDirBtn = new JButton();
+		gameDirBtn.setForeground(new Color(Settings.buttonsForeground));
 		launcherDirBtn = new JButton();
+		launcherDirBtn.setForeground(new Color(Settings.buttonsForeground));
 
 		checkbox.setText(LanguageUtils.getTranslated("launcher.options.openlauncherafterexit"));
 		checkbox.setHorizontalAlignment(SwingConstants.LEFT);

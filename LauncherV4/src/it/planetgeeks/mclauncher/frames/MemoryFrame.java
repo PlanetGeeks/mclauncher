@@ -1,6 +1,8 @@
 package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.Launcher;
+import it.planetgeeks.mclauncher.Settings;
+import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
 import it.planetgeeks.mclauncher.frames.utils.CustomKeyListener;
 import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.frames.utils.CustomWindowListener;
@@ -9,12 +11,12 @@ import it.planetgeeks.mclauncher.utils.Memory;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 
@@ -55,17 +57,24 @@ public class MemoryFrame extends JFrame
 
 	private void initComponents()
 	{
+		CustomJPanel panel = new CustomJPanel(true, "bg.png");
+		panel.setOpaque(false);
+		setContentPane(panel);
 
 		textField = new JTextField();
 		nameLbl = new JLabel();
 		sizeLbl = new JLabel();
 		spinnerSize = new JSpinner();
 		btn1 = new JButton();
+		btn1.setForeground(new Color(Settings.buttonsForeground));
 		btn2 = new JButton();
+		btn2.setForeground(new Color(Settings.buttonsForeground));
 		upBtn = new JButton();
+		upBtn.setForeground(new Color(Settings.buttonsForeground));
 		downBtn = new JButton();
+		downBtn.setForeground(new Color(Settings.buttonsForeground));
 		scrollpane = new JScrollPane();
-		list = new JList();
+		list = new JList<Object>();
 		separator = new JSeparator();
 		this.setTitle(LanguageUtils.getTranslated("launcher.memory.title"));
 
@@ -215,7 +224,7 @@ public class MemoryFrame extends JFrame
 
 	private void setList()
 	{
-		list.setModel(new AbstractListModel()
+		list.setModel(new AbstractListModel<Object>()
 		{
 
 			private static final long serialVersionUID = 1L;
@@ -282,7 +291,7 @@ public class MemoryFrame extends JFrame
 	private JButton downBtn;
 	private JLabel nameLbl;
 	private JLabel sizeLbl;
-	private JList list;
+	private JList<Object> list;
 	private JScrollPane scrollpane;
 	private JSeparator separator;
 	private JSpinner spinnerSize;

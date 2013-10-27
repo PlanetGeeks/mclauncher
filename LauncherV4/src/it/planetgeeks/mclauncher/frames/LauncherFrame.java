@@ -1,6 +1,7 @@
 package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.Launcher;
+import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.panels.LoginPanel;
 import it.planetgeeks.mclauncher.frames.panels.MainPanel;
 import it.planetgeeks.mclauncher.frames.utils.CustomJFrame;
@@ -8,6 +9,7 @@ import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -38,16 +40,20 @@ public class LauncherFrame extends CustomJFrame
 	private void initComponents()
 	{
 		setTitle(LanguageUtils.getTranslated("launcher.title"));
-
+        setIconImage(Launcher.resources.getResource("icon.png").getImage());
+        
 		loginPanel = new LoginPanel();
 		mainPanel = new MainPanel();
         barPanel = new JPanel();
 		
 		menuBar = new JMenuBar();
 		menu1 = new JMenu();
+		menu1.setForeground(new Color(Settings.buttonsForeground));
 		menu2 = new JMenu();
+		menu2.setForeground(new Color(Settings.buttonsForeground));
 		menu3 = new JMenu();
-
+		menu3.setForeground(new Color(Settings.buttonsForeground));
+		
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		menuBar.add(menu1);

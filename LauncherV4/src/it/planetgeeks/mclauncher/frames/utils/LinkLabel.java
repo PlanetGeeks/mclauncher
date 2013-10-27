@@ -16,10 +16,14 @@ public class LinkLabel extends JLabel
 	private static final long serialVersionUID = 1L;
 
 	private String text;
+	
+	private String url;
 
-	public LinkLabel(String text)
+	public LinkLabel(String text, String url)
 	{
 		super(text);
+		
+		this.url = url;
 
 		setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -56,7 +60,7 @@ public class LinkLabel extends JLabel
 
 	protected void fireActionPerformed(ActionEvent evt)
 	{
-	    DesktopUtils.openWebPage(this.getNormalText());
+	    DesktopUtils.openWebPage(this.url);
 	}
 
 }

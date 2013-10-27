@@ -19,11 +19,19 @@ public class Settings
 	 *  Ad esempio per cambiare il titolo del launcher nella lingua italiana basta trovare il file it_IT.lang
 	 *  aprirlo ( potete farlo da eclipse ) , trovare la riga con scritto launcher.title=    e dopo l'uguale 
 	 *  scrivere il titolo che volete voi. Niente di più semplice.
-	 **/
+	 **/ 
 	
-	// INFORMAZIONI SUL LAUNCHER //  
+	/** IMPOSTAZIONI LAUNCHER UPDATER **/
 	
-	/** Nome del launcher **/
+	/** Link per il controllo della versione del launcher ( che contiene link download - md5 - size ) **/
+	public static String launcherLink = "null";
+    
+    /** Se c'è un update del launcher fa apparire il box per la conferma altrimenti procede forzatamente **/
+    public static boolean showUpdateConfirm = true;
+   
+    /** IMPOSTAZIONI GENERALI **/
+    
+    /** Nome del launcher **/
 	public static String launcherName = "Launcher v4";
 	
 	/** Versione del launcher **/
@@ -35,31 +43,8 @@ public class Settings
 	/** Link del pannello informazioni **/
 	public static String linkInfo = "http://www.google.it/";
 	
-	// IMPOSTAZIONI LAUNCHER UPDATER //  
-	
-	/** Link di download del launcher **/
-	public static String launcherLink = "null";
-	
-	/** Link md5 del launcher **/
-    public static String launcherMD5 = "null";
-    
-    /** Se c'è un update del launcher fa apparire il box per la conferma altrimenti procede forzatamente **/
-    public static boolean showUpdateConfirm = true;
-    
-    
-    // IMPOSTAZIONI LAUNCHER //   
-    
     /** Cartella del gioco **/
     public static String gameDir = "testv4"; //La cartella in %APPDATA% dove vengono salvati i file di minecraft e del launcher
-   
-    /** Colore iniziale del label "profile" nel profile editor **/
-    public static int colorProfileFrameLabel = 0xFF0000; 
-    
-    /** Colore di errore del label "profile" nel profile editor **/
-    public static int colorProfileFrameLabelErrored = 0xFF0000;
-    
-    /** Colore label di collegamento ( hyperlinks ) **/
-    public static int colorHyperLinks = 0x0000CF;
     
     /** link news 1 **/
     public static String newsLink1 = "http://mcupdate.tumblr.com/‎";
@@ -70,7 +55,17 @@ public class Settings
     /** link news 3 **/
     public static String newsLink3 = "http://www.youtube.com/PlanetGeeks/";
     
+    /** link per il label vicino al bottone di connessione **/
     public static String websiteLink = "http://www.youtube.com/PlanetGeeks/";
+    
+    /** link per il label nella finestra delle informazioni **/
+    public static String infoLink = "http://www.youtube.com/PlanetGeeks/";
+    
+    /** link per il logo in basso a sinistra nella schermata principale **/
+    public static String logoLink = "http://www.youtube.com/PlanetGeeks/";
+    
+    
+    /** IMPOSTAZIONI GRAFICHE **/
     
     /** Launcher Frame layout mode 
     Questo parametro permette di scegliere un layout ( disposizione dei componenti ) per il launcher, Qui la lista dei layout
@@ -92,7 +87,48 @@ public class Settings
     /** Per usare bordi della finestra personalizzati **/
     public static boolean customBorder = false;
     
+    /** Dimensione della barra superiore ( utile per lo spostamento della finestra sullo schermo ) **/
     public static int barHeight = 28;
     
+    /** Colore titolo finestra solo per bordo personalizzato **/
     public static int titleColor = 0xFFFFFF;
+    
+    /** Colore di sfondo dei bottoni **/
+    public static int buttonsBackground = 0x37363C;
+    
+    /** Colore del testo dei bottoni **/
+    public static int buttonsForeground = 0xEAEAEB;
+
+    /** Colore dei label nel pannello inferiore **/
+    public static int southBarLabelsForeground = 0xEAEAEB;
+    
+    /** Colore principale delle scritte **/
+    public static int textDefault = 0x000000;
+    
+    /** Colore dell'alone di selezione **/
+    public static int focus = 0xD0CFD2;
+    
+    /** Colore di sfondo di menu a tendina ,liste, combobox e altri componenti simili **/
+    public static int lightBackground = 0xC1C0C3;
+    
+    public static int control = 0xD0CFD2;
+    
+    /** Colore di base dei componenti **/
+    public static int colorBase = 0x504D5C;
+    
+    /** Colore iniziale del label "profile" nel profile editor **/
+    public static int colorProfileFrameLabel = 0xFF0000; 
+    
+    /** Colore di errore del label "profile" nel profile editor **/
+    public static int colorProfileFrameLabelErrored = 0xFF0000;
+    
+    /** Colore label di collegamento ( hyperlinks ) **/
+    public static int colorHyperLinks = 0x006FFF;
+    
+    /** Colore background console **/
+    public static int consoleBackground = 0x000000;
+    
+    /** Colore delle scritte della console **/
+    public static int consoleForeground = 0xFFFFFF;
+   
 }
