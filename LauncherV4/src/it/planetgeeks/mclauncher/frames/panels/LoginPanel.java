@@ -38,7 +38,7 @@ public class LoginPanel extends CustomJPanel
     public void initComponents()
     {
     	logo = new JLabel();
-    	logo.setIcon(Launcher.resources.getResource("logo.png"));
+    	logo.setIcon(Launcher.getResources().getResource("logo.png"));
     	
 		controlsPanel = new CustomJPanel(false, "controlsBg.png");
 		controlsPanel.setRightAlign();

@@ -64,6 +64,8 @@ public class Settings
     /** link per il logo in basso a sinistra nella schermata principale **/
     public static String logoLink = "http://www.youtube.com/PlanetGeeks/";
     
+    /** link per il caricamento dei modpack **/
+    public static String modpacks = "https://dl.dropboxusercontent.com/u/88221856/launcherv4test/modpacks/modpacks.list";
     
     /** IMPOSTAZIONI GRAFICHE **/
     

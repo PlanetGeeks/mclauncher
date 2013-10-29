@@ -154,7 +154,7 @@ public class ProfileFrame extends JFrame
 			{
 				if(String.valueOf(comboBoxRam.getSelectedItem()).equals("< " + LanguageUtils.getTranslated("launcher.memorybox.createMem") + " >"))
                 {
-                	Launcher.openMemoryEditor(1, profile);
+                	Launcher.openOrCloseMemoryEditor(1, profile);
                 	setVisible(false);
                 }
 			}

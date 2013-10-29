@@ -50,11 +50,11 @@ public class CustomJFrame extends JFrame
 		    contentPanel.setBounds(spx, spx, width, height);
 		    super.getContentPane().setLayout(null);
 		    closeBtn = new JLabel();
-			closeBtn.setIcon(Launcher.resources.getMergedResource(Launcher.resources.getCroppedResorce("buttons.png", 0, 0, 19, 19), Launcher.resources.getCroppedResorce("buttons.png", 19, 0, 19, 19)));
+			closeBtn.setIcon(Launcher.getResources().getMergedResource(Launcher.getResources().getCroppedResorce("buttons.png", 0, 0, 19, 19), Launcher.getResources().getCroppedResorce("buttons.png", 19, 0, 19, 19)));
 			closeBtn.setLocation(width + spx - 30, spx - Settings.barHeight/2 - 19/2);
 			closeBtn.setSize(19, 19);
 			minimizeBtn = new JLabel();
-			minimizeBtn.setIcon(Launcher.resources.getMergedResource(Launcher.resources.getCroppedResorce("buttons.png", 0, 0, 19, 19), Launcher.resources.getCroppedResorce("buttons.png", 19, 19, 19, 19)));
+			minimizeBtn.setIcon(Launcher.getResources().getMergedResource(Launcher.getResources().getCroppedResorce("buttons.png", 0, 0, 19, 19), Launcher.getResources().getCroppedResorce("buttons.png", 19, 19, 19, 19)));
 			minimizeBtn.setLocation(width + spx - 19 - 40, spx - Settings.barHeight/2 - 19/2);
 			minimizeBtn.setSize(19, 19);
 			titleLbl = new JLabel();
@@ -67,13 +67,13 @@ public class CustomJFrame extends JFrame
 				@Override
 				public void mousePressed(MouseEvent e)
 				{
-					closeBtn.setIcon(Launcher.resources.getMergedResource(Launcher.resources.getCroppedResorce("buttons.png", 0, 19, 19, 19), Launcher.resources.getCroppedResorce("buttons.png", 19, 0, 19, 19)));
+					closeBtn.setIcon(Launcher.getResources().getMergedResource(Launcher.getResources().getCroppedResorce("buttons.png", 0, 19, 19, 19), Launcher.getResources().getCroppedResorce("buttons.png", 19, 0, 19, 19)));
 				}
 				
 				@Override
 				public void mouseReleased(MouseEvent e)
 				{
-					closeBtn.setIcon(Launcher.resources.getMergedResource(Launcher.resources.getCroppedResorce("buttons.png", 0, 0, 19, 19), Launcher.resources.getCroppedResorce("buttons.png", 19, 0, 19, 19)));
+					closeBtn.setIcon(Launcher.getResources().getMergedResource(Launcher.getResources().getCroppedResorce("buttons.png", 0, 0, 19, 19), Launcher.getResources().getCroppedResorce("buttons.png", 19, 0, 19, 19)));
 				    Launcher.closeLauncher();
 				}
 				
@@ -95,13 +95,13 @@ public class CustomJFrame extends JFrame
 				@Override
 				public void mousePressed(MouseEvent e)
 				{
-					minimizeBtn.setIcon(Launcher.resources.getMergedResource(Launcher.resources.getCroppedResorce("buttons.png", 0, 19, 19, 19), Launcher.resources.getCroppedResorce("buttons.png", 19, 19, 19, 19)));
+					minimizeBtn.setIcon(Launcher.getResources().getMergedResource(Launcher.getResources().getCroppedResorce("buttons.png", 0, 19, 19, 19), Launcher.getResources().getCroppedResorce("buttons.png", 19, 19, 19, 19)));
 				}
 				
 				@Override
 				public void mouseReleased(MouseEvent e)
 				{
-					minimizeBtn.setIcon(Launcher.resources.getMergedResource(Launcher.resources.getCroppedResorce("buttons.png", 0, 0, 19, 19), Launcher.resources.getCroppedResorce("buttons.png", 19, 19, 19, 19)));
+					minimizeBtn.setIcon(Launcher.getResources().getMergedResource(Launcher.getResources().getCroppedResorce("buttons.png", 0, 0, 19, 19), Launcher.getResources().getCroppedResorce("buttons.png", 19, 19, 19, 19)));
 					setState(Frame.ICONIFIED);
 				}
 				

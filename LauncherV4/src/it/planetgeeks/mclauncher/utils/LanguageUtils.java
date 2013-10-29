@@ -21,7 +21,7 @@ public class LanguageUtils
 	{
 		try
 		{
-			InputStream input = Launcher.resources.getInputStream("languages/languages.list");
+			InputStream input = Launcher.getResources().getInputStream("languages/languages.list");
 			if (input != null)
 			{
 				BufferedReader br = new BufferedReader(new InputStreamReader(input));
@@ -88,7 +88,7 @@ public class LanguageUtils
 	{
 		try
 		{
-			InputStream input = Launcher.resources.getInputStream("languages/" + fileName);
+			InputStream input = Launcher.getResources().getInputStream("languages/" + fileName);
 			if (input != null)
 			{
 				BufferedReader br = new BufferedReader(new InputStreamReader(input));

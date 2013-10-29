@@ -40,12 +40,12 @@ public class LauncherFrame extends CustomJFrame
 	private void initComponents()
 	{
 		setTitle(LanguageUtils.getTranslated("launcher.title"));
-        setIconImage(Launcher.resources.getResource("icon.png").getImage());
-        
+		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
+
 		loginPanel = new LoginPanel();
 		mainPanel = new MainPanel();
-        barPanel = new JPanel();
-		
+		barPanel = new JPanel();
+
 		menuBar = new JMenuBar();
 		menu1 = new JMenu();
 		menu1.setForeground(new Color(Settings.buttonsForeground));
@@ -53,7 +53,7 @@ public class LauncherFrame extends CustomJFrame
 		menu2.setForeground(new Color(Settings.buttonsForeground));
 		menu3 = new JMenu();
 		menu3.setForeground(new Color(Settings.buttonsForeground));
-		
+
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		menuBar.add(menu1);
@@ -61,9 +61,8 @@ public class LauncherFrame extends CustomJFrame
 		menuBar.add(menu3);
 
 		barPanel.setLayout(new BorderLayout());
-		barPanel.add(menuBar , BorderLayout.NORTH);
-		
-		
+		barPanel.add(menuBar, BorderLayout.NORTH);
+
 		setMenu();
 
 		GroupLayout layout = new GroupLayout(getContentPane());
@@ -76,17 +75,28 @@ public class LauncherFrame extends CustomJFrame
 
 	private void setMenu()
 	{
-		menu1.setText(LanguageUtils.getTranslated("lancher.bar.file"));
+		menu1.setText(LanguageUtils.getTranslated("launcher.bar.file"));
 		menu2.setText(LanguageUtils.getTranslated("launcher.bar.options"));
 		menu3.setText(LanguageUtils.getTranslated("launcher.bar.info"));
 
-		Object items1[][] = { { "Esci", KeyEvent.VK_E, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK), "normal" } };
+		Object items1[][] = { { LanguageUtils.getTranslated("launcher.bar.file.profile.create"), KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.file.profile.modify"), KeyEvent.VK_O, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.file.manageMem"), KeyEvent.VK_M, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK), "check" }, { LanguageUtils.getTranslated("launcher.bar.file.updateLauncher"), KeyEvent.VK_U, KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK), "normal" }, { "separator" }, { LanguageUtils.getTranslated("launcher.bar.file.exit"), KeyEvent.VK_E, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK), "normal" } };
 
 		menuItemCreation(menu1, items1);
 
-		menu1.setMnemonic(KeyEvent.VK_F);
+		menu1.setMnemonic(KeyEvent.VK_G);
 
-		menu1.getItem(0).addActionListener(new ActionListener()
+		menu1.getItem(2).addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				Launcher.openOrCloseMemoryEditor(0, null);
+
+			}
+		});
+
+		menu1.getItem(5).addActionListener(new ActionListener()
 		{
 
 			@Override
@@ -96,8 +106,17 @@ public class LauncherFrame extends CustomJFrame
 
 			}
 		});
-
-		Object items2[][] = { { LanguageUtils.getTranslated("launcher.bar.options.manageMem"), KeyEvent.VK_M, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.options.showConsole"), KeyEvent.VK_K, KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.CTRL_MASK), "check" }, { "separator" }, { LanguageUtils.getTranslated("launcher.bar.options.advanced"), KeyEvent.VK_A, KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK), "check" } };
+	
+		menu1.addMouseListener(new CustomMouseListener()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				((JCheckBoxMenuItem) menu1.getItem(2)).setSelected(Launcher.isMemoryFrameOpened());
+			}
+		});
+		
+		Object items2[][] = { { LanguageUtils.getTranslated("launcher.bar.options.showConsole"), KeyEvent.VK_K, KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.CTRL_MASK), "check" }, { LanguageUtils.getTranslated("launcher.bar.options.forceUpdate"), KeyEvent.VK_L, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK), "check" }, { "separator" }, { LanguageUtils.getTranslated("launcher.bar.options.advanced"), KeyEvent.VK_A, KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK), "check" } };
 
 		menuItemCreation(menu2, items2);
 
@@ -109,18 +128,17 @@ public class LauncherFrame extends CustomJFrame
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Launcher.openMemoryEditor(0, null);
-
+				Launcher.openOrCloseConsole();
 			}
 		});
-
+		
 		menu2.getItem(1).addActionListener(new ActionListener()
 		{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Launcher.openOrCloseConsole();
+				Launcher.forceUpdate = !Launcher.forceUpdate;
 			}
 		});
 
@@ -138,7 +156,8 @@ public class LauncherFrame extends CustomJFrame
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				((JCheckBoxMenuItem) menu2.getItem(1)).setSelected(Launcher.isConsoleOpened());
+				((JCheckBoxMenuItem) menu2.getItem(0)).setSelected(Launcher.isConsoleOpened());
+				((JCheckBoxMenuItem) menu2.getItem(1)).setSelected(Launcher.forceUpdate);
 				((JCheckBoxMenuItem) menu2.getItem(4)).setSelected(Launcher.isAdvOptionsOpened());
 			}
 		});

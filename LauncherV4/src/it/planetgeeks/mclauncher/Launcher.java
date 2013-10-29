@@ -1,19 +1,21 @@
 package it.planetgeeks.mclauncher;
 
-import java.awt.Color;
-
 import it.planetgeeks.mclauncher.frames.ConsoleFrame;
 import it.planetgeeks.mclauncher.frames.InfoFrame;
 import it.planetgeeks.mclauncher.frames.LauncherFrame;
+import it.planetgeeks.mclauncher.frames.MPFilterFrame;
 import it.planetgeeks.mclauncher.frames.MemoryFrame;
 import it.planetgeeks.mclauncher.frames.OptionsFrame;
 import it.planetgeeks.mclauncher.frames.ProfileFrame;
+import it.planetgeeks.mclauncher.modpack.ModPackUtils;
 import it.planetgeeks.mclauncher.resources.ResourcesUtils;
 import it.planetgeeks.mclauncher.updater.LauncherUpdater;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
+
+import java.awt.Color;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -24,9 +26,11 @@ public class Launcher
 	private static ProfileFrame profileFrame;
 	private static MemoryFrame memoryFrame;
 	private static InfoFrame infoFrame;
-	public static ConsoleFrame consoleFrame;
-	public static OptionsFrame optionsFrame;
-	public static ResourcesUtils resources = new ResourcesUtils();
+	private static ConsoleFrame consoleFrame;
+	private static OptionsFrame optionsFrame;
+	private static MPFilterFrame filterFrame;
+	private static ResourcesUtils resources = new ResourcesUtils();
+	public static boolean forceUpdate = false;
 
 	public static void main(String[] args)
 	{
@@ -42,6 +46,7 @@ public class Launcher
 			consoleFrame.updateComponents();
 			ProfilesUtils.loadProfiles();
 			MemoryUtils.loadMemories();
+			ModPackUtils.startLoading();
 			launcherFrame = new LauncherFrame();
 			launcherFrame.setVisible(true);
 		}
@@ -94,10 +99,30 @@ public class Launcher
 		profileFrame.setVisible(true);
 	}
 
-	public static void openMemoryEditor(int parent, Object extra)
+	public static void openOrCloseMemoryEditor(int parent, Object extra)
 	{
-		memoryFrame = new MemoryFrame(parent, extra);
-		memoryFrame.setVisible(true);
+		if(memoryFrame == null || !memoryFrame.isVisible())
+		{
+			memoryFrame = new MemoryFrame(parent, extra);
+			memoryFrame.setVisible(true);
+		}
+		else
+		{
+			memoryFrame.close();
+		}	
+	}
+	
+	public static void openOrCloseFilterFrame()
+	{
+		if(filterFrame == null || !filterFrame.isVisible())
+		{
+			filterFrame = new MPFilterFrame();
+			filterFrame.setVisible(true);
+		}
+		else
+		{
+			filterFrame.setVisible(false);
+		}	
 	}
 	
 	public static void openOrCloseInfoFrame()
@@ -138,6 +163,11 @@ public class Launcher
 		}
 	}
 
+	public static boolean isMemoryFrameOpened()
+	{
+		return memoryFrame != null ? (memoryFrame.isVisible() ? true : false) : false;
+	}
+	
 	public static boolean isConsoleOpened()
 	{
 		return consoleFrame != null ? (consoleFrame.isVisible() ? true : false) : false;
@@ -152,10 +182,25 @@ public class Launcher
 	{
 		return infoFrame != null ? (infoFrame.isVisible() ? true : false) : false;
 	}
+	
+	public static ConsoleFrame getConsoleFrame()
+	{
+		return consoleFrame;
+	}
 
 	public static LauncherFrame getLauncherFrame()
 	{
 		return launcherFrame;
+	}
+	
+	public static ResourcesUtils getResources()
+	{
+		return resources;
+	}
+	
+	public static OptionsFrame getOptions()
+	{
+		return optionsFrame;
 	}
 
 	private static void dropUpdaterErrors(String[] args)

@@ -85,10 +85,7 @@ public class MemoryFrame extends JFrame
 			@Override
 			public void windowClosing(WindowEvent arg0)
 			{
-				if (parentFrame == 1)
-				{
-					Launcher.openProfileEditor((Profile) extra);
-				}
+				close();
 			}
 		});
 
@@ -283,6 +280,15 @@ public class MemoryFrame extends JFrame
 		{
 			setList();
 		}
+	}
+	
+	public void close()
+	{
+		if (parentFrame == 1)
+		{
+			Launcher.openProfileEditor((Profile) extra);
+		}
+		setVisible(false);
 	}
 
 	private JButton btn1;

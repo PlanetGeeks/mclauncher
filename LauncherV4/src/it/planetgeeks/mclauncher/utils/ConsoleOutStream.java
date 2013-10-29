@@ -41,13 +41,13 @@ public class ConsoleOutStream extends OutputStream
 				{
 					if(text.startsWith("[MINECRAFT]"))
 					{
-						Launcher.consoleFrame.lines.add(new String[] { "MINECRAFT", text.substring(11) });
+						Launcher.getConsoleFrame().lines.add(new String[] { "MINECRAFT", text.substring(11) });
 					}
 					else
 					{
-						Launcher.consoleFrame.lines.add(new String[] { "LAUNCHER", text });
+						Launcher.getConsoleFrame().lines.add(new String[] { "LAUNCHER", text });
 					}
-					Launcher.consoleFrame.updateTextArea();
+					Launcher.getConsoleFrame().updateTextArea();
 				}
 			});
 			sb.setLength(0);

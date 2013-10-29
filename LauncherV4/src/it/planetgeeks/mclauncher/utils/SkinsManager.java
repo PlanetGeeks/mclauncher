@@ -93,7 +93,7 @@ public class SkinsManager
 					}
 					catch (Exception e)
 					{
-						originalImage = Launcher.resources.getResourceBuffered("char.png");
+						originalImage = Launcher.getResources().getResourceBuffered("char.png");
 					}
 				}
 			}
