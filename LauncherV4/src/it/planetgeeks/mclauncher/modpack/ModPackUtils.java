@@ -31,7 +31,9 @@ public class ModPackUtils
 	private static ArrayList<ModPack> modPacks = new ArrayList<ModPack>();
 	public static EnumFilterType filter = EnumFilterType.ALL;
 	public static String filterStr = null;
-
+	public static ArrayList<ModPack> filteredList = new ArrayList<ModPack>();
+	public static ModPack selected = null;
+	
 	public static void startLoading()
 	{
 		Thread thread = new Thread(new ThreadGetPacksInfo());

@@ -88,6 +88,9 @@ public class LoginPanel extends CustomJPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				String s = (String) profileComboBox.getSelectedItem();
+				
+				ProfilesUtils.selectedProfile = profileComboBox.getSelectedIndex();
+				
 				if (s.equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")))
 				{
 					Launcher.openProfileEditor(null);

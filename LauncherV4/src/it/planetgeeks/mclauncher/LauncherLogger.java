@@ -59,7 +59,7 @@ public enum LauncherLogger
 				File toSave = saveFile.getSelectedFile();
 				if (toSave.exists())
 				{
-					if (JOptionPane.showConfirmDialog(null, LanguageUtils.getTranslated("launcher.savelogoverwritemessage"), "launcher.savelogtitle", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+					if (JOptionPane.showConfirmDialog(null, LanguageUtils.getTranslated("launcher.saveoverwritemessage"), LanguageUtils.getTranslated("launcher.saveoverwritetitle"), JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
 					{
 						return;
 					}

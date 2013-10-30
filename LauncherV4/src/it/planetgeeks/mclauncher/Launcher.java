@@ -4,9 +4,11 @@ import it.planetgeeks.mclauncher.frames.ConsoleFrame;
 import it.planetgeeks.mclauncher.frames.InfoFrame;
 import it.planetgeeks.mclauncher.frames.LauncherFrame;
 import it.planetgeeks.mclauncher.frames.MPFilterFrame;
+import it.planetgeeks.mclauncher.frames.MPInfoFrame;
 import it.planetgeeks.mclauncher.frames.MemoryFrame;
 import it.planetgeeks.mclauncher.frames.OptionsFrame;
 import it.planetgeeks.mclauncher.frames.ProfileFrame;
+import it.planetgeeks.mclauncher.modpack.ModPack;
 import it.planetgeeks.mclauncher.modpack.ModPackUtils;
 import it.planetgeeks.mclauncher.resources.ResourcesUtils;
 import it.planetgeeks.mclauncher.updater.LauncherUpdater;
@@ -29,6 +31,7 @@ public class Launcher
 	private static ConsoleFrame consoleFrame;
 	private static OptionsFrame optionsFrame;
 	private static MPFilterFrame filterFrame;
+	private static MPInfoFrame mpinfoframe;
 	private static ResourcesUtils resources = new ResourcesUtils();
 	public static boolean forceUpdate = false;
 
@@ -122,6 +125,22 @@ public class Launcher
 		else
 		{
 			filterFrame.setVisible(false);
+		}	
+	}
+	
+	public static void openOrCloseMPInfoFrame(ModPack modpack)
+	{
+		if(mpinfoframe == null || !mpinfoframe.isVisible())
+		{
+			if(modpack != null)
+			{
+				mpinfoframe = new MPInfoFrame(modpack);
+				mpinfoframe.setVisible(true);
+			}
+		}
+		else
+		{
+			mpinfoframe.setVisible(false);
 		}	
 	}
 	

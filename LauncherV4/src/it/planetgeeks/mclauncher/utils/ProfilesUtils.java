@@ -16,7 +16,8 @@ public class ProfilesUtils
 
 	private static ArrayList<Profile> profiles = new ArrayList<Profile>();
 	private static File profileFolder = new File(DirUtils.getLauncherDirectory() + File.separator + "profiles");
-
+    public static int selectedProfile = 0;
+	
 	public static ArrayList<Profile> getProfiles()
 	{
 		return profiles;
@@ -231,6 +232,11 @@ public class ProfilesUtils
 			}
 		}
 		return null;
+	}
+	
+	public static Profile getSelectedProfile()
+	{
+		return selectedProfile >= 0 && selectedProfile < profiles.size() ? profiles.get(selectedProfile) : null;
 	}
 
 }

@@ -39,6 +39,14 @@ public class CustomJPanel extends JPanel
 		this.imageFile = image;
 		this.imageIcon = Launcher.getResources().getResource(imageFile);
 	}
+	
+	public CustomJPanel(boolean repeat, ImageIcon image)
+	{
+		super();
+		this.repeat = repeat;
+		this.imageFile = "";
+		this.imageIcon = image;
+	}
 
 	public CustomJPanel(LayoutManager layout)
 	{

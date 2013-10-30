@@ -19,7 +19,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class FileUtils
 {
-
 	private static InputStream is;
 	
 	public static String generateBufferedHash(File file) throws NoSuchAlgorithmException, FileNotFoundException, IOException
@@ -44,7 +43,7 @@ public class FileUtils
 	{
 		return String.valueOf(file.length());
 	}
-
+	
 	public static boolean downloadFile(String pathUrl, File dest)
 	{
 		try
@@ -58,6 +57,7 @@ public class FileUtils
 			BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
 			byte[] data = new byte[1024];
 			int i = 0;
+	    	
 			while ((i = in.read(data, 0, 1024)) >= 0)
 			{
 				totalDataRead = totalDataRead + i;
@@ -66,7 +66,7 @@ public class FileUtils
 			bout.close();
 			fos.close();
 			in.close();
-			connection.disconnect();
+			connection.disconnect();;
 			return true;
 		}
 		catch (Exception e)
@@ -106,4 +106,5 @@ public class FileUtils
 		}
 		return true;
 	}
+	
 }

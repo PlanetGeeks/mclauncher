@@ -7,6 +7,7 @@ import it.planetgeeks.mclauncher.frames.panels.MainPanel;
 import it.planetgeeks.mclauncher.frames.utils.CustomJFrame;
 import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
+import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -85,6 +86,27 @@ public class LauncherFrame extends CustomJFrame
 
 		menu1.setMnemonic(KeyEvent.VK_G);
 
+		menu1.getItem(0).addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				Launcher.openProfileEditor(null);
+
+			}
+		});
+		
+		menu1.getItem(1).addActionListener(new ActionListener()
+		{
+
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				Launcher.openProfileEditor(ProfilesUtils.getSelectedProfile());
+			}
+		});
+		
 		menu1.getItem(2).addActionListener(new ActionListener()
 		{
 

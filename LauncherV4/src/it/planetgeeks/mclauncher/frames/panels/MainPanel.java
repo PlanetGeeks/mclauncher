@@ -3,10 +3,13 @@ package it.planetgeeks.mclauncher.frames.panels;
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.EnumLayouts;
+import it.planetgeeks.mclauncher.frames.MPServerFrame;
 import it.planetgeeks.mclauncher.frames.utils.CustomComponentListener;
+import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.modpack.EnumFilterType;
 import it.planetgeeks.mclauncher.modpack.ModPack;
 import it.planetgeeks.mclauncher.modpack.ModPackUtils;
+import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.SkinsManager;
 
@@ -15,6 +18,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,12 +33,15 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.LayoutStyle;
+import javax.swing.ListSelectionModel;
 
 public class MainPanel extends JPanel
 {
@@ -200,8 +208,8 @@ public class MainPanel extends JPanel
 
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
-			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(26, 26, 26).addComponent(tabbedPanel, GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addGap(0, 0, Short.MAX_VALUE)).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpBtn2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))).addContainerGap()));
-			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpBtn1).addComponent(mpFilterBtn)).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(3, 3, 3).addComponent(mpBtn2)).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl).addGap(1, 1, 1)))).addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)).addGap(11, 11, 11).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(leftSkin).addComponent(rightSkin)).addContainerGap()).addComponent(tabbedPanel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))));
+			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(26, 26, 26).addComponent(tabbedPanel, GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addGap(0, 0, Short.MAX_VALUE)).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpBtn2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))).addContainerGap()));
+			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpBtn1).addComponent(mpFilterBtn)).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(3, 3, 3).addComponent(mpBtn2)).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl).addGap(1, 1, 1)))).addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)).addGap(11, 11, 11).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(rightSkin).addComponent(leftSkin)).addContainerGap()).addComponent(tabbedPanel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))));
 		}
 
 		this.setBackground(new Color(0, 0, 0, 0));
@@ -314,11 +322,32 @@ public class MainPanel extends JPanel
             mpScrollPanel.getViewport().setOpaque(false);
             
             mpScrollPanel.setViewportBorder(null);
+            
+            mpList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    		
+    		mpList.addMouseListener(new CustomMouseListener()
+    		{
+    			@Override
+    			public void mousePressed(MouseEvent e)
+    			{
+    				 ModPackUtils.selected = ModPackUtils.filteredList.get(mpList.getSelectedIndex());						
+    			}	   
+    		});
 
 		}
 		else
 		{
 			mpCombobox = new JComboBox<Object>();
+			
+			mpCombobox.addActionListener(new ActionListener()
+			{
+				@Override
+				public void actionPerformed(ActionEvent arg0)
+				{
+				    ModPackUtils.selected = ModPackUtils.filteredList.get(mpCombobox.getSelectedIndex());	
+				}		
+			});
+			
 		}
 
 		mpBtn1.setText(LanguageUtils.getTranslated("launcher.modpacks.downloadserver"));
@@ -336,6 +365,40 @@ public class MainPanel extends JPanel
 			{
 				Launcher.openOrCloseFilterFrame();
 			}
+		});
+		
+		mpBtn1.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				JFileChooser saveFile = new JFileChooser();
+				saveFile.setSelectedFile(new File(DirUtils.getLauncherDirectory() + File.separator + "server.zip"));
+				if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+				{
+					File toSave = saveFile.getSelectedFile();
+					
+					if(toSave.exists())
+					{
+						if (JOptionPane.showConfirmDialog(null, LanguageUtils.getTranslated("launcher.saveoverwritemessage"), LanguageUtils.getTranslated("launcher.saveoverwritetitle"), JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+						{
+							return;
+						}
+					}
+					MPServerFrame server = new MPServerFrame("https://dl.dropboxusercontent.com/u/88221856/MCC.zip", toSave);
+					server.setVisible(true);
+					server.startDownload();
+				}	    
+			}		
+		});
+		
+		mpBtn2.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				Launcher.openOrCloseMPInfoFrame(ModPackUtils.selected);
+			}		
 		});
 		
 	}
@@ -402,7 +465,6 @@ public class MainPanel extends JPanel
 
 	public void updateSkin()
 	{
-		System.out.println("K");
 		if (SkinsManager.originalImage == null)
 		{
 			if (loadSkin == null)
@@ -453,6 +515,10 @@ public class MainPanel extends JPanel
 
 		ArrayList<ModPack> filtered = ModPackUtils.getFilteredList(ModPackUtils.getClonedList(modpacks), ModPackUtils.filter, ModPackUtils.filterStr);
 
+		ModPackUtils.filteredList = filtered;
+		
+		ModPackUtils.selected = filtered.size() > 0 ? filtered.get(0) : null;
+		
 		String layoutType = getModPackLayoutType();
 		if (!layoutType.equals("NULL"))
 		{
