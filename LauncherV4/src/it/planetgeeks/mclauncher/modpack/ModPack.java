@@ -13,6 +13,8 @@ public class ModPack
 	public boolean directServerDownload;
 	public ImageIcon packImage;
 	public ArrayList<String> modList = new ArrayList<String>();
+	public ArrayList<ModPackFile> setup = new ArrayList<ModPackFile>();
+	public String setupIndex;
 
     public ModPack(String mcVersion, String packName, String packOwner, String packServerLink)
     {
@@ -84,6 +86,19 @@ public class ModPack
     	cloned.setPackImage(this.packImage);
     	
     	return cloned;
+    }
+    
+    public void setSetup(ArrayList<String> link)
+    {
+    	for(int i = 0; i < link.size(); i++)
+    	{
+    		setup.add(new ModPackFile(link.get(i)));
+    	}
+    }
+    
+    public void setSetupIndex(String link)
+    {
+    	setupIndex = link;
     }
     
 }

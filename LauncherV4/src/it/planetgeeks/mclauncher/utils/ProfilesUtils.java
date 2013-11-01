@@ -98,7 +98,6 @@ public class ProfilesUtils
 				br.close();
 				if (!errored)
 				{
-					LauncherLogger.log(LauncherLogger.INFO, "Loaded profile '" + prof.profileName + "'!");
 					return prof;
 				}
 			}
@@ -119,6 +118,7 @@ public class ProfilesUtils
 			if (current.profileName.equals(profileName))
 			{
 				profiles.remove(i);
+				selectedProfile = 0;
 				break;
 			}
 		}
@@ -157,6 +157,7 @@ public class ProfilesUtils
 		{
 			writeProfile(profileFile, profile);
 			profiles.add(profile);
+		    setSelectedProfile(profile.profileName);
 			LauncherLogger.log(LauncherLogger.INFO, "Profile '" + profile.profileName + "' created!");
 			return true;
 		}
@@ -172,12 +173,14 @@ public class ProfilesUtils
 		if(deleteProfile(latProfileName, false))
 		{
 			profile.profileName = profileName;
+			profile.skin = null;
 			writeProfile(new File(getProfilesDir() + File.separator + profile.profileName + ".profile"), profile);
 			profiles.add(profile);
-			LauncherLogger.log(LauncherLogger.INFO, "Profile with profileName '" + profileName + "' modified!");
+			setSelectedProfile(profile.profileName);
+			LauncherLogger.log(LauncherLogger.INFO, "Profile with profileName '" + latProfileName + "' modified!");
 			return true;
 		}
-		LauncherLogger.log(LauncherLogger.GRAVE, "Error on modifing profile '" + profileName + "'!");
+		LauncherLogger.log(LauncherLogger.GRAVE, "Error on modifing profile '" + latProfileName + "'!");
 		return false;
 	}
 
@@ -192,7 +195,7 @@ public class ProfilesUtils
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 			bw.write("username:" + profile.username);
 			bw.newLine();
-			bw.write("password:" + profile.password != null && !profile.password.equals("") ? EncrypterUtils.encrypt(profile.password, getResourcemap()) : "");
+			bw.write("password:" + (profile.password != null && !profile.password.equals("") ? EncrypterUtils.encrypt(profile.password, getResourcemap()) : ""));
 			bw.newLine();
 			bw.write("ram:" + profile.ram);
 			bw.newLine();
@@ -237,6 +240,17 @@ public class ProfilesUtils
 	public static Profile getSelectedProfile()
 	{
 		return selectedProfile >= 0 && selectedProfile < profiles.size() ? profiles.get(selectedProfile) : null;
+	}
+	
+	private static void setSelectedProfile(String profileName)
+	{
+		for(int i = 0; i < profiles.size(); i++)
+		{
+			if(profiles.get(i).profileName.equals(profileName))
+			{
+				selectedProfile = i;
+			}
+		}
 	}
 
 }

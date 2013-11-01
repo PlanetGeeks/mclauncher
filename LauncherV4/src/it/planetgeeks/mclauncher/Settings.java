@@ -67,6 +67,9 @@ public class Settings
     /** link per il caricamento dei modpack **/
     public static String modpacks = "https://dl.dropboxusercontent.com/u/88221856/launcherv4test/modpacks/modpacks.list";
     
+    /** link da dove prendere le skins **/
+    public static String skinIndex = "https://s3.amazonaws.com/MinecraftSkins/";
+    
     /** IMPOSTAZIONI GRAFICHE **/
     
     /** Launcher Frame layout mode 
@@ -119,7 +122,7 @@ public class Settings
     public static int colorBase = 0x504D5C;
     
     /** Colore iniziale del label "profile" nel profile editor **/
-    public static int colorProfileFrameLabel = 0xFF0000; 
+    public static int colorProfileFrameLabel = 0x000000; 
     
     /** Colore di errore del label "profile" nel profile editor **/
     public static int colorProfileFrameLabelErrored = 0xFF0000;

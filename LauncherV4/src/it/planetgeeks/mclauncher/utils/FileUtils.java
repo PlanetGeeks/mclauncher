@@ -6,7 +6,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,22 +20,35 @@ public class FileUtils
 {
 	private static InputStream is;
 	
-	public static String generateBufferedHash(File file) throws NoSuchAlgorithmException, FileNotFoundException, IOException
+	public static String generateBufferedHash(File file) 
 	{
-		MessageDigest md = MessageDigest.getInstance("MD5");
-
-		is = new FileInputStream(file);
-
-		byte[] buffer = new byte[8192];
-		int read = 0;
-		while ((read = is.read(buffer)) > 0)
+		try
 		{
-			md.update(buffer, 0, read);
-		}
-		byte[] md5 = md.digest();
-		BigInteger bi = new BigInteger(1, md5);
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			
+			is = new FileInputStream(file);
 
-		return bi.toString(16);
+			byte[] buffer = new byte[8192];
+			int read = 0;
+			while ((read = is.read(buffer)) > 0)
+			{
+				md.update(buffer, 0, read);
+			}
+			byte[] md5 = md.digest();
+			BigInteger bi = new BigInteger(1, md5);
+
+			return bi.toString(16);
+		}
+		catch (NoSuchAlgorithmException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		return "";
 	}
 
 	public static String getFileSize(File file)

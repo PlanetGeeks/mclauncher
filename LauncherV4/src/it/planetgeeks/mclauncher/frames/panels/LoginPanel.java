@@ -62,7 +62,7 @@ public class LoginPanel extends CustomJPanel
 		launchButton.setText(LanguageUtils.getTranslated("launcher.connectbtn"));
 		linkLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		setComboboxProfiles();
+		setComboboxProfiles(null);
 		
 		logo.addMouseListener(new MouseAdapter()
 		{
@@ -95,6 +95,11 @@ public class LoginPanel extends CustomJPanel
 				{
 					Launcher.openProfileEditor(null);
 				}
+				else
+				{
+					Launcher.getLauncherFrame().mainPanel.updateSkin();
+				}
+				
 				profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
 			}
 		});
@@ -135,7 +140,7 @@ public class LoginPanel extends CustomJPanel
    
     }
     
-    public void setComboboxProfiles()
+    public void setComboboxProfiles(String selected)
 	{
 		ArrayList<String> profileList = new ArrayList<String>();
 		for (Profile profile : ProfilesUtils.getProfiles())
@@ -149,7 +154,18 @@ public class LoginPanel extends CustomJPanel
 			str[i] = profileList.get(i);
 		}
 		profileComboBox.setModel(new DefaultComboBoxModel<String>(str));
+		
+		if(selected != null)
+		{
+			profileComboBox.setSelectedItem(selected);
+		}
+		
 		profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
+		
+	    if(Launcher.getLauncherFrame() != null)
+	    {
+	    	Launcher.getLauncherFrame().mainPanel.updateSkin();
+	    }
 	}
     
     private CustomJPanel controlsPanel;

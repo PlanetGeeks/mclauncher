@@ -12,6 +12,7 @@ import it.planetgeeks.mclauncher.modpack.ModPackUtils;
 import it.planetgeeks.mclauncher.utils.DesktopUtils;
 import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
+import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 import it.planetgeeks.mclauncher.utils.SkinsManager;
 
 import java.awt.Color;
@@ -481,7 +482,7 @@ public class MainPanel extends JPanel
 
 	public void updateSkin()
 	{
-		if (SkinsManager.originalImage == null)
+		if (ProfilesUtils.getSelectedProfile() == null || ProfilesUtils.getSelectedProfile().skin == null)
 		{
 			if (loadSkin == null)
 			{
@@ -504,6 +505,21 @@ public class MainPanel extends JPanel
 			animLoadSkin.setBounds(tempXY[0] + 33, this.getSize().height - tempXY[1] + 80, 45, 35);
 			this.add(loadSkin);
 			this.add(animLoadSkin);
+			
+			for (int i = 0; i < skinPoligon.size(); i++)
+			{
+				remove(skinPoligon.get(i));
+			}
+			
+			this.loadSkin.setVisible(true);
+			if(ProfilesUtils.getSelectedProfile() != null)
+			{
+				this.animLoadSkin.setVisible(true);
+			}	
+			else
+			{
+				this.animLoadSkin.setVisible(false);
+			}
 		}
 		else
 		{
@@ -511,18 +527,26 @@ public class MainPanel extends JPanel
 			this.animLoadSkin.setVisible(false);
 		}
 
-		for (int i = 0; i < skinPoligon.size(); i++)
+		if(!SkinsManager.operating)
 		{
-			remove(skinPoligon.get(i));
-		}
+			for (int i = 0; i < skinPoligon.size(); i++)
+			{
+				remove(skinPoligon.get(i));
+			}
 
-		skinXY[0] = 116;
-		skinXY[1] = this.getSize().height - 300;
+			skinXY[0] = 116;
+			skinXY[1] = this.getSize().height - 300;
 
-		skinPoligon = new ArrayList<JButton>();
-		SkinsManager.startLoadingThread(this, null, "https://dl.dropboxusercontent.com/u/88221856/skin/Flood.png", null, skinXY[0], skinXY[1], skinPoligon, mode, false);
-		revalidate();
-		repaint();
+			skinPoligon = new ArrayList<JButton>();
+			
+			if(ProfilesUtils.getSelectedProfile() != null)
+			{
+		        SkinsManager.startLoadingThread(this, null, "", null, skinXY[0], skinXY[1], skinPoligon, mode, false);		
+			}
+			
+			revalidate();
+			repaint();
+		}	
 	}
 
 	public void updateModPacks(ArrayList<ModPack> modpacks, boolean completed)

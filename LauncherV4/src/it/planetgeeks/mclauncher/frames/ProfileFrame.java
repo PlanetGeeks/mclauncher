@@ -48,6 +48,7 @@ public class ProfileFrame extends JFrame
 		initComponents();
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(screenSize.width / 2 - this.getWidth() / 2, screenSize.height / 2 - this.getHeight() / 2);
+	   
 	}
 
 	private void initComponents()
@@ -202,7 +203,7 @@ public class ProfileFrame extends JFrame
 					ProfilesUtils.deleteProfile(this.latestProfName, true);
 					profile = null;
 					this.setVisible(false);
-					Launcher.getLauncherFrame().loginPanel.setComboboxProfiles();
+					Launcher.getLauncherFrame().loginPanel.setComboboxProfiles(null);
 				}
 				break;
 			}
@@ -227,7 +228,7 @@ public class ProfileFrame extends JFrame
 						ProfilesUtils.modifyProfile(this.latestProfName, profileNameField.getText(), profile);
 						profile = null;
 						this.setVisible(false);
-						Launcher.getLauncherFrame().loginPanel.setComboboxProfiles();
+						Launcher.getLauncherFrame().loginPanel.setComboboxProfiles(ProfilesUtils.getSelectedProfile().profileName);
 					}
 				}
 				break;
@@ -245,7 +246,7 @@ public class ProfileFrame extends JFrame
 					{
 						profile = null;
 						this.setVisible(false);
-						Launcher.getLauncherFrame().loginPanel.setComboboxProfiles();
+						Launcher.getLauncherFrame().loginPanel.setComboboxProfiles(ProfilesUtils.getSelectedProfile().profileName);
 					}
 				}
 				break;
@@ -265,6 +266,7 @@ public class ProfileFrame extends JFrame
 		{
 			this.usernameLbl.setForeground(new Color(Settings.colorProfileFrameLabel));
 		}
+		
 		if (this.checkBoxPsw.isSelected() && !(this.passwordField.getPassword().length > 0))
 		{
 			this.passwordLbl.setForeground(new Color(Settings.colorProfileFrameLabelErrored));
@@ -274,6 +276,7 @@ public class ProfileFrame extends JFrame
 		{
 			this.passwordLbl.setForeground(new Color(Settings.colorProfileFrameLabel));
 		}
+		
 		if (!(this.profileNameField.getText().length() > 0))
 		{
 			this.profileNameLbl.setForeground(new Color(Settings.colorProfileFrameLabelErrored));
@@ -283,6 +286,7 @@ public class ProfileFrame extends JFrame
 		{
 			this.profileNameLbl.setForeground(new Color(Settings.colorProfileFrameLabel));
 		}
+		
 		if (create)
 		{
 			return true;

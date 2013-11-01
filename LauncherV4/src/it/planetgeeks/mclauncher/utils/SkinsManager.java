@@ -5,15 +5,13 @@ package it.planetgeeks.mclauncher.utils;
  *
  */
 
-import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.frames.panels.MainPanel;
 
 import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.net.URL;
 import java.util.List;
-import javax.imageio.ImageIO;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -60,13 +58,13 @@ public class SkinsManager
 
 	public static void startLoadingThread(JPanel contentPane, ActionListener listener, String url, BufferedImage img, int x, int y, List<JButton> buttons, int mode, boolean forceUrl)
 	{
-		if (originalImage == null)
+		if (ProfilesUtils.getSelectedProfile().skin == null)
 		{
-			if(!operating)
+			if (!operating)
 			{
 				Thread thread = new Thread(new DownloadSkinThread(contentPane, listener, url, img, x, y, buttons, mode, forceUrl));
 				thread.start();
-			}	
+			}
 		}
 		else
 		{
@@ -78,25 +76,7 @@ public class SkinsManager
 	{
 		try
 		{
-			if (img != null)
-			{
-				originalImage = img;
-			}
-			else
-			{
-				if (originalImage == null)
-				{
-
-					try
-					{
-						originalImage = ImageIO.read(new URL(url));
-					}
-					catch (Exception e)
-					{
-						originalImage = Launcher.getResources().getResourceBuffered("char.png");
-					}
-				}
-			}
+			originalImage = ProfilesUtils.getSelectedProfile().getSkin();
 
 			if (mode == 0)
 			{
@@ -140,7 +120,7 @@ public class SkinsManager
 		}
 
 		MainPanel panel = (MainPanel) contentPane;
-		if(operating)
+		if (operating)
 		{
 			operating = false;
 			panel.updateSkin();

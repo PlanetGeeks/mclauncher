@@ -33,7 +33,7 @@ public class ModPackUtils
 	public static String filterStr = null;
 	public static ArrayList<ModPack> filteredList = new ArrayList<ModPack>();
 	public static ModPack selected = null;
-
+		
 	public static void startLoading()
 	{
 		Thread thread = new Thread(new ThreadGetPacksInfo());
@@ -81,6 +81,8 @@ public class ModPackUtils
 		String packServerLink = null;
 		ImageIcon imgIcon = null;
 		ArrayList<String> mods = new ArrayList<String>();
+		ArrayList<String> setup = new ArrayList<String>();
+		String setupIndex = null;
 		File modpack = new File(DirUtils.getLauncherDirectory() + File.separator + "temp");
 		if (modpack.exists())
 		{
@@ -110,9 +112,9 @@ public class ModPackUtils
 					{
 						packServerLink = readed.substring(11);
 					}
-					else if (readed.startsWith("mod="))
+					else if (readed.startsWith("mods="))
 					{
-						mods.add(readed.substring(4));
+						mods = readFileContent(readed.substring(5));
 					}
 					else if (readed.startsWith("image="))
 					{
@@ -121,6 +123,14 @@ public class ModPackUtils
 						{
 							imgIcon = new ImageIcon(image);
 						}
+					}
+					else if (readed.startsWith("setup="))
+					{
+						setup = readFileContent(readed.substring(6));
+					}
+					else if (readed.startsWith("setup-index="))
+					{
+						setupIndex = readed.substring(12);
 					}
 
 					readed = br.readLine();
@@ -144,8 +154,45 @@ public class ModPackUtils
 		ModPack returned = new ModPack(packMcVersion, packName, packOwner, packServerLink);
 		returned.setModList(mods);
 		returned.setPackImage(imgIcon);
+		returned.setSetup(setup);
+		returned.setSetupIndex(setupIndex);
 
 		return returned;
+	}
+	
+	private static ArrayList<String> readFileContent(String url)
+	{
+		ArrayList<String> list = new ArrayList<String>();
+		
+		File file = new File(DirUtils.getLauncherDirectory() + File.separator + "tempread");
+		if (file.exists())
+		{
+			file.delete();
+		}
+		if (FileUtils.downloadFile(url, file))
+		{
+			try
+			{
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String readed = br.readLine();
+				while (readed != null)
+				{
+					list.add(readed);
+					readed = br.readLine();
+				}
+				br.close();
+			}
+			catch (IOException e)
+			{
+				LauncherLogger.log(LauncherLogger.GRAVE, "Error on reading file content '" + url + "' !");
+				file.delete();
+				return null;
+			}
+			
+			file.delete();
+		}
+		
+		return list;
 	}
 
 	private static ArrayList<String> getUrls()
@@ -255,4 +302,29 @@ public class ModPackUtils
 
 		return modpacks;
 	}
+
+    public static void setupModPack(ModPack modpack)
+    {
+    	if(modpack.setup != null)
+    	{
+    		for(int i = 0; i < modpack.setup.size(); i++)
+        	{
+    			ModPackFile current = modpack.setup.get(i);
+        	    File currentFile = current.getSaveFile();
+        	    if(currentFile.exists())
+        	    {
+        	    	if(!(current.getMD5().equals(FileUtils.generateBufferedHash(currentFile)) && current.getSize().equals(FileUtils.getFileSize(currentFile))))
+        	    	{
+        	    	    currentFile.delete();
+        	    	    FileUtils.downloadFile(current.getDownloadURL(modpack.setupIndex), currentFile);
+            	    }	
+        	    }
+        	    else
+        	    {
+        	    	FileUtils.downloadFile(current.getDownloadURL(modpack.setupIndex), currentFile);
+        	    }
+        	}
+    	}
+    }
+
 }
