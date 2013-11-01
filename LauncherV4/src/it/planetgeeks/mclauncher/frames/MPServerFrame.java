@@ -105,6 +105,7 @@ public class MPServerFrame extends JFrame
 						bout.write(data, 0, i);
 						float perc = (totalDataRead * 100) / filesize;
 						updateStatus((int)perc);
+						Thread.sleep(1);
 					}
 					bout.close();
 					fos.close();

@@ -10,6 +10,7 @@ public class ModPack
 	public String packName;
 	public String packOwner;
 	public String packServerLink;
+	public boolean directServerDownload;
 	public ImageIcon packImage;
 	public ArrayList<String> modList = new ArrayList<String>();
 

@@ -21,24 +21,24 @@ public class LauncherUpdater
 	public static String downloadUrl;
 	private static String md5;
 	private static String size;
-	
+
 	public static void startCheck()
 	{
 		File launcher = new File(DirUtils.getWorkingDirectory() + File.separator + "launcher" + File.separator + "launcher.jar");
 		if (launcher.exists())
 		{
-			if(getLauncherCheckFile())
+			if (getLauncherCheckFile())
 			{
 				String checkLauncher = checkLauncher(launcher);
 				if (checkLauncher.equals("UPDATE"))
 				{
 					boolean update = true;
-					if(Settings.showUpdateConfirm)
+					if (Settings.showUpdateConfirm)
 					{
-						int dialogResult = JOptionPane.showConfirmDialog (null, LanguageUtils.getTranslated("updater.dialogMessage"), LanguageUtils.getTranslated("updater.dialogTitle"), JOptionPane.YES_NO_OPTION);
-					    update = dialogResult == JOptionPane.YES_OPTION ? true : false;
+						int dialogResult = JOptionPane.showConfirmDialog(null, LanguageUtils.getTranslated("updater.dialogMessage"), LanguageUtils.getTranslated("updater.dialogTitle"), JOptionPane.YES_NO_OPTION);
+						update = dialogResult == JOptionPane.YES_OPTION ? true : false;
 					}
-					if(update)
+					if (update)
 					{
 						Updater.startUpdateThread();
 					}
@@ -47,7 +47,7 @@ public class LauncherUpdater
 						openLauncher();
 					}
 				}
-				else if(checkLauncher.equals("OK"))
+				else if (checkLauncher.equals("OK"))
 				{
 					openLauncher();
 				}
@@ -59,7 +59,7 @@ public class LauncherUpdater
 		}
 		else
 		{
-			if(getLauncherCheckFile())
+			if (getLauncherCheckFile())
 			{
 				Updater.startUpdateThread();
 			}
@@ -76,7 +76,7 @@ public class LauncherUpdater
 		{
 			String temp_md5 = FileUtils.generateBufferedHash(launcher);
 			String temp_size = FileUtils.getFileSize(launcher);
-			
+
 			if (temp_md5.equals(md5) && temp_size.equals(size))
 			{
 				return "OK";
@@ -92,7 +92,7 @@ public class LauncherUpdater
 			return "UPDATE";
 		}
 	}
-	
+
 	public static void openLauncher()
 	{
 		try
@@ -104,50 +104,50 @@ public class LauncherUpdater
 			Method main = myMainClass.getMethod("main", String[].class);
 			main.invoke(null, new Object[] { new String[] { "start" } });
 		}
-		catch(Exception e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static boolean getLauncherCheckFile()
 	{
-	    File check = new File(DirUtils.getLauncherDirectory() + File.separator + "check");
-	    
-	    if(FileUtils.downloadFile(Settings.launcherLink, check))
-	    {
-	    	BufferedReader br;
+		File check = new File(DirUtils.getLauncherDirectory() + File.separator + "check");
+
+		if (FileUtils.downloadFile(Settings.launcherLink, check))
+		{
+			BufferedReader br;
 			try
 			{
 				br = new BufferedReader(new FileReader(check));
 				String readed = br.readLine();
-				while(readed != null)
+				while (readed != null)
 				{
-					if(readed.startsWith("url="))
+					if (readed.startsWith("url="))
 					{
 						String splitted[] = readed.split("=");
 						String url = "";
-						for(int i = 1; i < splitted.length; i++)
+						for (int i = 1; i < splitted.length; i++)
 						{
 							url += splitted[i];
 						}
 						downloadUrl = url;
 					}
-					else if(readed.startsWith("md5="))
+					else if (readed.startsWith("md5="))
 					{
 						String splitted[] = readed.split("=");
 						String temp_md5 = "";
-						for(int i = 1; i < splitted.length; i++)
+						for (int i = 1; i < splitted.length; i++)
 						{
 							temp_md5 += splitted[i];
 						}
 						md5 = temp_md5;
 					}
-					else if(readed.startsWith("size="))
+					else if (readed.startsWith("size="))
 					{
 						String splitted[] = readed.split("=");
 						String temp_size = "";
-						for(int i = 1; i < splitted.length; i++)
+						for (int i = 1; i < splitted.length; i++)
 						{
 							temp_size += splitted[i];
 						}
@@ -163,11 +163,11 @@ public class LauncherUpdater
 				e.printStackTrace();
 				return false;
 			}
-	    }
-	    else
-	    {
-	    	return false;
-	    }
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 }

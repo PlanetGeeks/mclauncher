@@ -9,6 +9,7 @@ import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.modpack.EnumFilterType;
 import it.planetgeeks.mclauncher.modpack.ModPack;
 import it.planetgeeks.mclauncher.modpack.ModPackUtils;
+import it.planetgeeks.mclauncher.utils.DesktopUtils;
 import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.SkinsManager;
@@ -311,43 +312,51 @@ public class MainPanel extends JPanel
 
 			mpScrollPanel.setViewportView(mpList);
 
-			mpList.setBackground(new Color(0,0,0,0));
-			
-			mpScrollPanel.setBackground(new Color(0,0,0,0));
+			mpList.setBackground(new Color(0, 0, 0, 0));
 
-            mpScrollPanel.setOpaque(false);
-            
-            mpList.setOpaque(false);
-            
-            mpScrollPanel.getViewport().setOpaque(false);
-            
-            mpScrollPanel.setViewportBorder(null);
-            
-            mpList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    		
-    		mpList.addMouseListener(new CustomMouseListener()
-    		{
-    			@Override
-    			public void mousePressed(MouseEvent e)
-    			{
-    				 ModPackUtils.selected = ModPackUtils.filteredList.get(mpList.getSelectedIndex());						
-    			}	   
-    		});
+			mpScrollPanel.setBackground(new Color(0, 0, 0, 0));
+
+			mpScrollPanel.setOpaque(false);
+
+			mpList.setOpaque(false);
+
+			mpScrollPanel.getViewport().setOpaque(false);
+
+			mpScrollPanel.setViewportBorder(null);
+
+			mpList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+			mpList.addMouseListener(new CustomMouseListener()
+			{
+				@Override
+				public void mousePressed(MouseEvent e)
+				{
+					ModPackUtils.selected = ModPackUtils.filteredList.get(mpList.getSelectedIndex());
+				}
+			});
 
 		}
 		else
 		{
 			mpCombobox = new JComboBox<Object>();
-			
+
 			mpCombobox.addActionListener(new ActionListener()
 			{
 				@Override
 				public void actionPerformed(ActionEvent arg0)
 				{
-				    ModPackUtils.selected = ModPackUtils.filteredList.get(mpCombobox.getSelectedIndex());	
-				}		
+					ModPackUtils.selected = ModPackUtils.filteredList.get(mpCombobox.getSelectedIndex());
+					if (ModPackUtils.selected.packServerLink != null && DesktopUtils.checkLink(ModPackUtils.selected.packServerLink))
+					{
+						mpBtn1.setEnabled(true);
+					}
+					else
+					{
+						mpBtn1.setEnabled(false);
+					}
+				}
 			});
-			
+
 		}
 
 		mpBtn1.setText(LanguageUtils.getTranslated("launcher.modpacks.downloadserver"));
@@ -357,7 +366,7 @@ public class MainPanel extends JPanel
 		mpFilterBtn.setText(LanguageUtils.getTranslated("launcher.modpacks.filter.settings"));
 
 		mpFilterLbl.setText(getModPacksFilter());
-		
+
 		mpFilterBtn.addActionListener(new ActionListener()
 		{
 			@Override
@@ -366,41 +375,48 @@ public class MainPanel extends JPanel
 				Launcher.openOrCloseFilterFrame();
 			}
 		});
-		
+
 		mpBtn1.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				JFileChooser saveFile = new JFileChooser();
-				saveFile.setSelectedFile(new File(DirUtils.getLauncherDirectory() + File.separator + "server.zip"));
-				if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+				if (ModPackUtils.selected.directServerDownload)
 				{
-					File toSave = saveFile.getSelectedFile();
-					
-					if(toSave.exists())
+					JFileChooser saveFile = new JFileChooser();
+					saveFile.setSelectedFile(new File(DirUtils.getLauncherDirectory() + File.separator + "server.zip"));
+					if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
 					{
-						if (JOptionPane.showConfirmDialog(null, LanguageUtils.getTranslated("launcher.saveoverwritemessage"), LanguageUtils.getTranslated("launcher.saveoverwritetitle"), JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+						File toSave = saveFile.getSelectedFile();
+
+						if (toSave.exists())
 						{
-							return;
+							if (JOptionPane.showConfirmDialog(null, LanguageUtils.getTranslated("launcher.saveoverwritemessage"), LanguageUtils.getTranslated("launcher.saveoverwritetitle"), JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+							{
+								return;
+							}
 						}
+						MPServerFrame server = new MPServerFrame(ModPackUtils.selected.packServerLink, toSave);
+						server.setVisible(true);
+						server.startDownload();
 					}
-					MPServerFrame server = new MPServerFrame("https://dl.dropboxusercontent.com/u/88221856/MCC.zip", toSave);
-					server.setVisible(true);
-					server.startDownload();
-				}	    
-			}		
+				}
+				else
+				{
+					DesktopUtils.openWebPage(ModPackUtils.selected.packServerLink);
+				}
+			}
 		});
-		
+
 		mpBtn2.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
 				Launcher.openOrCloseMPInfoFrame(ModPackUtils.selected);
-			}		
+			}
 		});
-		
+
 	}
 
 	private void createScene()
@@ -516,9 +532,18 @@ public class MainPanel extends JPanel
 		ArrayList<ModPack> filtered = ModPackUtils.getFilteredList(ModPackUtils.getClonedList(modpacks), ModPackUtils.filter, ModPackUtils.filterStr);
 
 		ModPackUtils.filteredList = filtered;
-		
+
 		ModPackUtils.selected = filtered.size() > 0 ? filtered.get(0) : null;
-		
+
+		if (ModPackUtils.selected.packServerLink != null && DesktopUtils.checkLink(ModPackUtils.selected.packServerLink))
+		{
+			mpBtn1.setEnabled(true);
+		}
+		else
+		{
+			mpBtn1.setEnabled(false);
+		}
+
 		String layoutType = getModPackLayoutType();
 		if (!layoutType.equals("NULL"))
 		{

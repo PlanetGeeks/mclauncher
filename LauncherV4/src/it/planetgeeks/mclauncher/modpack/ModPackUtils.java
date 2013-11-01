@@ -33,7 +33,7 @@ public class ModPackUtils
 	public static String filterStr = null;
 	public static ArrayList<ModPack> filteredList = new ArrayList<ModPack>();
 	public static ModPack selected = null;
-	
+
 	public static void startLoading()
 	{
 		Thread thread = new Thread(new ThreadGetPacksInfo());
@@ -42,28 +42,37 @@ public class ModPackUtils
 
 	protected static void analyzePacks()
 	{
-        ArrayList<String> urls = getUrls();
-        
-        for(int i = 0; i < urls.size(); i++)
-        {
-        	ModPack currentPack = getPack(urls.get(i));
-        	if(currentPack != null)
-        	{
-        		addModPack(currentPack);
-        	}
-        	Launcher.getLauncherFrame().mainPanel.updateModPacks(modPacks, i != urls.size() - 1 ? false : true);
-        }
-        
-        if(modPacks.size() > 0)
-        {
-        	LauncherLogger.log(LauncherLogger.INFO, "Loaded " + modPacks.size() + " modpacks!");
-        }
-        else
-        {
-        	LauncherLogger.log(LauncherLogger.INFO, "No modpack loaded!");
-        }
+		try
+		{
+			ArrayList<String> urls = getUrls();
+
+			for (int i = 0; i < urls.size(); i++)
+			{
+				ModPack currentPack = getPack(urls.get(i));
+				if (currentPack != null)
+				{
+					addModPack(currentPack);
+				}
+				Launcher.getLauncherFrame().mainPanel.updateModPacks(modPacks, i != urls.size() - 1 ? false : true);
+
+				Thread.sleep(1);
+			}
+
+			if (modPacks.size() > 0)
+			{
+				LauncherLogger.log(LauncherLogger.INFO, "Loaded " + modPacks.size() + " modpacks!");
+			}
+			else
+			{
+				LauncherLogger.log(LauncherLogger.INFO, "No modpack loaded!");
+			}
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
-	
+
 	private static ModPack getPack(String url)
 	{
 		String packName = null;
@@ -73,48 +82,48 @@ public class ModPackUtils
 		ImageIcon imgIcon = null;
 		ArrayList<String> mods = new ArrayList<String>();
 		File modpack = new File(DirUtils.getLauncherDirectory() + File.separator + "temp");
-		if(modpack.exists())
+		if (modpack.exists())
 		{
 			modpack.delete();
 		}
-		if(FileUtils.downloadFile(url, modpack))
+		if (FileUtils.downloadFile(url, modpack))
 		{
 			try
 			{
 				BufferedReader br = new BufferedReader(new FileReader(modpack));
 				String readed = br.readLine();
-				while(readed != null)
+				while (readed != null)
 				{
-                    if(readed.startsWith("name="))
-                    {
-                    	packName = readed.substring(5);
-                    }
-                    else if(readed.startsWith("owner="))
-                    {
-                    	packOwner = readed.substring(6);
-                    }
-                    else if(readed.startsWith("mcVersion="))
-                    {
-                    	packMcVersion = readed.substring(10);
-                    }
-                    else if(readed.startsWith("serverLink="))
-                    {
-                    	packServerLink = readed.substring(11);
-                    }
-                    else if(readed.startsWith("mod="))
-                    {
-                    	mods.add(readed.substring(4));
-                    }
-                    else if(readed.startsWith("image="))
-                    {
-                    	Image image = ImageIO.read(new URL(readed.substring(6)));
-                    	if(image != null)
-                    	{
-                    		imgIcon = new ImageIcon(image);
-                    	}
-                    }
-                    
-                    readed = br.readLine();
+					if (readed.startsWith("name="))
+					{
+						packName = readed.substring(5);
+					}
+					else if (readed.startsWith("owner="))
+					{
+						packOwner = readed.substring(6);
+					}
+					else if (readed.startsWith("mcVersion="))
+					{
+						packMcVersion = readed.substring(10);
+					}
+					else if (readed.startsWith("serverLink="))
+					{
+						packServerLink = readed.substring(11);
+					}
+					else if (readed.startsWith("mod="))
+					{
+						mods.add(readed.substring(4));
+					}
+					else if (readed.startsWith("image="))
+					{
+						Image image = ImageIO.read(new URL(readed.substring(6)));
+						if (image != null)
+						{
+							imgIcon = new ImageIcon(image);
+						}
+					}
+
+					readed = br.readLine();
 				}
 				br.close();
 			}
@@ -131,19 +140,19 @@ public class ModPackUtils
 			LauncherLogger.log(LauncherLogger.GRAVE, "Error on downloading modpack info! URL : '" + url + "'");
 			return null;
 		}
-		
-	    ModPack returned = new ModPack(packMcVersion, packName, packOwner, packServerLink);
-	    returned.setModList(mods);
-	    returned.setPackImage(imgIcon);
-	    
-	    return returned;
+
+		ModPack returned = new ModPack(packMcVersion, packName, packOwner, packServerLink);
+		returned.setModList(mods);
+		returned.setPackImage(imgIcon);
+
+		return returned;
 	}
 
 	private static ArrayList<String> getUrls()
 	{
 		ArrayList<String> urls = new ArrayList<String>();
 		File modpacks = new File(DirUtils.getLauncherDirectory() + File.separator + "modpacks.list");
-		if(modpacks.exists())
+		if (modpacks.exists())
 		{
 			modpacks.delete();
 		}
@@ -153,10 +162,10 @@ public class ModPackUtils
 			{
 				BufferedReader br = new BufferedReader(new FileReader(modpacks));
 				String readed = br.readLine();
-				while(readed != null)
+				while (readed != null)
 				{
-				    urls.add(readed);
-				    readed = br.readLine();
+					urls.add(readed);
+					readed = br.readLine();
 				}
 				br.close();
 			}
@@ -170,7 +179,7 @@ public class ModPackUtils
 		{
 			LauncherLogger.log(LauncherLogger.GRAVE, "Error on downloading modpack list! URL : '" + Settings.modpacks + "'");
 		}
-	    return urls;
+		return urls;
 	}
 
 	private static void addModPack(ModPack pack)
@@ -199,7 +208,7 @@ public class ModPackUtils
 				{
 					return inputList;
 				}
-			    else if (filter == EnumFilterType.MCVERSION)
+				else if (filter == EnumFilterType.MCVERSION)
 				{
 					if (current.mcVersion.contains(str))
 						returned.add(current);
@@ -234,16 +243,16 @@ public class ModPackUtils
 	{
 		return modPacks;
 	}
-	
+
 	public static ArrayList<ModPack> getClonedList(ArrayList<ModPack> packs)
 	{
 		ArrayList<ModPack> modpacks = new ArrayList<ModPack>();
-		
-		for(int i = 0; i < packs.size(); i++)
+
+		for (int i = 0; i < packs.size(); i++)
 		{
 			modpacks.add(packs.get(i).clone());
 		}
-		
+
 		return modpacks;
 	}
 }

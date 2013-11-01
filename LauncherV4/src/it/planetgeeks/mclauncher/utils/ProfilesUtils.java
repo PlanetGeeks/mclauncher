@@ -148,7 +148,7 @@ public class ProfilesUtils
 
 			if (current.profileName.equals(profile.profileName))
 			{
-				LauncherLogger.log(LauncherLogger.INFO, "Profile with profileName : '" + profile.profileName + "' already exists!");
+				LauncherLogger.log(LauncherLogger.INFO, "Profile with profileName '" + profile.profileName + "' already exists!");
 				return false;
 			}
 		}
@@ -174,7 +174,7 @@ public class ProfilesUtils
 			profile.profileName = profileName;
 			writeProfile(new File(getProfilesDir() + File.separator + profile.profileName + ".profile"), profile);
 			profiles.add(profile);
-			LauncherLogger.log(LauncherLogger.INFO, "Profile with profileName : '" + profileName + "' modified!");
+			LauncherLogger.log(LauncherLogger.INFO, "Profile with profileName '" + profileName + "' modified!");
 			return true;
 		}
 		LauncherLogger.log(LauncherLogger.GRAVE, "Error on modifing profile '" + profileName + "'!");

@@ -3,9 +3,12 @@ package it.planetgeeks.mclauncher.frames;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
 import it.planetgeeks.mclauncher.modpack.ModPack;
+import it.planetgeeks.mclauncher.utils.DesktopUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 
 import javax.swing.AbstractListModel;
@@ -118,9 +121,19 @@ public class MPInfoFrame extends JFrame
 		versionmcField.setEditable(false);
 		ownerField.setText(modpack.packOwner);
 		ownerField.setEditable(false);
-		hasServer.setSelected(modpack.packServerLink != null && !modpack.packServerLink.equals("") ? true : false);
+		hasServer.setSelected(modpack.packServerLink != null && DesktopUtils.checkLink(modpack.packServerLink) ? true : false);
 		hasServer.setFocusable(false);
 		versionField.setEditable(false);
+		
+		hasServer.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				hasServer.setSelected(modpack.packServerLink != null && DesktopUtils.checkLink(modpack.packServerLink) ? true : false);	
+			}			
+		});
+		
 		
 		modList.setOpaque(false);
 		modList.setBackground(new Color(0,0,0,0));

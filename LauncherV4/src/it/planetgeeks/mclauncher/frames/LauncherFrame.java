@@ -6,6 +6,7 @@ import it.planetgeeks.mclauncher.frames.panels.LoginPanel;
 import it.planetgeeks.mclauncher.frames.panels.MainPanel;
 import it.planetgeeks.mclauncher.frames.utils.CustomJFrame;
 import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
+import it.planetgeeks.mclauncher.frames.utils.CustomWindowListener;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 
@@ -15,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
@@ -55,7 +57,16 @@ public class LauncherFrame extends CustomJFrame
 		menu3 = new JMenu();
 		menu3.setForeground(new Color(Settings.buttonsForeground));
 
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+		
+		this.addWindowListener(new CustomWindowListener()
+		{
+			@Override
+			public void windowClosing(WindowEvent arg0)
+			{
+                Launcher.closeLauncher();
+			}
+		});
 
 		menuBar.add(menu1);
 		menuBar.add(menu2);
