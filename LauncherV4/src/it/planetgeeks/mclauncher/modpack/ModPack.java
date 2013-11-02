@@ -15,6 +15,7 @@ public class ModPack
 	public ArrayList<String> modList = new ArrayList<String>();
 	public ArrayList<ModPackFile> setup = new ArrayList<ModPackFile>();
 	public String setupIndex;
+	public boolean useForge;
 
     public ModPack(String mcVersion, String packName, String packOwner, String packServerLink)
     {
@@ -80,10 +81,14 @@ public class ModPack
     }
     
     public ModPack clone()
-    {
+    {	
     	ModPack cloned = new ModPack(this.mcVersion, this.packName, this.packOwner, this.packServerLink);
     	cloned.setModList(this.modList);
     	cloned.setPackImage(this.packImage);
+    	cloned.setup = this.setup;
+    	cloned.setSetupIndex(this.setupIndex);
+    	cloned.setUseForge(this.useForge);
+    	cloned.setServerLinkDirect(this.directServerDownload);
     	
     	return cloned;
     }
@@ -99,6 +104,16 @@ public class ModPack
     public void setSetupIndex(String link)
     {
     	setupIndex = link;
+    }
+    
+    public void setUseForge(boolean useForge)
+    {
+    	this.useForge = useForge;
+    }
+    
+    public void setServerLinkDirect(boolean direct)
+    {
+    	this.directServerDownload = direct;
     }
     
 }

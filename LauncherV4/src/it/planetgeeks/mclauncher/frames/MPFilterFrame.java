@@ -49,6 +49,8 @@ public class MPFilterFrame extends JFrame
 		panel.setOpaque(false);
 		setContentPane(panel);
 
+		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
+		
 		this.setResizable(false);
 
 		setTitle(LanguageUtils.getTranslated("launcher.modpacks.filter.settings"));

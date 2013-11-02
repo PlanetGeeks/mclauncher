@@ -25,6 +25,10 @@ public class ProfilesUtils
 
 	public static void loadProfiles()
 	{
+		profiles = new ArrayList<Profile>();
+		
+		selectedProfile = 0;
+		
 		File[] profilesList = getProfilesDir().listFiles();
 
 		if (profilesList != null)

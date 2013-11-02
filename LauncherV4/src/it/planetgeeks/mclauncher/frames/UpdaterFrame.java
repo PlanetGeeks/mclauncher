@@ -10,9 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import it.planetgeeks.mclauncher.Launcher;
-import it.planetgeeks.mclauncher.LauncherLogger;
 import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
-import it.planetgeeks.mclauncher.utils.DesktopUtils;
+import it.planetgeeks.mclauncher.updater.LauncherUpdater;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 
 import javax.swing.GroupLayout;
@@ -25,14 +24,14 @@ import javax.swing.SwingConstants;
 
 import javax.swing.WindowConstants;
 
-public class MPServerFrame extends JFrame
+public class UpdaterFrame extends JFrame
 {
 
 	private static final long serialVersionUID = 1L;
 	private String pathUrl;
 	private File dest;
 
-	public MPServerFrame(String pathUrl, File dest)
+	public UpdaterFrame(String pathUrl, File dest)
 	{
 		this.pathUrl = pathUrl;
 		this.dest = dest;
@@ -49,7 +48,7 @@ public class MPServerFrame extends JFrame
 
 		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
 		
-		setTitle(LanguageUtils.getTranslated("launcher.modpacks.downloadserver"));
+		setTitle(LanguageUtils.getTranslated("updater.dialogTitle"));
 		
 		progressBar = new JProgressBar();
 		lbl1 = new JLabel();
@@ -60,7 +59,7 @@ public class MPServerFrame extends JFrame
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		lbl1.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl1.setText(LanguageUtils.getTranslated("launcher.modpacks.downloadserver.startingdownload"));
+		lbl1.setText(LanguageUtils.getTranslated("updater.startingDownload"));
 
 		lbl2.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -120,7 +119,6 @@ public class MPServerFrame extends JFrame
 				{
 					updateStatus(-2);
 					e.printStackTrace();
-					LauncherLogger.log(LauncherLogger.GRAVE, "Error on downloading modpack server!");
 				}
 			}
 		}
@@ -136,7 +134,7 @@ public class MPServerFrame extends JFrame
 		{
 			progressBar.setValue(percent);
 			
-		    lbl1.setText(LanguageUtils.getTranslated("launcher.modpacks.downloadserver.downloading") + " " + percent + "%");
+		    lbl1.setText(LanguageUtils.getTranslated("updater.downloading") + " " + percent + "%");
 		    
 		    String str = new String(pathUrl);
 		    
@@ -151,11 +149,13 @@ public class MPServerFrame extends JFrame
 		{
 			if(percent == -1)
 			{
-			    DesktopUtils.openFolder(dest.getParentFile());
+				LauncherUpdater.openLauncher(null);
 			}
 			else if(percent == -2)
 			{
-				JOptionPane.showMessageDialog(null, LanguageUtils.getTranslated("launcher.modpacks.downloadserver.error"), LanguageUtils.getTranslated("launcher.modpacks.downloadserver.error.title"), JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, LanguageUtils.getTranslated("updater.downloading.error"), LanguageUtils.getTranslated("updater.dialogTitle"), JOptionPane.ERROR_MESSAGE);
+			
+				LauncherUpdater.openLauncher("ERROR1");
 			}
 			this.setVisible(false);
 		}

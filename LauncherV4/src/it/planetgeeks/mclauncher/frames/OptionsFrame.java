@@ -38,6 +38,8 @@ public class OptionsFrame extends JFrame
 		panel.setOpaque(false);
 		setContentPane(panel);
 		
+		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
+		
 		setTitle(LanguageUtils.getTranslated("launcher.options.title"));
 		setSize(287, 320);
 		setResizable(false);

@@ -24,7 +24,7 @@ public class Settings
 	/** IMPOSTAZIONI LAUNCHER UPDATER **/
 	
 	/** Link per il controllo della versione del launcher ( che contiene link download - md5 - size ) **/
-	public static String launcherLink = "null";
+	public static String launcherLink = "https://dl.dropboxusercontent.com/u/88221856/launcherv4test/checksum.txt";
     
     /** Se c'è un update del launcher fa apparire il box per la conferma altrimenti procede forzatamente **/
     public static boolean showUpdateConfirm = true;
@@ -70,6 +70,9 @@ public class Settings
     /** link da dove prendere le skins **/
     public static String skinIndex = "https://s3.amazonaws.com/MinecraftSkins/";
     
+    /** se impostato su true appare la funzione "Mostra Console" in Opzioni **/
+    public static boolean activateConsole = true;
+    
     /** IMPOSTAZIONI GRAFICHE **/
     
     /** Launcher Frame layout mode 
@@ -87,7 +90,7 @@ public class Settings
     - MULTI_NEWS_MODPACK,         -> 3 News + Modpack //bugged
     - MULTI_NEWS_SKIN_MODPACK;    -> 3 News + Skin + Modpack
     **/
-    public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS_SKIN_MODPACK; 
+    public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS_MODPACK; 
     
     /** Per usare bordi della finestra personalizzati **/
     public static boolean customBorder = false;

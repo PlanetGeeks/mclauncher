@@ -1,6 +1,5 @@
 package it.planetgeeks.mclauncher;
 
-import it.planetgeeks.mclauncher.frames.ConsoleFrame;
 import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.LogPrintStream;
@@ -20,8 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 public enum LauncherLogger
-{
-
+{	
 	INFO("[INFO]"), 
 	GRAVE("[GRAVE]"), 
 	SEVERE("[SEVERE]");
@@ -33,6 +31,8 @@ public enum LauncherLogger
 		this.type = type;
 	}
 
+	private static boolean initialized = false;
+	
 	private static File logFolder = new File(DirUtils.getLauncherDirectory() + File.separator + "logs");
 
 	private static File currentLog;
@@ -46,7 +46,10 @@ public enum LauncherLogger
 
 	public static void log(LauncherLogger log, String str)
 	{
-		System.out.println("[" + getDate("HH:mm:ss") + "]" + log.type + " : " + str);
+		if(initialized)
+		{
+			System.out.println("[" + getDate("HH:mm:ss") + "]" + "[LAUNCHER]" + log.type + " : " + str);
+		}
 	}
 
 	public static void saveLog(JTextArea consolePanel)
@@ -94,6 +97,8 @@ public enum LauncherLogger
 
 	public static void loadLogger()
 	{
+		initialized = true;
+		
 		try
 		{
 			currentLog = new File(getLogFolder() + File.separator + "log-" + getDate("yyyy.MM.dd.HH.mm.ss"));
@@ -144,7 +149,7 @@ public enum LauncherLogger
 				toDelete.delete();
 			}
 			FileOutputStream file = new FileOutputStream(currentLog.getAbsolutePath());
-			LogPrintStream lpr = new LogPrintStream(file, System.out, new PrintStream(ConsoleFrame.out));
+			LogPrintStream lpr = new LogPrintStream(file, System.out, new PrintStream(Launcher.getConsoleFrame().out));
 			System.setOut(lpr);
 			System.setErr(lpr);
 		}

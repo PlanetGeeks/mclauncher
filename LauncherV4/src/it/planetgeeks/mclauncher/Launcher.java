@@ -55,7 +55,10 @@ public class Launcher
 		}
 		else
 		{
-			LauncherUpdater.startCheck();
+			loadLookAndFeel();
+			LauncherProperties.loadProperties();
+			LanguageUtils.loadLanguages();
+			LauncherUpdater.startCheck();	
 		}
 	}
 

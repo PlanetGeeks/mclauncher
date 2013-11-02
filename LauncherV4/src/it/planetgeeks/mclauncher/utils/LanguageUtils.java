@@ -19,6 +19,9 @@ public class LanguageUtils
 
 	public static void loadLanguages()
 	{
+		currentPack = null;
+		langs = new ArrayList<LanguagePack>();
+		
 		try
 		{
 			InputStream input = Launcher.getResources().getInputStream("languages/languages.list");

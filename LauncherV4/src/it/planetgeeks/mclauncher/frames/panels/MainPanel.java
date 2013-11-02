@@ -11,6 +11,7 @@ import it.planetgeeks.mclauncher.modpack.ModPack;
 import it.planetgeeks.mclauncher.modpack.ModPackUtils;
 import it.planetgeeks.mclauncher.utils.DesktopUtils;
 import it.planetgeeks.mclauncher.utils.DirUtils;
+import it.planetgeeks.mclauncher.utils.FileUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 import it.planetgeeks.mclauncher.utils.SkinsManager;
@@ -222,6 +223,7 @@ public class MainPanel extends JPanel
 
 	private void loadSkinComponents()
 	{
+		skinLayout = true;
 		leftSkin = new JButton();
 		leftSkin.setForeground(new Color(Settings.buttonsForeground));
 		rightSkin = new JButton();
@@ -333,6 +335,14 @@ public class MainPanel extends JPanel
 				public void mousePressed(MouseEvent e)
 				{
 					ModPackUtils.selected = ModPackUtils.filteredList.get(mpList.getSelectedIndex());
+					if (ModPackUtils.selected.packServerLink != null && DesktopUtils.checkLink(ModPackUtils.selected.packServerLink))
+					{
+						mpBtn1.setEnabled(true);
+					}
+					else
+					{
+						mpBtn1.setEnabled(false);
+					} 
 				}
 			});
 
@@ -384,12 +394,20 @@ public class MainPanel extends JPanel
 			{
 				if (ModPackUtils.selected.directServerDownload)
 				{
+
 					JFileChooser saveFile = new JFileChooser();
 					saveFile.setSelectedFile(new File(DirUtils.getLauncherDirectory() + File.separator + "server.zip"));
 					if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
 					{
 						File toSave = saveFile.getSelectedFile();
-
+						
+						String extension = FileUtils.getExtension(ModPackUtils.selected.packServerLink);
+					
+						if(!toSave.getName().endsWith(extension))
+						{
+							toSave = new File(toSave.getAbsolutePath() + extension);
+						}
+						
 						if (toSave.exists())
 						{
 							if (JOptionPane.showConfirmDialog(null, LanguageUtils.getTranslated("launcher.saveoverwritemessage"), LanguageUtils.getTranslated("launcher.saveoverwritetitle"), JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
@@ -482,71 +500,74 @@ public class MainPanel extends JPanel
 
 	public void updateSkin()
 	{
-		if (ProfilesUtils.getSelectedProfile() == null || ProfilesUtils.getSelectedProfile().skin == null)
+		if (skinLayout)
 		{
-			if (loadSkin == null)
+			if (ProfilesUtils.getSelectedProfile() == null || ProfilesUtils.getSelectedProfile().skin == null)
 			{
-				loadSkin = new JLabel();
-				loadSkin.setIcon(Launcher.getResources().getResource("pgLoad.png"));
-				loadSkin.setSize(112, 224);
-				animLoadSkin = new JLabel();
-				animLoadSkin.setSize(45, 35);
-				animLoadSkin.setIcon(Launcher.getResources().getResource("load.gif"));
+				if (loadSkin == null)
+				{
+					loadSkin = new JLabel();
+					loadSkin.setIcon(Launcher.getResources().getResource("pgLoad.png"));
+					loadSkin.setSize(112, 224);
+					animLoadSkin = new JLabel();
+					animLoadSkin.setSize(45, 35);
+					animLoadSkin.setIcon(Launcher.getResources().getResource("load.gif"));
+				}
+				else
+				{
+					this.remove(loadSkin);
+					this.remove(animLoadSkin);
+				}
+
+				int tempXY[] = { 88, 300 };
+
+				loadSkin.setBounds(tempXY[0], this.getSize().height - tempXY[1], 112, 224);
+				animLoadSkin.setBounds(tempXY[0] + 33, this.getSize().height - tempXY[1] + 80, 45, 35);
+				this.add(loadSkin);
+				this.add(animLoadSkin);
+
+				for (int i = 0; i < skinPoligon.size(); i++)
+				{
+					remove(skinPoligon.get(i));
+				}
+
+				this.loadSkin.setVisible(true);
+				if (ProfilesUtils.getSelectedProfile() != null)
+				{
+					this.animLoadSkin.setVisible(true);
+				}
+				else
+				{
+					this.animLoadSkin.setVisible(false);
+				}
 			}
 			else
 			{
-				this.remove(loadSkin);
-				this.remove(animLoadSkin);
-			}
-
-			int tempXY[] = { 88, 300 };
-
-			loadSkin.setBounds(tempXY[0], this.getSize().height - tempXY[1], 112, 224);
-			animLoadSkin.setBounds(tempXY[0] + 33, this.getSize().height - tempXY[1] + 80, 45, 35);
-			this.add(loadSkin);
-			this.add(animLoadSkin);
-			
-			for (int i = 0; i < skinPoligon.size(); i++)
-			{
-				remove(skinPoligon.get(i));
-			}
-			
-			this.loadSkin.setVisible(true);
-			if(ProfilesUtils.getSelectedProfile() != null)
-			{
-				this.animLoadSkin.setVisible(true);
-			}	
-			else
-			{
+				this.loadSkin.setVisible(false);
 				this.animLoadSkin.setVisible(false);
 			}
-		}
-		else
-		{
-			this.loadSkin.setVisible(false);
-			this.animLoadSkin.setVisible(false);
-		}
 
-		if(!SkinsManager.operating)
-		{
-			for (int i = 0; i < skinPoligon.size(); i++)
+			if (!SkinsManager.operating)
 			{
-				remove(skinPoligon.get(i));
-			}
+				for (int i = 0; i < skinPoligon.size(); i++)
+				{
+					remove(skinPoligon.get(i));
+				}
 
-			skinXY[0] = 116;
-			skinXY[1] = this.getSize().height - 300;
+				skinXY[0] = 116;
+				skinXY[1] = this.getSize().height - 300;
 
-			skinPoligon = new ArrayList<JButton>();
-			
-			if(ProfilesUtils.getSelectedProfile() != null)
-			{
-		        SkinsManager.startLoadingThread(this, null, "", null, skinXY[0], skinXY[1], skinPoligon, mode, false);		
+				skinPoligon = new ArrayList<JButton>();
+
+				if (ProfilesUtils.getSelectedProfile() != null)
+				{
+					SkinsManager.startLoadingThread(this, null, "", null, skinXY[0], skinXY[1], skinPoligon, mode, false);
+				}
+
+				revalidate();
+				repaint();
 			}
-			
-			revalidate();
-			repaint();
-		}	
+		}
 	}
 
 	public void updateModPacks(ArrayList<ModPack> modpacks, boolean completed)
@@ -654,4 +675,5 @@ public class MainPanel extends JPanel
 	private JLabel loadSkin;
 	private JLabel animLoadSkin;
 	public boolean loadingModPack = true;
+	public boolean skinLayout = false;
 }

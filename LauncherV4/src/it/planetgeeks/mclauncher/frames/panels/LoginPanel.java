@@ -6,6 +6,7 @@ import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
 import it.planetgeeks.mclauncher.frames.utils.LinkLabel;
 import it.planetgeeks.mclauncher.utils.DesktopUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
+import it.planetgeeks.mclauncher.utils.LoginUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 
@@ -22,6 +23,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 
@@ -64,6 +66,15 @@ public class LoginPanel extends CustomJPanel
 		
 		setComboboxProfiles(null);
 		
+		launchButton.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+			    connectionBtnClicked();		
+			}			
+		});
+		
 		logo.addMouseListener(new MouseAdapter()
 		{
 			public void mousePressed(MouseEvent me)
@@ -91,7 +102,7 @@ public class LoginPanel extends CustomJPanel
 				
 				ProfilesUtils.selectedProfile = profileComboBox.getSelectedIndex();
 				
-				if (s.equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")))
+				if (s.equals("<" + LanguageUtils.getTranslated("launcher.profile.combobox.create") + ">"))
 				{
 					Launcher.openProfileEditor(null);
 				}
@@ -100,11 +111,11 @@ public class LoginPanel extends CustomJPanel
 					Launcher.getLauncherFrame().mainPanel.updateSkin();
 				}
 				
-				profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
+				profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals("<" + LanguageUtils.getTranslated("launcher.profile.combobox.create") + ">") ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
 			}
 		});
 		
-		profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
+		profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals("<" + LanguageUtils.getTranslated("launcher.profile.combobox.create") + ">") ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
 
 		profileButton.addActionListener(new ActionListener()
 		{
@@ -112,7 +123,7 @@ public class LoginPanel extends CustomJPanel
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				if (String.valueOf(profileComboBox.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")))
+				if (String.valueOf(profileComboBox.getSelectedItem()).equals("<" + LanguageUtils.getTranslated("launcher.profile.combobox.create") + ">"))
 				{
 					Launcher.openProfileEditor(null);
 				}
@@ -147,7 +158,7 @@ public class LoginPanel extends CustomJPanel
 		{
 			profileList.add(profile.profileName);
 		}
-		profileList.add(LanguageUtils.getTranslated("launcher.profile.combobox.create"));
+		profileList.add("<" + LanguageUtils.getTranslated("launcher.profile.combobox.create") + ">");
 		String[] str = new String[profileList.size()];
 		for (int i = 0; i < str.length; i++)
 		{
@@ -160,13 +171,58 @@ public class LoginPanel extends CustomJPanel
 			profileComboBox.setSelectedItem(selected);
 		}
 		
-		profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals(LanguageUtils.getTranslated("launcher.profile.combobox.create")) ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
+		profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals("<" + LanguageUtils.getTranslated("launcher.profile.combobox.create") + ">") ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
 		
 	    if(Launcher.getLauncherFrame() != null)
 	    {
 	    	Launcher.getLauncherFrame().mainPanel.updateSkin();
 	    }
 	}
+    
+    private void connectionBtnClicked()
+    {
+        if(profileComboBox.getSelectedItem().equals("<" + LanguageUtils.getTranslated("launcher.profile.combobox.create") + ">"))
+        {
+        	JOptionPane.showMessageDialog(null, LanguageUtils.getTranslated("launcher.login.selectprofile"), LanguageUtils.getTranslated("launcher.login.title"), JOptionPane.ERROR_MESSAGE);
+       
+        	return;
+        }
+    	
+    	Profile profile = ProfilesUtils.getSelectedProfile();
+    	
+    	String error = "";
+    	
+    	if(profile.rememberPsw)
+    	{
+    		String result = LoginUtils.login(profile.username, profile.password);
+    		
+    		if(result.contains(":"))
+    		{
+    			return;
+    		}
+    		else
+    		{
+    			if(result.equals("NOCONNECTION"))
+    			{
+    				error = LanguageUtils.getTranslated("launcher.login.noconnection");
+    			}
+    			else if(result.equals("LOGINFAILED"))
+    			{
+    				error = LanguageUtils.getTranslated("launcher.login.badlogin");
+    			}
+    			else if(result.equals("ERROR"))
+    			{
+    				error = LanguageUtils.getTranslated("launcher.login.error");
+    			}
+    			
+    			error += " ";		
+    		}
+    	}
+    	
+    	int result = JOptionPane.showConfirmDialog(null, error + LanguageUtils.getTranslated("launcher.login.playoffline"), LanguageUtils.getTranslated("launcher.login.title"), JOptionPane.YES_NO_OPTION);
+        
+    	
+    }
     
     private CustomJPanel controlsPanel;
     private JButton profileButton;

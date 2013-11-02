@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
 import it.planetgeeks.mclauncher.modpack.ModPack;
 import it.planetgeeks.mclauncher.utils.DesktopUtils;
@@ -47,6 +48,8 @@ public class MPInfoFrame extends JFrame
 	
 		this.setTitle(LanguageUtils.getTranslated("launcher.modpacks.infoframe.title"));
 		this.setResizable(false);
+		
+		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
 		
 		detailsPanel = new JPanel();
 		mpnameLbl = new JLabel();

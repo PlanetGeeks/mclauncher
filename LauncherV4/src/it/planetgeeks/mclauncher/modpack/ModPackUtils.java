@@ -42,6 +42,12 @@ public class ModPackUtils
 
 	protected static void analyzePacks()
 	{
+		modPacks = new ArrayList<ModPack>();
+		filter = EnumFilterType.ALL;
+		filterStr = null;
+		filteredList = new ArrayList<ModPack>();
+		selected = null;
+		
 		try
 		{
 			ArrayList<String> urls = getUrls();
@@ -83,6 +89,8 @@ public class ModPackUtils
 		ArrayList<String> mods = new ArrayList<String>();
 		ArrayList<String> setup = new ArrayList<String>();
 		String setupIndex = null;
+		boolean useForge = false;
+		boolean serverLinkDirect = false;
 		File modpack = new File(DirUtils.getLauncherDirectory() + File.separator + "temp");
 		if (modpack.exists())
 		{
@@ -132,6 +140,14 @@ public class ModPackUtils
 					{
 						setupIndex = readed.substring(12);
 					}
+					else if (readed.startsWith("useForge="))
+					{
+						useForge = readed.substring(9).trim().equals("true") ? true : false;
+					}
+					else if (readed.startsWith("serverLink-direct="))
+					{
+						serverLinkDirect = (readed.substring(18).trim()).equals("true") ? true : false;
+					}
 
 					readed = br.readLine();
 				}
@@ -156,6 +172,8 @@ public class ModPackUtils
 		returned.setPackImage(imgIcon);
 		returned.setSetup(setup);
 		returned.setSetupIndex(setupIndex);
+		returned.setUseForge(useForge);
+		returned.setServerLinkDirect(serverLinkDirect);
 
 		return returned;
 	}

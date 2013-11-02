@@ -61,6 +61,8 @@ public class MemoryFrame extends JFrame
 		panel.setOpaque(false);
 		setContentPane(panel);
 
+		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
+		
 		textField = new JTextField();
 		nameLbl = new JLabel();
 		sizeLbl = new JLabel();

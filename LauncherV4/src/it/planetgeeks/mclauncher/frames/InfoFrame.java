@@ -1,5 +1,6 @@
 package it.planetgeeks.mclauncher.frames;
 
+import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
 import it.planetgeeks.mclauncher.frames.utils.LinkLabel;
@@ -29,6 +30,8 @@ public class InfoFrame extends JFrame
 		CustomJPanel panel = new CustomJPanel(true, "bg.png");
 		panel.setOpaque(false);
 		setContentPane(panel);
+		
+		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
 		
 		this.setSize(300, 320);
 		this.setResizable(false);

@@ -15,6 +15,7 @@ import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
 
 public class FileUtils
 {
@@ -50,6 +51,13 @@ public class FileUtils
 
 		return "";
 	}
+	
+	public static String getExtension(String pathUrl)
+	{
+	    String[] splitted =	pathUrl.split(Pattern.quote("."));
+	    
+	    return "." + splitted[splitted.length - 1];
+	}
 
 	public static String getFileSize(File file)
 	{
@@ -83,7 +91,6 @@ public class FileUtils
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
 			return false;
 		}
 	}

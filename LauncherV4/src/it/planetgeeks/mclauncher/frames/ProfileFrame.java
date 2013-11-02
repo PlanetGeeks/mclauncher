@@ -53,6 +53,8 @@ public class ProfileFrame extends JFrame
 
 	private void initComponents()
 	{
+		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
+		
 		usernameLbl = new JLabel();
 		usernameField = new JTextField();
 		passwordLbl = new JLabel();

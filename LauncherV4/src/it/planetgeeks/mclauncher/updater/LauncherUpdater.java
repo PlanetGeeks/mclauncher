@@ -1,7 +1,7 @@
 package it.planetgeeks.mclauncher.updater;
 
-import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.Settings;
+import it.planetgeeks.mclauncher.frames.UpdaterFrame;
 import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.FileUtils;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
@@ -40,33 +40,30 @@ public class LauncherUpdater
 					}
 					if (update)
 					{
-						Updater.startUpdateThread();
+						startUpdate();
 					}
 					else
 					{
-						openLauncher();
+						openLauncher(null);
 					}
 				}
 				else if (checkLauncher.equals("OK"))
 				{
-					openLauncher();
+					openLauncher(null);
 				}
 			}
 			else
 			{
-				openLauncher();
+				openLauncher("ERROR0");
 			}
 		}
 		else
 		{
-			if (getLauncherCheckFile())
-			{
-				Updater.startUpdateThread();
-			}
-			else
-			{
-				Launcher.main(new String[] { "start", "ERROR0" });
-			}
+			File source = new File(LauncherUpdater.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+			
+			FileUtils.copyFile(source, launcher);
+			
+			startCheck();
 		}
 	}
 
@@ -93,16 +90,24 @@ public class LauncherUpdater
 		}
 	}
 
-	public static void openLauncher()
+	public static void openLauncher(String err)
 	{
 		try
 		{
-			URL url = new File(DirUtils.getWorkingDirectory() + File.separator + "launcher" + File.separator + "launcher.jar").toURI().toURL();
+			URL url = new File(DirUtils.getLauncherDirectory() + File.separator + "launcher.jar").toURI().toURL();
 			@SuppressWarnings("resource")
 			URLClassLoader classLoader = new URLClassLoader(new URL[] { url }, new LauncherUpdater().getClass().getClassLoader());
 			Class<?> myMainClass = classLoader.loadClass("it.planetgeeks.mclauncher.Launcher");
 			Method main = myMainClass.getMethod("main", String[].class);
-			main.invoke(null, new Object[] { new String[] { "start" } });
+			if(err != null)
+			{
+				main.invoke(null, new Object[] { new String[] { "start", err } });
+			}
+			else
+			{
+				main.invoke(null, new Object[] { new String[] { "start" } });
+			}
+			
 		}
 		catch (Exception e)
 		{
@@ -156,11 +161,18 @@ public class LauncherUpdater
 					readed = br.readLine();
 				}
 				br.close();
+				if (check.exists())
+				{
+					check.delete();
+				}
 				return true;
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				if (check.exists())
+				{
+					check.delete();
+				}
 				return false;
 			}
 		}
@@ -168,6 +180,19 @@ public class LauncherUpdater
 		{
 			return false;
 		}
+	}
+
+	public static void startUpdate()
+	{
+		File launcher = new File(DirUtils.getLauncherDirectory() + File.separator + "launcher.jar");
+		if (launcher.exists())
+		{
+			launcher.delete();
+		}
+
+		UpdaterFrame updaterFrame = new UpdaterFrame(LauncherUpdater.downloadUrl, launcher);
+		updaterFrame.setVisible(true);
+		updaterFrame.startDownload();
 	}
 
 }

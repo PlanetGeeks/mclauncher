@@ -28,11 +28,13 @@ import javax.swing.WindowConstants;
 public class ConsoleFrame extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	public static ConsoleOutStream out;
+	public ConsoleOutStream out;
 	public ArrayList<String[]> lines = new ArrayList<String[]>();
+	public int clearedList = 0;
 
 	public ConsoleFrame()
 	{
+		lines.clear();
 		initComponents();
 		out = new ConsoleOutStream();
 	}
@@ -42,6 +44,8 @@ public class ConsoleFrame extends JFrame
 		CustomJPanel panel = new CustomJPanel(true, "bg.png");
 		panel.setOpaque(false);
 		setContentPane(panel);
+		
+		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
 		
 		scrollPanel = new JScrollPane();
 		consolePanel = new JTextArea();
@@ -89,6 +93,7 @@ public class ConsoleFrame extends JFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				consolePanel.setText("");
+				clearedList = lines.size();
 			}
 		});
 		
@@ -120,7 +125,10 @@ public class ConsoleFrame extends JFrame
 		{
 			if(consoleTypeBox.getSelectedIndex() == 0 || (lines.get(i)[0].equals("LAUNCHER") && consoleTypeBox.getSelectedIndex() == 1) || (lines.get(i)[0].equals("MINECRAFT") && consoleTypeBox.getSelectedIndex() == 2))
 			{
-				consolePanel.append(lines.get(i)[1]);
+				if(i >= clearedList)
+				{
+					consolePanel.append(lines.get(i)[1]);
+				}
 			}
 		}
 	}
