@@ -10,21 +10,13 @@ public class Settings
 	 *  Visita il sito Web  : http://www.planetgeeks.org/
 	 *  
 	 *  Spero che il launcher risponda alle vostre richieste! Questo è un lavoro fatto per passione
-	 *  quindi nulla esclude che ci possono essere bugs! In ogni caso segnalateli se li trovate!
+	 *  quindi nulla esclude che ci possano essere bugs! In ogni caso , se li trovate , segnalateli !
 	 */
-	
-	/** Quasi tutte le scritte presenti nel launcher sono personalizzabili!
-	 *  Le scritte sono presenti nei file .lang nel package it.planetgeeks.mclauncher.resources.languages
-	 *  Per modificare una scritta trovarla nella lista e sostituire quello che c'è dopo = con il nuovo testo
-	 *  Ad esempio per cambiare il titolo del launcher nella lingua italiana basta trovare il file it_IT.lang
-	 *  aprirlo ( potete farlo da eclipse ) , trovare la riga con scritto launcher.title=    e dopo l'uguale 
-	 *  scrivere il titolo che volete voi. Niente di più semplice.
-	 **/ 
 	
 	/** IMPOSTAZIONI LAUNCHER UPDATER **/
 	
 	/** Link per il controllo della versione del launcher ( che contiene link download - md5 - size ) **/
-	public static String launcherLink = "https://dl.dropboxusercontent.com/u/88221856/launcherv4test/checksum.txt";
+	public static String launcherLink = "null";
     
     /** Se c'è un update del launcher fa apparire il box per la conferma altrimenti procede forzatamente **/
     public static boolean showUpdateConfirm = true;
@@ -40,8 +32,7 @@ public class Settings
 	/** Proprietario del launcher **/
 	public static String launcherOwner = "Flood2d";
 	
-	/** Link del pannello informazioni **/
-	public static String linkInfo = "http://www.google.it/";
+
 	
     /** Cartella del gioco **/
     public static String gameDir = "testv4"; //La cartella in %APPDATA% dove vengono salvati i file di minecraft e del launcher
@@ -58,8 +49,8 @@ public class Settings
     /** link per il label vicino al bottone di connessione **/
     public static String websiteLink = "http://www.youtube.com/PlanetGeeks/";
     
-    /** link per il label nella finestra delle informazioni **/
-    public static String infoLink = "http://www.youtube.com/PlanetGeeks/";
+	/** Link del pannello informazioni **/
+	public static String linkInfo = "http://www.google.it/";
     
     /** link per il logo in basso a sinistra nella schermata principale **/
     public static String logoLink = "http://www.youtube.com/PlanetGeeks/";
@@ -90,10 +81,10 @@ public class Settings
     - MULTI_NEWS_MODPACK,         -> 3 News + Modpack //bugged
     - MULTI_NEWS_SKIN_MODPACK;    -> 3 News + Skin + Modpack
     **/
-    public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS_MODPACK; 
+    public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS_SKIN_MODPACK; 
     
     /** Per usare bordi della finestra personalizzati **/
-    public static boolean customBorder = false;
+    public static boolean customBorder = true;
     
     /** Dimensione della barra superiore ( utile per lo spostamento della finestra sullo schermo ) **/
     public static int barHeight = 28;
@@ -124,11 +115,8 @@ public class Settings
     /** Colore di base dei componenti **/
     public static int colorBase = 0x504D5C;
     
-    /** Colore iniziale del label "profile" nel profile editor **/
-    public static int colorProfileFrameLabel = 0x000000; 
-    
     /** Colore di errore del label "profile" nel profile editor **/
-    public static int colorProfileFrameLabelErrored = 0xFF0000;
+    public static int colorLabelErrored = 0xFF0000;
     
     /** Colore label di collegamento ( hyperlinks ) **/
     public static int colorHyperLinks = 0x006FFF;

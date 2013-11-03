@@ -342,7 +342,7 @@ public class MainPanel extends JPanel
 					else
 					{
 						mpBtn1.setEnabled(false);
-					} 
+					}
 				}
 			});
 
@@ -400,14 +400,14 @@ public class MainPanel extends JPanel
 					if (saveFile.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
 					{
 						File toSave = saveFile.getSelectedFile();
-						
+
 						String extension = FileUtils.getExtension(ModPackUtils.selected.packServerLink);
-					
-						if(!toSave.getName().endsWith(extension))
+
+						if (!toSave.getName().endsWith(extension))
 						{
 							toSave = new File(toSave.getAbsolutePath() + extension);
 						}
-						
+
 						if (toSave.exists())
 						{
 							if (JOptionPane.showConfirmDialog(null, LanguageUtils.getTranslated("launcher.saveoverwritemessage"), LanguageUtils.getTranslated("launcher.saveoverwritetitle"), JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
@@ -526,9 +526,12 @@ public class MainPanel extends JPanel
 				this.add(loadSkin);
 				this.add(animLoadSkin);
 
-				for (int i = 0; i < skinPoligon.size(); i++)
+				for (int i = 0; i < skinPoligon.length; i++)
 				{
-					remove(skinPoligon.get(i));
+					if (skinPoligon[i] != null)
+					{
+						skinPoligon[i].setVisible(false);
+					}
 				}
 
 				this.loadSkin.setVisible(true);
@@ -549,25 +552,46 @@ public class MainPanel extends JPanel
 
 			if (!SkinsManager.operating)
 			{
-				for (int i = 0; i < skinPoligon.size(); i++)
-				{
-					remove(skinPoligon.get(i));
-				}
-
 				skinXY[0] = 116;
 				skinXY[1] = this.getSize().height - 300;
 
-				skinPoligon = new ArrayList<JButton>();
-
+				for (int i = 0; i < skinPoligon.length; i++)
+				{
+					if (skinPoligon[i] != null)
+					{
+		                remove(skinPoligon[i]);
+					}
+				}
+				
 				if (ProfilesUtils.getSelectedProfile() != null)
 				{
 					SkinsManager.startLoadingThread(this, null, "", null, skinXY[0], skinXY[1], skinPoligon, mode, false);
 				}
-
-				revalidate();
-				repaint();
 			}
 		}
+	}
+
+	public void setSkinPoligon(JButton[] buttons)
+	{
+		for (int i = 0; i < skinPoligon.length; i++)
+		{
+			if (skinPoligon[i] != null)
+			{
+                remove(skinPoligon[i]);
+			}
+		}
+		
+		for (int i = 0; i < skinPoligon.length; i++)
+		{
+			skinPoligon[i] = buttons[i];
+			if(skinPoligon[i] != null)
+			{
+				add(skinPoligon[i]);
+			}		
+		}
+		
+		revalidate();
+		repaint();
 	}
 
 	public void updateModPacks(ArrayList<ModPack> modpacks, boolean completed)
@@ -656,7 +680,7 @@ public class MainPanel extends JPanel
 	}
 
 	private int skinXY[];
-	private ArrayList<JButton> skinPoligon = new ArrayList<JButton>();
+	private JButton[] skinPoligon = new JButton[7];
 	private int mode = 0;
 	private JButton mpBtn1;
 	private JButton mpBtn2;

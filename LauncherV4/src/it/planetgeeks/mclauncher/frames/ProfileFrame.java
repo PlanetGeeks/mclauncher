@@ -261,32 +261,32 @@ public class ProfileFrame extends JFrame
 		boolean create = true;
 		if (!(this.usernameField.getText().length() > 0))
 		{
-			this.usernameLbl.setForeground(new Color(Settings.colorProfileFrameLabelErrored));
+			this.usernameLbl.setForeground(new Color(Settings.colorLabelErrored));
 			create = false;
 		}
 		else
 		{
-			this.usernameLbl.setForeground(new Color(Settings.colorProfileFrameLabel));
+			this.usernameLbl.setForeground(new Color(Settings.textDefault));
 		}
 		
 		if (this.checkBoxPsw.isSelected() && !(this.passwordField.getPassword().length > 0))
 		{
-			this.passwordLbl.setForeground(new Color(Settings.colorProfileFrameLabelErrored));
+			this.passwordLbl.setForeground(new Color(Settings.colorLabelErrored));
 			create = false;
 		}
 		else
 		{
-			this.passwordLbl.setForeground(new Color(Settings.colorProfileFrameLabel));
+			this.passwordLbl.setForeground(new Color(Settings.textDefault));
 		}
 		
 		if (!(this.profileNameField.getText().length() > 0))
 		{
-			this.profileNameLbl.setForeground(new Color(Settings.colorProfileFrameLabelErrored));
+			this.profileNameLbl.setForeground(new Color(Settings.colorLabelErrored));
 			create = false;
 		}
 		else
 		{
-			this.profileNameLbl.setForeground(new Color(Settings.colorProfileFrameLabel));
+			this.profileNameLbl.setForeground(new Color(Settings.textDefault));
 		}
 		
 		if (create)

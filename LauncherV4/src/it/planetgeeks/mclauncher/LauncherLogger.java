@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -94,7 +95,7 @@ public enum LauncherLogger
 		}
 		return logFolder;
 	}
-
+	
 	public static void loadLogger()
 	{
 		initialized = true;
@@ -103,51 +104,31 @@ public enum LauncherLogger
 		{
 			currentLog = new File(getLogFolder() + File.separator + "log-" + getDate("yyyy.MM.dd.HH.mm.ss"));
 			File[] logs = getLogFolder().listFiles();
-			if (logs != null && logs.length == 5)
+			
+			int logsMax;
+			
+			try
 			{
-				File toDelete = null;
-				for (int a = 0; a < 6; a++)
-				{
-					boolean breaked = false;
-					for (int i = 0; i < logs.length; i++)
-					{
-						String[] date = logs[i].getName().substring(4).split(".");
-						if (date.length != 6)
-						{
-							toDelete = logs[i];
-							break;
-						}
-						int first = 0;
-						try
-						{
-							first = Integer.valueOf(date[a]);
-						}
-						catch (NumberFormatException e)
-						{
-							toDelete = logs[i];
-							break;
-						}
-						if (toDelete != null)
-						{
-							String[] current = logs[i].getName().substring(4).split(".");
-
-							if (first < Integer.valueOf(current[a]))
-							{
-								toDelete = logs[i];
-							}
-						}
-						else
-						{
-							toDelete = logs[i];
-						}
-					}
-					if (breaked)
-					{
-						break;
-					}
-				}
-				toDelete.delete();
+				String maxLogs = LauncherProperties.getProperty("automaticLogs");
+				logsMax = Integer.valueOf(maxLogs);
 			}
+			catch (NumberFormatException e)
+			{
+				LauncherProperties.modifyProperty("automaticLogs", "5");
+				logsMax = 5;
+			}
+			
+			int logsLenght = logs.length;
+			
+			if (logs != null && logsLenght >= logsMax)
+			{
+				for(int i = 0; i < logsLenght - (logsMax - 1); i++)
+				{
+					deleteOldestLog(logs);
+					logs = getLogFolder().listFiles();
+				}
+			}
+			
 			FileOutputStream file = new FileOutputStream(currentLog.getAbsolutePath());
 			LogPrintStream lpr = new LogPrintStream(file, System.out, new PrintStream(Launcher.getConsoleFrame().out));
 			System.setOut(lpr);
@@ -157,5 +138,51 @@ public enum LauncherLogger
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	private static void deleteOldestLog(File[] logs)
+	{
+		File toDelete = null;
+		for (int a = 0; a < 6; a++)
+		{
+			boolean breaked = false;
+			for (int i = 0; i < logs.length; i++)
+			{
+				String[] date = logs[i].getName().substring(4).split(Pattern.quote("."));
+				if (date.length != 6)
+				{
+					toDelete = logs[i];
+					break;
+				}
+				int first = 0;
+				try
+				{
+					first = Integer.valueOf(date[a]);
+				}
+				catch (NumberFormatException e)
+				{
+					toDelete = logs[i];
+					break;
+				}
+				if (toDelete != null)
+				{
+					String[] current = logs[i].getName().substring(4).split(Pattern.quote("."));
+
+					if (first < Integer.valueOf(current[a]))
+					{
+						toDelete = logs[i];
+					}
+				}
+				else
+				{
+					toDelete = logs[i];
+				}
+			}
+			if (breaked)
+			{
+				break;
+			}
+		}
+		toDelete.delete();
 	}
 }

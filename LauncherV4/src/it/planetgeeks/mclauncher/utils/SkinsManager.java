@@ -10,7 +10,7 @@ import it.planetgeeks.mclauncher.frames.panels.MainPanel;
 import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.util.List;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,12 +24,12 @@ class DownloadSkinThread implements Runnable
 	private BufferedImage img;
 	private int x;
 	private int y;
-	private List<JButton> buttons;
+	private JButton[] buttons;
 	private int mode;
 	private boolean forceUrl;
 
 	public DownloadSkinThread(JPanel contentPane, ActionListener listener,
-			String url, BufferedImage img, int x, int y, List<JButton> buttons,
+			String url, BufferedImage img, int x, int y, JButton[] buttons,
 			int mode, boolean forceUrl)
 	{
 		this.contentPane = contentPane;
@@ -48,7 +48,6 @@ class DownloadSkinThread implements Runnable
 	{
 		SkinsManager.operating = true;
 		SkinsManager.drawCharacter(contentPane, actionListener, url, img, x, y, buttons, mode, forceUrl);
-
 	}
 
 }
@@ -56,7 +55,7 @@ class DownloadSkinThread implements Runnable
 public class SkinsManager
 {
 
-	public static void startLoadingThread(JPanel contentPane, ActionListener listener, String url, BufferedImage img, int x, int y, List<JButton> buttons, int mode, boolean forceUrl)
+	public static void startLoadingThread(JPanel contentPane, ActionListener listener, String url, BufferedImage img, int x, int y, JButton[] buttons, int mode, boolean forceUrl)
 	{
 		if (ProfilesUtils.getSelectedProfile().skin == null)
 		{
@@ -72,7 +71,7 @@ public class SkinsManager
 		}
 	}
 
-	protected static void drawCharacter(JPanel contentPane, ActionListener listener, String url, BufferedImage img, int x, int y, List<JButton> buttons, int mode, boolean forceUrl)
+	protected static void drawCharacter(JPanel contentPane, ActionListener listener, String url, BufferedImage img, int x, int y, JButton[] buttons, int mode, boolean forceUrl)
 	{
 		try
 		{
@@ -80,37 +79,43 @@ public class SkinsManager
 
 			if (mode == 0)
 			{
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 40, 8, 48, 16, x - 4, y - 5, 8));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 8, 8, 16, 16, x, y, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 20, 20, 28, 32, x, y + 56, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 44, 20, 48, 32, x - 28, y + 56, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 44, 20, 48, 32, x + 56, y + 56, 7, true));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 4, 20, 8, 32, x, y + 140, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 4, 20, 8, 32, x + 28, y + 140, 7, true));
+				buttons[0] = (drawCropped(contentPane, listener, originalImage, 2, 40, 8, 48, 16, x - 4, y - 5, 8)); 
+				buttons[1] = (drawCropped(contentPane, listener, originalImage, 2, 8, 8, 16, 16, x, y, 7));
+				buttons[2] = (drawCropped(contentPane, listener, originalImage, 2, 20, 20, 28, 32, x, y + 56, 7));
+				buttons[3] = (drawCropped(contentPane, listener, originalImage, 2, 44, 20, 48, 32, x - 28, y + 56, 7));
+				buttons[4] = (drawCropped(contentPane, listener, originalImage, 2, 44, 20, 48, 32, x + 56, y + 56, 7, true));
+				buttons[5] = (drawCropped(contentPane, listener, originalImage, 2, 4, 20, 8, 32, x, y + 140, 7));
+				buttons[6] = (drawCropped(contentPane, listener, originalImage, 2, 4, 20, 8, 32, x + 28, y + 140, 7, true));
 			}
 			else if (mode == 1)
 			{
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 32, 8, 40, 16, x - 4, y - 5, 8));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 0, 8, 8, 16, x, y, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 40, 20, 44, 32, x + 14, y + 56, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 0, 20, 4, 32, x + 14, y + 140, 7));
+				buttons[0] = (drawCropped(contentPane, listener, originalImage, 2, 32, 8, 40, 16, x - 4, y - 5, 8));
+				buttons[1] = (drawCropped(contentPane, listener, originalImage, 2, 0, 8, 8, 16, x, y, 7));
+				buttons[2] = (drawCropped(contentPane, listener, originalImage, 2, 40, 20, 44, 32, x + 14, y + 56, 7));
+				buttons[3] = (drawCropped(contentPane, listener, originalImage, 2, 0, 20, 4, 32, x + 14, y + 140, 7));
+				buttons[4] = null;
+				buttons[5] = null;
+				buttons[6] = null;
 			}
 			else if (mode == 2)
 			{
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 56, 8, 64, 16, x - 4, y - 5, 8));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 24, 8, 32, 16, x, y, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 32, 20, 40, 32, x, y + 56, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 52, 20, 56, 32, x - 28, y + 56, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 52, 20, 56, 32, x + 56, y + 56, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 12, 20, 16, 32, x, y + 140, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 12, 20, 16, 32, x + 28, y + 140, 7));
+				buttons[0] = (drawCropped(contentPane, listener, originalImage, 2, 56, 8, 64, 16, x - 4, y - 5, 8));
+				buttons[1] = (drawCropped(contentPane, listener, originalImage, 2, 24, 8, 32, 16, x, y, 7));
+				buttons[2] = (drawCropped(contentPane, listener, originalImage, 2, 32, 20, 40, 32, x, y + 56, 7));
+				buttons[3] = (drawCropped(contentPane, listener, originalImage, 2, 52, 20, 56, 32, x - 28, y + 56, 7));
+				buttons[4] = (drawCropped(contentPane, listener, originalImage, 2, 52, 20, 56, 32, x + 56, y + 56, 7, true));
+				buttons[5] = (drawCropped(contentPane, listener, originalImage, 2, 12, 20, 16, 32, x, y + 140, 7));
+				buttons[6] = (drawCropped(contentPane, listener, originalImage, 2, 12, 20, 16, 32, x + 28, y + 140, 7, true));
 			}
 			else if (mode == 3)
 			{
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 48, 8, 56, 16, x - 4, y - 5, 8));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 16, 8, 24, 16, x, y, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 52, 20, 56, 32, x + 14, y + 56, 7));
-				buttons.add(drawCropped(contentPane, listener, originalImage, 2, 8, 20, 12, 32, x + 14, y + 140, 7));
+				buttons[0] = (drawCropped(contentPane, listener, originalImage, 2, 48, 8, 56, 16, x - 4, y - 5, 8));
+				buttons[1] = (drawCropped(contentPane, listener, originalImage, 2, 16, 8, 24, 16, x, y, 7));
+				buttons[2] = (drawCropped(contentPane, listener, originalImage, 2, 52, 20, 56, 32, x + 14, y + 56, 7));
+				buttons[3] = (drawCropped(contentPane, listener, originalImage, 2, 8, 20, 12, 32, x + 14, y + 140, 7));
+			    buttons[4] = null;
+			    buttons[5] = null;
+			    buttons[6] = null;
 			}
 
 		}
@@ -120,6 +125,7 @@ public class SkinsManager
 		}
 
 		MainPanel panel = (MainPanel) contentPane;
+		panel.setSkinPoligon(buttons);
 		if (operating)
 		{
 			operating = false;
@@ -158,7 +164,6 @@ public class SkinsManager
 		tmp.setRolloverEnabled(false);
 
 		tmp.setBounds(x, y, (sx2 - sx1) * scale, (sy2 - sy1) * scale);
-		contentPane.add(tmp);
 		return tmp;
 	}
 
