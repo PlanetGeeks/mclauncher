@@ -1,5 +1,6 @@
 package it.planetgeeks.mclauncher.frames.utils;
 
+
 import it.planetgeeks.mclauncher.Launcher;
 
 import java.awt.Graphics;
@@ -8,6 +9,11 @@ import java.awt.LayoutManager;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+/**
+ * @author PlanetGeeks
+ *
+ */
 
 enum Side
 {

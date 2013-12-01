@@ -8,6 +8,11 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class ResourcesUtils
 {
 	public InputStream getInputStream(String str)

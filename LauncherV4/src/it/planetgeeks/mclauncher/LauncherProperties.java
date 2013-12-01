@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class LauncherProperties
 {
     private static HashMap<String, String> properties = new HashMap<String,String>();

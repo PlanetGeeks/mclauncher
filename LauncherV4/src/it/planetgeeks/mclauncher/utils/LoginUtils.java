@@ -10,6 +10,11 @@ import java.net.URLEncoder;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class LoginUtils
 {
 	private static String excutePost(String targetURL, String urlParameters)

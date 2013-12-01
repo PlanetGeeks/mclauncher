@@ -3,6 +3,11 @@ package it.planetgeeks.mclauncher.frames.utils;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class CustomKeyListener implements KeyListener
 {
 

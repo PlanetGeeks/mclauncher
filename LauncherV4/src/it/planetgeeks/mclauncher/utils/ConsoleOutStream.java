@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import javax.swing.SwingUtilities;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class ConsoleOutStream extends OutputStream
 {
 	private final StringBuilder sb = new StringBuilder();

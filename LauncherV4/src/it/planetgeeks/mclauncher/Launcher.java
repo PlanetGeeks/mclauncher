@@ -22,6 +22,11 @@ import java.awt.Color;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class Launcher
 {
 	private static LauncherFrame launcherFrame;
@@ -52,13 +57,14 @@ public class Launcher
 			ModPackUtils.startLoading();
 			launcherFrame = new LauncherFrame();
 			launcherFrame.setVisible(true);
+
 		}
 		else
 		{
 			loadLookAndFeel();
 			LauncherProperties.loadProperties();
 			LanguageUtils.loadLanguages();
-			LauncherUpdater.startCheck();	
+			LauncherUpdater.startCheck();
 		}
 	}
 
@@ -107,7 +113,7 @@ public class Launcher
 
 	public static void openOrCloseMemoryEditor(int parent, Object extra)
 	{
-		if(memoryFrame == null || !memoryFrame.isVisible())
+		if (memoryFrame == null || !memoryFrame.isVisible())
 		{
 			memoryFrame = new MemoryFrame(parent, extra);
 			memoryFrame.setVisible(true);
@@ -115,12 +121,12 @@ public class Launcher
 		else
 		{
 			memoryFrame.close();
-		}	
+		}
 	}
-	
+
 	public static void openOrCloseFilterFrame()
 	{
-		if(filterFrame == null || !filterFrame.isVisible())
+		if (filterFrame == null || !filterFrame.isVisible())
 		{
 			filterFrame = new MPFilterFrame();
 			filterFrame.setVisible(true);
@@ -128,14 +134,14 @@ public class Launcher
 		else
 		{
 			filterFrame.setVisible(false);
-		}	
+		}
 	}
-	
+
 	public static void openOrCloseMPInfoFrame(ModPack modpack)
 	{
-		if(mpinfoframe == null || !mpinfoframe.isVisible())
+		if (mpinfoframe == null || !mpinfoframe.isVisible())
 		{
-			if(modpack != null)
+			if (modpack != null)
 			{
 				mpinfoframe = new MPInfoFrame(modpack);
 				mpinfoframe.setVisible(true);
@@ -144,12 +150,12 @@ public class Launcher
 		else
 		{
 			mpinfoframe.setVisible(false);
-		}	
+		}
 	}
-	
+
 	public static void openOrCloseInfoFrame()
 	{
-		if(isInfoOpened())
+		if (isInfoOpened())
 		{
 			infoFrame.setVisible(false);
 		}
@@ -171,10 +177,10 @@ public class Launcher
 			consoleFrame.setVisible(true);
 		}
 	}
-	
+
 	public static void openOrCloseOptionsFrame()
 	{
-		if(isAdvOptionsOpened())
+		if (isAdvOptionsOpened())
 		{
 			optionsFrame.setVisible(false);
 		}
@@ -189,22 +195,22 @@ public class Launcher
 	{
 		return memoryFrame != null ? (memoryFrame.isVisible() ? true : false) : false;
 	}
-	
+
 	public static boolean isConsoleOpened()
 	{
 		return consoleFrame != null ? (consoleFrame.isVisible() ? true : false) : false;
 	}
-	
+
 	public static boolean isAdvOptionsOpened()
 	{
 		return optionsFrame != null ? (optionsFrame.isVisible() ? true : false) : false;
 	}
-	
+
 	public static boolean isInfoOpened()
 	{
 		return infoFrame != null ? (infoFrame.isVisible() ? true : false) : false;
 	}
-	
+
 	public static ConsoleFrame getConsoleFrame()
 	{
 		return consoleFrame;
@@ -214,12 +220,12 @@ public class Launcher
 	{
 		return launcherFrame;
 	}
-	
+
 	public static ResourcesUtils getResources()
 	{
 		return resources;
 	}
-	
+
 	public static OptionsFrame getOptions()
 	{
 		return optionsFrame;
@@ -242,6 +248,11 @@ public class Launcher
 			}
 		}
 	}
+	
+	public static void setUpdatingModPack(boolean updating)
+	{
+		launcherFrame.southPanel.setUpdating(updating);
+	}
 
 	private static void printLauncherInfo()
 	{
@@ -250,6 +261,6 @@ public class Launcher
 
 	public static void closeLauncher()
 	{
-        System.exit(0);
+		System.exit(0);
 	}
 }

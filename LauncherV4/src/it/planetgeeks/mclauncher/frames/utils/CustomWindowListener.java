@@ -3,6 +3,11 @@ package it.planetgeeks.mclauncher.frames.utils;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class CustomWindowListener implements WindowListener
 {
 

@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class LogPrintStream extends PrintStream
 { 
     private final PrintStream second;

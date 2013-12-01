@@ -26,6 +26,11 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class MPInfoFrame extends JFrame
 {
 

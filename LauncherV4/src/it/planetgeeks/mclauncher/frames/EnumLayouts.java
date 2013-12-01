@@ -1,5 +1,10 @@
 package it.planetgeeks.mclauncher.frames;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public enum EnumLayouts
 {
 	BG,

@@ -23,6 +23,11 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class OptionsFrame extends JFrame
 {
 	private static final long serialVersionUID = 1L;

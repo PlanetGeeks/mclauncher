@@ -2,6 +2,11 @@ package it.planetgeeks.mclauncher.utils;
 
 import java.util.HashMap;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class LanguagePack
 {
     public String packName;

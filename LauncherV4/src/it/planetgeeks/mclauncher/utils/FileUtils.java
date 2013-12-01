@@ -17,6 +17,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class FileUtils
 {
 	private static InputStream is;
@@ -62,6 +67,23 @@ public class FileUtils
 	public static String getFileSize(File file)
 	{
 		return String.valueOf(file.length());
+	}
+	
+	public static boolean internetConnected(String pathUrl)
+	{/**
+		try
+		{
+			URL url = new URL(pathUrl);
+			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+			System.out.println("HERE");
+			connection.disconnect();
+			return true;
+		}
+		catch (IOException e){}
+		
+		return false;
+		**/
+		return true;
 	}
 	
 	public static boolean downloadFile(String pathUrl, File dest)

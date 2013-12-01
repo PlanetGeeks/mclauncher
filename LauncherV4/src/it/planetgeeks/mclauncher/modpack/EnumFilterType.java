@@ -1,5 +1,10 @@
 package it.planetgeeks.mclauncher.modpack;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public enum EnumFilterType
 {
 	ALL("launcher.modpacks.filter.all"),
@@ -7,7 +12,8 @@ public enum EnumFilterType
     PACKNAME("launcher.modpacks.filter.name"),
     PACKOWNER("launcher.modpacks.filter.owner"),
     HASSERVER("launcher.modpacks.filter.server"),
-    HASMOD("launcher.modpacks.filter.mod");
+    HASMOD("launcher.modpacks.filter.mod"),
+	DOWNLOADED("launcher.modpacks.filter.downloaded");
 	
 	public String str;
 	

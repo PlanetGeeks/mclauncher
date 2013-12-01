@@ -25,6 +25,11 @@ import javax.swing.SwingConstants;
 
 import javax.swing.WindowConstants;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class MPServerFrame extends JFrame
 {
 

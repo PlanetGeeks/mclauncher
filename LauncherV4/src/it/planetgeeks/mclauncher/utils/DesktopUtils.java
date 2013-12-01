@@ -10,6 +10,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class DesktopUtils
 {
     public static void openWebPage(String url)

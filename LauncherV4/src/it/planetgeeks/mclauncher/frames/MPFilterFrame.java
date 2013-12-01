@@ -24,6 +24,11 @@ import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class MPFilterFrame extends JFrame
 {
 	private static final long serialVersionUID = 1L;
@@ -136,7 +141,7 @@ public class MPFilterFrame extends JFrame
 
 	private void updateComponents()
 	{
-		if (currentFilter == EnumFilterType.ALL || currentFilter == EnumFilterType.HASSERVER)
+		if (currentFilter == EnumFilterType.ALL || currentFilter == EnumFilterType.HASSERVER || currentFilter == EnumFilterType.DOWNLOADED)
 		{
 			valueLbl.setEnabled(false);
 			textField.setEnabled(false);

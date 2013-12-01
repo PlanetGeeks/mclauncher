@@ -10,6 +10,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class MemoryUtils
 {
 	private static ArrayList<Memory> memories = new ArrayList<Memory>();

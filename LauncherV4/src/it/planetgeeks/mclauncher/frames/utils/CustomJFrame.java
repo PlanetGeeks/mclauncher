@@ -20,6 +20,11 @@ import javax.swing.JPanel;
 
 import com.sun.awt.AWTUtilities;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class CustomJFrame extends JFrame
 {
 	private static final long serialVersionUID = 1L;
@@ -145,7 +150,7 @@ public class CustomJFrame extends JFrame
 			});
 			
 			AWTUtilities.setWindowOpaque(this, false);
-			
+			getRootPane().putClientProperty("apple.awt.draggableWindowBackground", Boolean.FALSE);
 			pack();
 		}
 		else

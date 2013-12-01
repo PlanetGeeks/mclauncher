@@ -31,6 +31,11 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class ProfileFrame extends JFrame
 {
 
@@ -205,7 +210,7 @@ public class ProfileFrame extends JFrame
 					ProfilesUtils.deleteProfile(this.latestProfName, true);
 					profile = null;
 					this.setVisible(false);
-					Launcher.getLauncherFrame().loginPanel.setComboboxProfiles(null);
+					Launcher.getLauncherFrame().southPanel.setComboboxProfiles(null);
 				}
 				break;
 			}
@@ -230,7 +235,7 @@ public class ProfileFrame extends JFrame
 						ProfilesUtils.modifyProfile(this.latestProfName, profileNameField.getText(), profile);
 						profile = null;
 						this.setVisible(false);
-						Launcher.getLauncherFrame().loginPanel.setComboboxProfiles(ProfilesUtils.getSelectedProfile().profileName);
+						Launcher.getLauncherFrame().southPanel.setComboboxProfiles(ProfilesUtils.getSelectedProfile().profileName);
 					}
 				}
 				break;
@@ -248,7 +253,7 @@ public class ProfileFrame extends JFrame
 					{
 						profile = null;
 						this.setVisible(false);
-						Launcher.getLauncherFrame().loginPanel.setComboboxProfiles(ProfilesUtils.getSelectedProfile().profileName);
+						Launcher.getLauncherFrame().southPanel.setComboboxProfiles(ProfilesUtils.getSelectedProfile().profileName);
 					}
 				}
 				break;

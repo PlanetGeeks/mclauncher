@@ -3,6 +3,11 @@ package it.planetgeeks.mclauncher.frames.utils;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class CustomComponentListener implements ComponentListener
 {
 

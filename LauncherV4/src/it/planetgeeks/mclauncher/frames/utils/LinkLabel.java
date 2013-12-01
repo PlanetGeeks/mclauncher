@@ -10,6 +10,11 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class LinkLabel extends JLabel
 {
 

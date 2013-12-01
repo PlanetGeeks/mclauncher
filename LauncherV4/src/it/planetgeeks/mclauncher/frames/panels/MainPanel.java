@@ -17,25 +17,22 @@ import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 import it.planetgeeks.mclauncher.utils.SkinsManager;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -45,6 +42,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+/**
+ * @author PlanetGeeks
+ *
+ */
 
 public class MainPanel extends JPanel
 {
@@ -95,7 +99,7 @@ public class MainPanel extends JPanel
 		{
 			loadBgComponents();
 
-			loadNewsComponents();
+			loadSkinComponents();
 
 			loadModPackComponents();
 
@@ -110,8 +114,8 @@ public class MainPanel extends JPanel
 
 			GroupLayout mainPanelLayout = new GroupLayout(this);
 			setLayout(mainPanelLayout);
-			mainPanelLayout.setHorizontalGroup(mainPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(mainPanelLayout.createSequentialGroup().addContainerGap().addComponent(jfxPanels[0]).addContainerGap()));
-			mainPanelLayout.setVerticalGroup(mainPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(mainPanelLayout.createSequentialGroup().addContainerGap().addComponent(jfxPanels[0], GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)));
+			mainPanelLayout.setHorizontalGroup(mainPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(mainPanelLayout.createSequentialGroup().addContainerGap().addComponent(jfxScrollPanels[0]).addContainerGap()));
+			mainPanelLayout.setVerticalGroup(mainPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(mainPanelLayout.createSequentialGroup().addContainerGap().addComponent(jfxScrollPanels[0], GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)));
 
 		}
 		else if (current == EnumLayouts.NEWS_SKIN)
@@ -119,11 +123,11 @@ public class MainPanel extends JPanel
 			loadNewsComponents();
 
 			loadSkinComponents();
-			jfxPanels[0].setPreferredSize(new Dimension(200, 200));
+			jfxScrollPanels[0].setPreferredSize(new Dimension(200, 200));
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
-			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(25, 25, 25).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(27, 27, 27).addComponent(jfxPanels[0], GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE).addContainerGap()));
-			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(jfxPanels[0], GroupLayout.Alignment.TRAILING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(0, 327, Short.MAX_VALUE).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(rightSkin).addComponent(leftSkin)).addGap(30, 30, 30)))));
+			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(25, 25, 25).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(27, 27, 27).addComponent(jfxScrollPanels[0], GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE).addContainerGap()));
+			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(jfxScrollPanels[0], GroupLayout.Alignment.TRAILING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(0, 327, Short.MAX_VALUE).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(rightSkin).addComponent(leftSkin)).addGap(30, 30, 30)))));
 
 		}
 		else if (current == EnumLayouts.MULTI_NEWS)
@@ -145,7 +149,7 @@ public class MainPanel extends JPanel
 
 			for (int i = 0; i < 3; i++)
 			{
-				jfxPanels[i].setPreferredSize(new Dimension(200, 200));
+				jfxScrollPanels[i].setPreferredSize(new Dimension(200, 200));
 			}
 
 			GroupLayout layout = new GroupLayout(this);
@@ -164,8 +168,8 @@ public class MainPanel extends JPanel
 
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
-			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(26, 26, 26).addComponent(jfxPanels[0], GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addGap(0, 0, Short.MAX_VALUE)).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpBtn2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))).addContainerGap()));
-			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpBtn1).addComponent(mpFilterBtn)).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(3, 3, 3).addComponent(mpBtn2)).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl).addGap(1, 1, 1)))).addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)).addGap(11, 11, 11).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(leftSkin).addComponent(rightSkin)).addContainerGap()).addComponent(jfxPanels[0], GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))));
+			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(26, 26, 26).addComponent(jfxScrollPanels[0], GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addGap(0, 0, Short.MAX_VALUE)).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpBtn2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))).addContainerGap()));
+			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpBtn1).addComponent(mpFilterBtn)).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(3, 3, 3).addComponent(mpBtn2)).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl).addGap(1, 1, 1)))).addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)).addGap(11, 11, 11).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(leftSkin).addComponent(rightSkin)).addContainerGap()).addComponent(jfxScrollPanels[0], GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))));
 		}
 		else if (current == EnumLayouts.NEWS_MODPACK)
 		{
@@ -173,12 +177,12 @@ public class MainPanel extends JPanel
 
 			loadModPackComponents();
 
-			jfxPanels[0].setPreferredSize(new Dimension(200, 200));
+			jfxScrollPanels[0].setPreferredSize(new Dimension(200, 200));
 
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
-			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpScrollPanel, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(jfxPanels[0])).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpBtn2))).addContainerGap()));
-			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpFilterBtn).addComponent(mpFilterLbl).addComponent(mpBtn1).addComponent(mpBtn2)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(jfxPanels[0]).addGroup(layout.createSequentialGroup().addComponent(mpScrollPanel, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE).addContainerGap()))));
+			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpScrollPanel, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(jfxScrollPanels[0])).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpBtn2))).addContainerGap()));
+			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpFilterBtn).addComponent(mpFilterLbl).addComponent(mpBtn1).addComponent(mpBtn2)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(jfxScrollPanels[0]).addGroup(layout.createSequentialGroup().addComponent(mpScrollPanel, GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE).addContainerGap()))));
 		}
 		else if (current == EnumLayouts.MULTI_NEWS_MODPACK)
 		{
@@ -188,7 +192,7 @@ public class MainPanel extends JPanel
 
 			for (int i = 0; i < 3; i++)
 			{
-				jfxPanels[i].setPreferredSize(new Dimension(200, 200));
+				jfxScrollPanels[i].setPreferredSize(new Dimension(200, 200));
 			}
 
 			GroupLayout layout = new GroupLayout(this);
@@ -206,7 +210,7 @@ public class MainPanel extends JPanel
 
 			for (int i = 0; i < 3; i++)
 			{
-				jfxPanels[i].setPreferredSize(new Dimension(200, 200));
+				jfxScrollPanels[i].setPreferredSize(new Dimension(200, 200));
 			}
 
 			GroupLayout layout = new GroupLayout(this);
@@ -272,24 +276,136 @@ public class MainPanel extends JPanel
 
 	private void loadMultiNewsComponents()
 	{
-		createScene();
+		Thread th = new Thread(new Runnable()
+		{
+
+			@Override
+			public void run()
+			{
+				for (int i = 0; i < 3; i++)
+				{
+
+					String link = "";
+					if (i == 0)
+					{
+						link = Settings.newsLink1;
+					}
+					else if (i == 1)
+					{
+						link = Settings.newsLink2;
+					}
+					else if (i == 2)
+					{
+						link = Settings.newsLink3;
+					}
+
+					try
+					{
+						JEditorPane pane = new JEditorPane();
+						pane.setEditable(false);
+						pane.setPage(link);
+	                    pane.setBackground(Color.BLACK);
+	                    pane.setBorder(null);
+	                    pane.addHyperlinkListener(new HyperlinkListener()
+						{
+							public void hyperlinkUpdate(HyperlinkEvent he)
+							{
+								if (he.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+									try
+									{
+										Desktop.getDesktop().browse(he.getURL().toURI());
+									}
+									catch (Exception e)
+									{
+										e.printStackTrace();
+									}
+							}
+						});
+						
+	                    jfxPanels[i] = pane;
+	                    
+
+					}
+					catch (MalformedURLException e)
+					{
+						jfxPanels[i].setText("Error on loading page");
+					}
+					catch (IOException e)
+					{
+						jfxPanels[i].setText("Error");
+					}
+					
+					jfxScrollPanels[i].setViewportView(jfxPanels[i]);
+				}
+			}
+
+		});
+
+		th.start();
 
 		tabbedPanel = new JTabbedPane();
 
-		tabbedPanel.addTab(LanguageUtils.getTranslated("launcher.newstab1.title"), jfxPanels[0]);
-		tabbedPanel.addTab(LanguageUtils.getTranslated("launcher.newstab2.title"), jfxPanels[1]);
-		tabbedPanel.addTab(LanguageUtils.getTranslated("launcher.newstab3.title"), jfxPanels[2]);
+		tabbedPanel.addTab(LanguageUtils.getTranslated("launcher.newstab1.title"), jfxScrollPanels[0]);
+		tabbedPanel.addTab(LanguageUtils.getTranslated("launcher.newstab2.title"), jfxScrollPanels[1]);
+		tabbedPanel.addTab(LanguageUtils.getTranslated("launcher.newstab3.title"), jfxScrollPanels[2]);
 
-		loadURL(Settings.newsLink1, 0);
-		loadURL(Settings.newsLink2, 1);
-		loadURL(Settings.newsLink3, 2);
 	}
 
 	private void loadNewsComponents()
 	{
-		createScene();
+		JScrollPane scroll = jfxScrollPanels[0];
+		JEditorPane pane = jfxPanels[0];
+		pane.setEditable(false);
+		scroll.setViewportView(pane);
 
-		loadURL(Settings.newsLink1, 0);
+		Thread th = new Thread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+
+				try
+				{
+					JEditorPane pane = new JEditorPane();
+					pane.setEditable(false);
+					pane.setPage(Settings.newsLink1);
+                    pane.setBackground(Color.BLACK);
+                    pane.setBorder(null);
+                    pane.addHyperlinkListener(new HyperlinkListener()
+					{
+						public void hyperlinkUpdate(HyperlinkEvent he)
+						{
+							if (he.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+								try
+								{
+									Desktop.getDesktop().browse(he.getURL().toURI());
+								}
+								catch (Exception e)
+								{
+									e.printStackTrace();
+								}
+						}
+					});
+					
+                    jfxPanels[0] = pane;
+                  
+
+				}
+				catch (MalformedURLException e)
+				{
+					jfxPanels[0].setText("Error on loading page");
+				}
+				catch (IOException e)
+				{
+					jfxPanels[0].setText("Error");
+				}
+				
+				  jfxScrollPanels[0].setViewportView(jfxPanels[0]);
+			}
+
+		});
+
+		th.start();
 	}
 
 	private void loadBgComponents()
@@ -438,66 +554,6 @@ public class MainPanel extends JPanel
 
 	}
 
-	private void createScene()
-	{
-		EnumLayouts current = Settings.layoutMode;
-		jfxtempvalue = current == EnumLayouts.MULTI_NEWS || current == EnumLayouts.MULTI_NEWS_MODPACK || current == EnumLayouts.MULTI_NEWS_SKIN || current == EnumLayouts.MULTI_NEWS_SKIN_MODPACK ? 3 : 1;
-
-		Platform.runLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				if (jfxtempvalue == 1)
-				{
-					engines = new WebEngine[1];
-				}
-				else
-				{
-					engines = new WebEngine[3];
-				}
-
-				for (int i = 0; i < engines.length; i++)
-				{
-					WebView view = new WebView();
-					engines[i] = view.getEngine();
-					jfxPanels[i].setScene(new Scene(view));
-				}
-			}
-		});
-	}
-
-	private void loadURL(final String url, final int engine)
-	{
-		Platform.runLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				String tmp = toURL(url);
-
-				if (tmp == null)
-				{
-					tmp = toURL("http://" + url);
-				}
-
-				engines[engine].load(tmp);
-			}
-		});
-	}
-
-	private String toURL(String str)
-	{
-		try
-		{
-			return new URL(str).toExternalForm();
-		}
-		catch (MalformedURLException exception)
-		{
-			return null;
-		}
-	}
-
 	public void updateSkin()
 	{
 		if (skinLayout)
@@ -559,10 +615,10 @@ public class MainPanel extends JPanel
 				{
 					if (skinPoligon[i] != null)
 					{
-		                remove(skinPoligon[i]);
+						remove(skinPoligon[i]);
 					}
 				}
-				
+
 				if (ProfilesUtils.getSelectedProfile() != null)
 				{
 					SkinsManager.startLoadingThread(this, null, "", null, skinXY[0], skinXY[1], skinPoligon, mode, false);
@@ -577,19 +633,19 @@ public class MainPanel extends JPanel
 		{
 			if (skinPoligon[i] != null)
 			{
-                remove(skinPoligon[i]);
+				remove(skinPoligon[i]);
 			}
 		}
-		
+
 		for (int i = 0; i < skinPoligon.length; i++)
 		{
 			skinPoligon[i] = buttons[i];
-			if(skinPoligon[i] != null)
+			if (skinPoligon[i] != null)
 			{
 				add(skinPoligon[i]);
-			}		
+			}
 		}
-		
+
 		revalidate();
 		repaint();
 	}
@@ -598,13 +654,13 @@ public class MainPanel extends JPanel
 	{
 		loadingModPack = completed;
 
-		ArrayList<ModPack> filtered = ModPackUtils.getFilteredList(ModPackUtils.getClonedList(modpacks), ModPackUtils.filter, ModPackUtils.filterStr);
+		ArrayList<ModPack> filtered = ModPackUtils.getFilteredList(modpacks, ModPackUtils.filter, ModPackUtils.filterStr);
 
 		ModPackUtils.filteredList = filtered;
 
 		ModPackUtils.selected = filtered.size() > 0 ? filtered.get(0) : null;
 
-		if (ModPackUtils.selected.packServerLink != null && DesktopUtils.checkLink(ModPackUtils.selected.packServerLink))
+		if (ModPackUtils.selected != null && ModPackUtils.selected.packServerLink != null && DesktopUtils.checkLink(ModPackUtils.selected.packServerLink))
 		{
 			mpBtn1.setEnabled(true);
 		}
@@ -692,9 +748,8 @@ public class MainPanel extends JPanel
 	private JButton leftSkin;
 	private JButton rightSkin;
 	private JTabbedPane tabbedPanel;
-	final private JFXPanel jfxPanels[] = { new JFXPanel(), new JFXPanel(), new JFXPanel() };
-	private WebEngine engines[];
-	private int jfxtempvalue = 0;
+	private JEditorPane jfxPanels[] = { new JEditorPane(), new JEditorPane(), new JEditorPane() };
+	private JScrollPane jfxScrollPanels[] = { new JScrollPane(), new JScrollPane(), new JScrollPane() };
 	private JPanel bgPanel;
 	private JLabel loadSkin;
 	private JLabel animLoadSkin;

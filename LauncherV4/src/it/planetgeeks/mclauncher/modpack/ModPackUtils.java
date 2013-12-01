@@ -4,6 +4,7 @@ import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.LauncherLogger;
 import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.utils.DirUtils;
+import it.planetgeeks.mclauncher.utils.DirUtils.OS;
 import it.planetgeeks.mclauncher.utils.FileUtils;
 
 import java.awt.Image;
@@ -17,6 +18,11 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 class ThreadGetPacksInfo implements Runnable
 {
 	@Override
@@ -28,12 +34,14 @@ class ThreadGetPacksInfo implements Runnable
 
 public class ModPackUtils
 {
-	private static ArrayList<ModPack> modPacks = new ArrayList<ModPack>();
+	public static ArrayList<ModPack> modPacks = new ArrayList<ModPack>();
 	public static EnumFilterType filter = EnumFilterType.ALL;
 	public static String filterStr = null;
 	public static ArrayList<ModPack> filteredList = new ArrayList<ModPack>();
 	public static ModPack selected = null;
-		
+	public static boolean updatePaused = false;
+	public static boolean updateStopped = false;
+
 	public static void startLoading()
 	{
 		Thread thread = new Thread(new ThreadGetPacksInfo());
@@ -47,7 +55,7 @@ public class ModPackUtils
 		filterStr = null;
 		filteredList = new ArrayList<ModPack>();
 		selected = null;
-		
+
 		try
 		{
 			ArrayList<String> urls = getUrls();
@@ -87,7 +95,7 @@ public class ModPackUtils
 		String packServerLink = null;
 		ImageIcon imgIcon = null;
 		ArrayList<String> mods = new ArrayList<String>();
-		ArrayList<String> setup = new ArrayList<String>();
+		String setup = new String();
 		String setupIndex = null;
 		boolean useForge = false;
 		boolean serverLinkDirect = false;
@@ -134,7 +142,7 @@ public class ModPackUtils
 					}
 					else if (readed.startsWith("setup="))
 					{
-						setup = readFileContent(readed.substring(6));
+						setup = readed.substring(6);
 					}
 					else if (readed.startsWith("setup-index="))
 					{
@@ -170,18 +178,18 @@ public class ModPackUtils
 		ModPack returned = new ModPack(packMcVersion, packName, packOwner, packServerLink);
 		returned.setModList(mods);
 		returned.setPackImage(imgIcon);
-		returned.setSetup(setup);
+		returned.setSetupLink(setup);
 		returned.setSetupIndex(setupIndex);
 		returned.setUseForge(useForge);
 		returned.setServerLinkDirect(serverLinkDirect);
 
 		return returned;
 	}
-	
+
 	private static ArrayList<String> readFileContent(String url)
 	{
 		ArrayList<String> list = new ArrayList<String>();
-		
+
 		File file = new File(DirUtils.getLauncherDirectory() + File.separator + "tempread");
 		if (file.exists())
 		{
@@ -206,10 +214,10 @@ public class ModPackUtils
 				file.delete();
 				return null;
 			}
-			
+
 			file.delete();
 		}
-		
+
 		return list;
 	}
 
@@ -298,6 +306,11 @@ public class ModPackUtils
 					if (current.containMod(str))
 						returned.add(current);
 				}
+				else if (filter == EnumFilterType.DOWNLOADED)
+				{
+					if (current.getModPackDir().exists())
+						returned.add(current);
+				}
 			}
 		}
 
@@ -309,40 +322,103 @@ public class ModPackUtils
 		return modPacks;
 	}
 
-	public static ArrayList<ModPack> getClonedList(ArrayList<ModPack> packs)
+	public static void setupModPack(final ModPack modpack)
 	{
-		ArrayList<ModPack> modpacks = new ArrayList<ModPack>();
+		Launcher.setUpdatingModPack(true);
 
-		for (int i = 0; i < packs.size(); i++)
+		Runnable r = new Runnable()
 		{
-			modpacks.add(packs.get(i).clone());
-		}
+			@Override
+			public void run()
+			{
+				Launcher.getLauncherFrame().southPanel.updateStatus(-1, "", 100, 100, 100);
+				modpack.setSetup(readFileContent(modpack.setupLink));
+				if (ModPackUtils.updateStopped)
+				{
+					updateStopped = false;
+					Launcher.setUpdatingModPack(false);
+					return;
+				}
+				while (updatePaused)
+				{
+					try
+					{
+						Thread.sleep(1000);
+					}
+					catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
+					if (updateStopped)
+					{
+						updateStopped = false;
+						Launcher.setUpdatingModPack(false);
+						return;
+					}
+				}
+				if (modpack.setup != null)
+				{
+					boolean dim = false;
+					for (int i = 0; i < modpack.setup.size(); i++)
+					{
+						i = dim ? i - 1 : i;
+						dim = false;
+						if (updateStopped)
+						{
+							updateStopped = false;
+							Launcher.setUpdatingModPack(false);
+							return;
+						}
+						while (updatePaused)
+						{
+							try
+							{
+								Thread.sleep(1000);
+							}
+							catch (InterruptedException e)
+							{
+								e.printStackTrace();
+							}
+							if (updateStopped)
+							{
+								updateStopped = false;
+								Launcher.setUpdatingModPack(false);
+								return;
+							}
+						}
+						ModPackFile current = modpack.setup.get(i);
 
-		return modpacks;
+						File currentFile = current.getSaveFile();
+						if (currentFile.exists())
+						{
+							Launcher.getLauncherFrame().southPanel.updateStatus(2, currentFile.getName(), 100, i + 1, modpack.setup.size());
+							if (current.check() && !(current.getMD5().equals(FileUtils.generateBufferedHash(currentFile)) && current.getSize().equals(FileUtils.getFileSize(currentFile))))
+							{
+								currentFile.delete();
+								if (!Launcher.getLauncherFrame().southPanel.setDownloadingFile(current.getDownloadURL(modpack.setupIndex), currentFile, i + 1, modpack.setup.size()))
+								{
+									dim = true;
+								}
+							}
+						}
+						else
+						{
+							if (current.getOs() == OS.unknown || current.getOs() == DirUtils.getPlatform())
+							{
+								if (!Launcher.getLauncherFrame().southPanel.setDownloadingFile(current.getDownloadURL(modpack.setupIndex), currentFile, i + 1, modpack.setup.size()))
+								{
+									dim = true;
+								}
+							}
+						}
+					}
+				}
+			}
+
+		};
+
+		Thread tr = new Thread(r);
+		tr.start();
 	}
-
-    public static void setupModPack(ModPack modpack)
-    {
-    	if(modpack.setup != null)
-    	{
-    		for(int i = 0; i < modpack.setup.size(); i++)
-        	{
-    			ModPackFile current = modpack.setup.get(i);
-        	    File currentFile = current.getSaveFile();
-        	    if(currentFile.exists())
-        	    {
-        	    	if(!(current.getMD5().equals(FileUtils.generateBufferedHash(currentFile)) && current.getSize().equals(FileUtils.getFileSize(currentFile))))
-        	    	{
-        	    	    currentFile.delete();
-        	    	    FileUtils.downloadFile(current.getDownloadURL(modpack.setupIndex), currentFile);
-            	    }	
-        	    }
-        	    else
-        	    {
-        	    	FileUtils.downloadFile(current.getDownloadURL(modpack.setupIndex), currentFile);
-        	    }
-        	}
-    	}
-    }
 
 }

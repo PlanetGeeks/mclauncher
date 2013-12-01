@@ -25,6 +25,11 @@ import javax.swing.JTextArea;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class ConsoleFrame extends JFrame
 {
 	private static final long serialVersionUID = 1L;

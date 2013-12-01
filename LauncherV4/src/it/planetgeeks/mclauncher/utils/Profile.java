@@ -8,6 +8,11 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class Profile
 {
     public String username;

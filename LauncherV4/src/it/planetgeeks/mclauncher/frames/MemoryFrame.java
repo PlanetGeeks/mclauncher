@@ -32,6 +32,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class MemoryFrame extends JFrame
 {
 	private static final long serialVersionUID = 1L;

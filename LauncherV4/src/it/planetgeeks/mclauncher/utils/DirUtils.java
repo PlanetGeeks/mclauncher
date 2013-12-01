@@ -4,6 +4,11 @@ import it.planetgeeks.mclauncher.Settings;
 
 import java.io.File;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class DirUtils
 {
 	public static File workDir = null;
@@ -71,6 +76,18 @@ public class DirUtils
 			return OS.linux;
 		if (osName.contains("unix"))
 			return OS.linux;
+		return OS.unknown;
+	}
+	
+	public static OS getPlatform(String str)
+	{
+		if(str.toLowerCase().contains("win"))
+			return OS.windows;
+		if(str.toLowerCase().contains("lin"))
+			return OS.linux;
+		if(str.toLowerCase().contains("mac"))
+			return OS.macos;
+		
 		return OS.unknown;
 	}
 

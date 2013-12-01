@@ -16,6 +16,11 @@ import javax.swing.JSeparator;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingConstants;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class InfoFrame extends JFrame
 {
 	private static final long serialVersionUID = 1L;

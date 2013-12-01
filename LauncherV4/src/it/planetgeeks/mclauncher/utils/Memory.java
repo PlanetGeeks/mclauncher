@@ -1,5 +1,10 @@
 package it.planetgeeks.mclauncher.utils;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class Memory
 {
     public String name;

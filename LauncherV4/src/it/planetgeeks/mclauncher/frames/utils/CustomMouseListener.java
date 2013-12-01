@@ -3,6 +3,11 @@ package it.planetgeeks.mclauncher.frames.utils;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * @author PlanetGeeks
+ *
+ */
+
 public class CustomMouseListener implements MouseListener
 {
 	@Override

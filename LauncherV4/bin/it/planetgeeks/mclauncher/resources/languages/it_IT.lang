@@ -1,4 +1,4 @@
-x!isDefault=true
+!isDefault=true
 launcher.title=Questo e' il launcher v4
 updater.dialogTitle=Launcher Updater
 updater.dialogMessage=E' disponibile una nuova versione! Vuoi aggiornare il launcher?
@@ -88,6 +88,7 @@ launcher.modpacks.filter.version=Per versione
 launcher.modpacks.filter.owner=Per proprietario
 launcher.modpacks.filter.server=Con il download del server
 launcher.modpacks.filter.mod=Con la mod
+launcher.modpacks.filter.downloaded=Gia' scaricato
 launcher.modpacks.filterframe.type=Tipo
 launcher.modpacks.filterframe.value=Valore
 launcher.modpacks.filterframe.apply=Applica filtro
@@ -107,4 +108,9 @@ launcher.modpacks.infoframe.owner=Proprietario
 launcher.modpacks.infoframe.versionmc=Versione Minecraft
 launcher.modpacks.infoframe.hasserver=Possiede il download del server
 launcher.modpacks.infoframe.title=Informazioni pacchetto
-
+launcher.modpacks.update.downloading=Scaricando
+launcher.modpacks.update.downloadingMap=Avvio dello scaricamento in corso...
+launcher.modpacks.update.total=Progresso totale
+launcher.modpacks.update.checking=Controllo il file
+launcher.login.selectModpack=Seleziona un modpack!
+launcher.login.selectModpack.title=Attenzione!

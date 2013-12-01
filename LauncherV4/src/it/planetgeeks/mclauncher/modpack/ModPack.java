@@ -1,8 +1,16 @@
 package it.planetgeeks.mclauncher.modpack;
 
+import it.planetgeeks.mclauncher.utils.DirUtils;
+
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+
+/**
+ * @author PlanetGeeks
+ *
+ */
 
 public class ModPack
 {
@@ -15,6 +23,7 @@ public class ModPack
 	public ArrayList<String> modList = new ArrayList<String>();
 	public ArrayList<ModPackFile> setup = new ArrayList<ModPackFile>();
 	public String setupIndex;
+	public String setupLink;
 	public boolean useForge;
 
     public ModPack(String mcVersion, String packName, String packOwner, String packServerLink)
@@ -52,6 +61,11 @@ public class ModPack
     	this.mcVersion = mcVersion;
     }
     
+    public void setSetupLink(String link)
+    {
+    	this.setupLink = link;
+    }
+    
     public boolean containMod(String str)
     {
     	for(int i = 0; i < modList.size(); i++)
@@ -80,26 +94,14 @@ public class ModPack
     	this.packImage = img;
     }
     
-    public ModPack clone()
-    {	
-    	ModPack cloned = new ModPack(this.mcVersion, this.packName, this.packOwner, this.packServerLink);
-    	cloned.setModList(this.modList);
-    	cloned.setPackImage(this.packImage);
-    	cloned.setup = this.setup;
-    	cloned.setSetupIndex(this.setupIndex);
-    	cloned.setUseForge(this.useForge);
-    	cloned.setServerLinkDirect(this.directServerDownload);
-    	
-    	return cloned;
-    }
-    
     public void setSetup(ArrayList<String> link)
     {
     	for(int i = 0; i < link.size(); i++)
     	{
-    		setup.add(new ModPackFile(link.get(i)));
+    		setup.add(new ModPackFile(link.get(i), this));
     	}
     }
+    
     
     public void setSetupIndex(String link)
     {
@@ -114,6 +116,11 @@ public class ModPack
     public void setServerLinkDirect(boolean direct)
     {
     	this.directServerDownload = direct;
+    }
+    
+    public File getModPackDir()
+    {
+    	return new File(DirUtils.getWorkingDirectory() + File.separator + packName);
     }
     
 }
