@@ -1,5 +1,6 @@
 package it.planetgeeks.mclauncher.frames.panels;
 
+import it.planetgeeks.mclauncher.GameLauncher;
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.LauncherLogger;
 import it.planetgeeks.mclauncher.Settings;
@@ -40,7 +41,7 @@ import javax.swing.SwingConstants;
 
 /**
  * @author PlanetGeeks
- *
+ * 
  */
 
 public class SouthPanel extends CustomJPanel
@@ -90,7 +91,8 @@ public class SouthPanel extends CustomJPanel
 		totalLbl.setForeground(new Color(Settings.southBarLabelsForeground));
 		currentLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		currentLbl.setForeground(new Color(Settings.southBarLabelsForeground));
-		currentLbl.setText("Scaricando - dwadwad wad.jar 53%");;
+		currentLbl.setText("Scaricando - dwadwad wad.jar 53%");
+		;
 		stopLbl.setIcon(Launcher.getResources().getResource("stop.png"));
 		pauseLbl.setIcon(Launcher.getResources().getResource("pause.png"));
 
@@ -111,7 +113,7 @@ public class SouthPanel extends CustomJPanel
 				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
-		
+
 		pauseLbl.addMouseListener(new MouseAdapter()
 		{
 			public void mousePressed(MouseEvent me)
@@ -130,7 +132,7 @@ public class SouthPanel extends CustomJPanel
 				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
-		
+
 		setComboboxProfiles(null);
 
 		launchButton.addActionListener(new ActionListener()
@@ -322,7 +324,14 @@ public class SouthPanel extends CustomJPanel
 			}
 			else
 			{
-				// check if there is a local version
+				if(selected.getModPackDir().exists())
+				{
+					GameLauncher.launchGame();
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, LanguageUtils.getTranslated("launcher.login.noconnection.modpack"), LanguageUtils.getTranslated("launcher.login.warning"), JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		}
 		else
@@ -332,7 +341,6 @@ public class SouthPanel extends CustomJPanel
 		}
 	}
 
-	/** status 0 checking , 1 downloading , -1 starting update/ pathUrl url || filename (controllo) / current progress || indeterminate **/
 	public void updateStatus(int status, String pathUrl, int current, int index, int max)
 	{
 		if (status >= 0)
@@ -386,15 +394,15 @@ public class SouthPanel extends CustomJPanel
 			int i = 0;
 			int filesize = connection.getContentLength();
 			boolean notBreaked = true;
-			
+
 			while ((i = in.read(data, 0, 1024)) >= 0)
 			{
 				totalDataRead = totalDataRead + i;
 				bout.write(data, 0, i);
 				float perc = (totalDataRead * 100) / filesize;
-				updateStatus(1, pathUrl, (int)perc, index, max);
+				updateStatus(1, pathUrl, (int) perc, index, max);
 				Thread.sleep(1);
-				if(ModPackUtils.updateStopped || ModPackUtils.updatePaused)
+				if (ModPackUtils.updateStopped || ModPackUtils.updatePaused)
 				{
 					notBreaked = false;
 					break;
@@ -404,7 +412,7 @@ public class SouthPanel extends CustomJPanel
 			fos.close();
 			in.close();
 			connection.disconnect();
-			
+
 			return notBreaked;
 		}
 		catch (Exception e)
@@ -412,7 +420,7 @@ public class SouthPanel extends CustomJPanel
 			e.printStackTrace();
 			LauncherLogger.log(LauncherLogger.GRAVE, "Error on downloading file " + pathUrl);
 		}
-		
+
 		return false;
 	}
 

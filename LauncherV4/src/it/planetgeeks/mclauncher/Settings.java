@@ -90,7 +90,7 @@ public class Settings
 	 * News + Modpack //bugged - MULTI_NEWS_SKIN_MODPACK; -> 3 News + Skin +
 	 * Modpack
 	 **/
-	public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS_MODPACK;
+	public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS_SKIN_MODPACK;
 
 	/** Per usare bordi della finestra personalizzati **/
 	public static boolean customBorder = false;

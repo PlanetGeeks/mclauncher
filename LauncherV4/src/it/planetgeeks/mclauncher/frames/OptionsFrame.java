@@ -53,7 +53,7 @@ public class OptionsFrame extends JFrame
 		checkbox = new JCheckBox();
 		logSpinner = new JSpinner();
 		logLbl = new JLabel();
-		paramSpinner = new JTextField();
+		paramField = new JTextField();
 		paramLbl = new JLabel();
 		saveBtn = new JButton();
 		saveBtn.setForeground(new Color(Settings.buttonsForeground));
@@ -137,8 +137,8 @@ public class OptionsFrame extends JFrame
 
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(22, 22, 22).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addComponent(launcherDirBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(gameDirBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(checkbox, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(logLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(paramLbl)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(logSpinner).addComponent(paramSpinner)))).addGap(22, 22, 22)).addGroup(layout.createSequentialGroup().addComponent(saveBtn, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(cancelBtn, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE).addGap(21, 21, 21)))));
-		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(18, 18, 18).addComponent(checkbox).addGap(18, 18, 18).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(logSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(logLbl)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(paramLbl).addComponent(paramSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(gameDirBtn).addGap(18, 18, 18).addComponent(launcherDirBtn).addGap(18, 18, Short.MAX_VALUE).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(saveBtn).addComponent(cancelBtn)).addGap(18, 18, 18)));
+		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(22, 22, 22).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addComponent(launcherDirBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(gameDirBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(checkbox, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(GroupLayout.Alignment.LEADING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(logLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(paramLbl)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(logSpinner).addComponent(paramField)))).addGap(22, 22, 22)).addGroup(layout.createSequentialGroup().addComponent(saveBtn, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(cancelBtn, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE).addGap(21, 21, 21)))));
+		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(18, 18, 18).addComponent(checkbox).addGap(18, 18, 18).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(logSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(logLbl)).addGap(18, 18, 18).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(paramLbl).addComponent(paramField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(gameDirBtn).addGap(18, 18, 18).addComponent(launcherDirBtn).addGap(18, 18, Short.MAX_VALUE).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(saveBtn).addComponent(cancelBtn)).addGap(18, 18, 18)));
 	}
 
 	private void loadComponentsProperties()
@@ -160,6 +160,36 @@ public class OptionsFrame extends JFrame
 
 		logSpinner.setValue(logs);
 	}
+	
+	public String[] getAddParams()
+	{
+		
+	    if(!paramField.getText().trim().equals(""))
+	    {
+	    	String z = paramField.getText();
+	    	boolean doubleSpace = z.substring(0,1).equals(" ");
+			String noDoubleSpc = "";
+			for(int i = 0; i < z.length(); i++)
+			{
+		        if(z.substring(i, i+1).equals(" "))
+		        {
+		        	if(!doubleSpace)
+		        	{
+		        		doubleSpace = true;
+		        		noDoubleSpc += (z.substring(i, i+1));
+		        	}
+	            }
+		        else
+		        {
+		        	noDoubleSpc += (z.substring(i, i+1));
+		        	doubleSpace = false;
+		        }
+			}
+	    	return noDoubleSpc.split(" ");
+	    }
+	    
+	    return null;
+	}
 
 	private JButton saveBtn;
 	private JButton cancelBtn;
@@ -169,5 +199,5 @@ public class OptionsFrame extends JFrame
 	private JLabel logLbl;
 	private JLabel paramLbl;
 	private JSpinner logSpinner;
-	private JTextField paramSpinner;
+	private JTextField paramField;
 }

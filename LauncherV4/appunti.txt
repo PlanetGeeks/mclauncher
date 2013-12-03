@@ -1,0 +1,2 @@
+fare avvio 1.5.2
+fare la funzione cambia lingua

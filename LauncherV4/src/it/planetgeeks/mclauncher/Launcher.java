@@ -24,7 +24,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * @author PlanetGeeks
- *
+ * 
  */
 
 public class Launcher
@@ -57,7 +57,6 @@ public class Launcher
 			ModPackUtils.startLoading();
 			launcherFrame = new LauncherFrame();
 			launcherFrame.setVisible(true);
-
 		}
 		else
 		{
@@ -248,7 +247,7 @@ public class Launcher
 			}
 		}
 	}
-	
+
 	public static void setUpdatingModPack(boolean updating)
 	{
 		launcherFrame.southPanel.setUpdating(updating);
@@ -257,6 +256,33 @@ public class Launcher
 	private static void printLauncherInfo()
 	{
 		LauncherLogger.log(LauncherLogger.INFO, Settings.launcherName + " | " + "Version " + Settings.launcherVersion + " | " + "Owned by " + Settings.launcherOwner);
+	}
+
+	public static void hideOrShowWindows(boolean hide)
+	{
+		if (hide)
+		{
+			if (launcherFrame != null)
+				launcherFrame.setVisible(hide ? false : true);
+			if (profileFrame != null)
+				profileFrame.setVisible(false);
+			if (memoryFrame != null)
+				memoryFrame.setVisible(false);
+			if (infoFrame != null)
+				infoFrame.setVisible(false);
+			if (optionsFrame != null)
+				optionsFrame.setVisible(false);
+			if (filterFrame != null)
+				filterFrame.setVisible(false);
+			if (mpinfoframe != null)
+				mpinfoframe.setVisible(false);
+		}
+		else
+		{
+			if (launcherFrame != null)
+				launcherFrame.setVisible(hide ? false : true);
+		}
+
 	}
 
 	public static void closeLauncher()

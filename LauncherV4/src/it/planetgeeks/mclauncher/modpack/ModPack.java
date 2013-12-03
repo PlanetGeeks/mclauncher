@@ -16,6 +16,7 @@ public class ModPack
 {
 	public String mcVersion;
 	public String packName;
+	public String packVersion;
 	public String packOwner;
 	public String packServerLink;
 	public boolean directServerDownload;
@@ -25,6 +26,9 @@ public class ModPack
 	public String setupIndex;
 	public String setupLink;
 	public boolean useForge;
+	public String modpackLink;
+	public String packBgLink;
+	public String modsListLink;
 
     public ModPack(String mcVersion, String packName, String packOwner, String packServerLink)
     {
@@ -123,4 +127,19 @@ public class ModPack
     	return new File(DirUtils.getWorkingDirectory() + File.separator + packName);
     }
     
+    public void setModPackLink(String url)
+    {
+    	this.modpackLink = url;
+    }
+    
+    public void setPackBgLink(String url)
+    {
+    	this.packBgLink = url;
+    }
+    
+    public void setModsListLink(String url)
+    {
+    	this.modsListLink = url;
+    }
+
 }

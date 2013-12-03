@@ -70,6 +70,6 @@ public class ModPackFile
     	    path += File.separator + str[i];	
     	}
     	
-    	return new File(parent.getModPackDir() + path);
+    	return new File(parent.getModPackDir() + File.separator + "files" + path);
     }
 }
