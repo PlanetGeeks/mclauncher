@@ -70,20 +70,17 @@ public class FileUtils
 	}
 	
 	public static boolean internetConnected(String pathUrl)
-	{/**
+	{
 		try
 		{
 			URL url = new URL(pathUrl);
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-			System.out.println("HERE");
 			connection.disconnect();
 			return true;
 		}
 		catch (IOException e){}
 		
 		return false;
-		**/
-		return true;
 	}
 	
 	public static boolean downloadFile(String pathUrl, File dest)

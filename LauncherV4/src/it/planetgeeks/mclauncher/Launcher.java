@@ -1,6 +1,7 @@
 package it.planetgeeks.mclauncher;
 
 import it.planetgeeks.mclauncher.frames.ConsoleFrame;
+import it.planetgeeks.mclauncher.frames.EnumLayouts;
 import it.planetgeeks.mclauncher.frames.InfoFrame;
 import it.planetgeeks.mclauncher.frames.LauncherFrame;
 import it.planetgeeks.mclauncher.frames.MPFilterFrame;
@@ -18,9 +19,24 @@ import it.planetgeeks.mclauncher.utils.Profile;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 
 import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.EventQueue;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 
+import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.parser.ParserDelegator;
 
 /**
  * @author PlanetGeeks
@@ -54,9 +70,17 @@ public class Launcher
 			consoleFrame.updateComponents();
 			ProfilesUtils.loadProfiles();
 			MemoryUtils.loadMemories();
+			EventQueue.invokeLater(new Runnable()
+			{
+				public void run()
+				{
+					launcherFrame = new LauncherFrame();
+					launcherFrame.setVisible(true);
+				}
+			});
+
 			ModPackUtils.startLoading();
-			launcherFrame = new LauncherFrame();
-			launcherFrame.setVisible(true);
+			loadNews();
 		}
 		else
 		{
@@ -65,6 +89,7 @@ public class Launcher
 			LanguageUtils.loadLanguages();
 			LauncherUpdater.startCheck();
 		}
+
 	}
 
 	private static void loadLookAndFeel()
@@ -282,11 +307,105 @@ public class Launcher
 			if (launcherFrame != null)
 				launcherFrame.setVisible(hide ? false : true);
 		}
+	}
 
+	public static void loadNews()
+	{
+		Thread th = new Thread()
+		{
+			@Override
+			public void run()
+			{
+				EnumLayouts layout = Settings.layoutMode;
+				int max = 1;
+				if (layout == EnumLayouts.MULTI_NEWS || layout == EnumLayouts.MULTI_NEWS_MODPACK || layout == EnumLayouts.MULTI_NEWS_SKIN || layout == EnumLayouts.MULTI_NEWS_SKIN_MODPACK)
+					max = 3;
+				JEditorPane[] panels = new JEditorPane[max];
+				for (int i = 0; i < max; i++)
+				{
+					String link = null;
+					if (i == 0)
+						link = Settings.newsLink1;
+					if (i == 1)
+						link = Settings.newsLink2;
+					if (i == 2)
+						link = Settings.newsLink3;
+
+					JEditorPane pane = new JEditorPane();
+					pane.setContentType("text/html");
+					pane.setEditable(false);
+					pane.setBackground(Color.BLACK);
+					pane.setBorder(null);
+					pane.addHyperlinkListener(new HyperlinkListener()
+					{
+						public void hyperlinkUpdate(HyperlinkEvent he)
+						{
+							if (he.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+							{
+								try
+
+								{
+									Desktop.getDesktop().browse(he.getURL().toURI());
+								}
+								catch (Exception e)
+								{
+									e.printStackTrace();
+								}
+							}
+						}
+					});
+
+					try
+					{
+						URL url = new URL(link);
+						URLConnection connection = url.openConnection();
+						InputStream is = connection.getInputStream();
+						InputStreamReader isr = new InputStreamReader(is);
+						BufferedReader br = new BufferedReader(isr);
+						HTMLEditorKit htmlKit = new HTMLEditorKit();
+						HTMLDocument htmlDoc = (HTMLDocument) htmlKit.createDefaultDocument();
+						HTMLEditorKit.Parser parser = new ParserDelegator();
+						HTMLEditorKit.ParserCallback callback = htmlDoc.getReader(0);
+						parser.parse(br, callback, true);
+						pane.setDocument(htmlDoc);
+						panels[i] = pane;
+					}
+					catch (IOException e)
+					{
+						pane.setText(LanguageUtils.getTranslated("launcher.newsError"));
+					}
+				}
+
+				for (int i = 0; i < panels.length; i++)
+				{
+					try
+					{
+						while (launcherFrame == null || launcherFrame.mainPanel == null || launcherFrame.mainPanel.jfxScrollPanels[i] == null)
+						{
+							Thread.sleep(200);
+						}
+
+						JScrollPane j = new JScrollPane();
+						j.setViewportView(panels[i]);
+
+						launcherFrame.mainPanel.jfxScrollPanels[i] = j;
+
+					}
+					catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
+				}
+				launcherFrame.mainPanel.updateNews();
+			}
+		};
+
+		th.start();
 	}
 
 	public static void closeLauncher()
 	{
 		System.exit(0);
 	}
+
 }

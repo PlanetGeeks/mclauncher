@@ -33,7 +33,7 @@ import javax.swing.WindowConstants;
 
 /**
  * @author PlanetGeeks
- *
+ * 
  */
 
 public class LauncherFrame extends CustomJFrame
@@ -87,12 +87,11 @@ public class LauncherFrame extends CustomJFrame
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(southPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(barPanel, GroupLayout.DEFAULT_SIZE, 840, Short.MAX_VALUE));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(barPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(0, 0, 0).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(southPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)));
-	
-		
+
 		pack();
-		
+
 	}
-	
+
 	private void setMenu()
 	{
 		menu1.setText(LanguageUtils.getTranslated("launcher.bar.file"));
@@ -101,10 +100,10 @@ public class LauncherFrame extends CustomJFrame
 
 		EnumLayouts e = Settings.layoutMode;
 		boolean skin = e == EnumLayouts.BG_SKIN || e == EnumLayouts.BG_SKIN_MODPACK || e == EnumLayouts.MULTI_NEWS_SKIN || e == EnumLayouts.MULTI_NEWS_SKIN_MODPACK || e == EnumLayouts.NEWS_SKIN || e == EnumLayouts.NEWS_SKIN_MODPACK;
-				
+
 		Object items1[][] = null;
-		
-		if(skin)
+
+		if (skin)
 		{
 			Object items[][] = { { LanguageUtils.getTranslated("launcher.bar.file.profile.create"), KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.file.profile.modify"), KeyEvent.VK_O, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.file.manageMem"), KeyEvent.VK_M, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK), "check" }, { LanguageUtils.getTranslated("launcher.bar.file.updateSkin"), KeyEvent.VK_S, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK), "normal" }, { "separator" }, { LanguageUtils.getTranslated("launcher.bar.file.exit"), KeyEvent.VK_E, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK), "normal" } };
 
@@ -112,11 +111,11 @@ public class LauncherFrame extends CustomJFrame
 		}
 		else
 		{
-			Object items[][] = { { LanguageUtils.getTranslated("launcher.bar.file.profile.create"), KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.file.profile.modify"), KeyEvent.VK_O, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.file.manageMem"), KeyEvent.VK_M, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK), "check" }, { "separator" }, { LanguageUtils.getTranslated("launcher.bar.file.exit"), KeyEvent.VK_E, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK), "normal" } };		
-		
-		   items1 = items;
+			Object items[][] = { { LanguageUtils.getTranslated("launcher.bar.file.profile.create"), KeyEvent.VK_P, KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.file.profile.modify"), KeyEvent.VK_O, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK), "normal" }, { LanguageUtils.getTranslated("launcher.bar.file.manageMem"), KeyEvent.VK_M, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK), "check" }, { "separator" }, { LanguageUtils.getTranslated("launcher.bar.file.exit"), KeyEvent.VK_E, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK), "normal" } };
+
+			items1 = items;
 		}
-		
+
 		menuItemCreation(menu1, items1);
 
 		menu1.setMnemonic(KeyEvent.VK_G);
@@ -153,7 +152,7 @@ public class LauncherFrame extends CustomJFrame
 			}
 		});
 
-		if(skin)
+		if (skin)
 		{
 			menu1.getItem(3).addActionListener(new ActionListener()
 			{
@@ -165,8 +164,8 @@ public class LauncherFrame extends CustomJFrame
 					Launcher.getLauncherFrame().mainPanel.updateSkin();
 				}
 			});
-		}	
-		
+		}
+
 		menu1.getItem(skin ? 5 : 4).addActionListener(new ActionListener()
 		{
 
@@ -188,28 +187,28 @@ public class LauncherFrame extends CustomJFrame
 		});
 
 		Object items2[][];
-		if(Settings.activateConsole)
+		if (Settings.activateConsole)
 		{
 			items2 = new Object[4][];
 			items2[0] = new Object[] { LanguageUtils.getTranslated("launcher.bar.options.showConsole"), KeyEvent.VK_K, KeyStroke.getKeyStroke(KeyEvent.VK_K, ActionEvent.CTRL_MASK), "check" };
-		    items2[1] = new Object[] {  LanguageUtils.getTranslated("launcher.bar.options.forceUpdate"), KeyEvent.VK_L, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK), "check" };
-		    items2[2] = new Object[] { "separator" };
-		    items2[3] = new Object[] { LanguageUtils.getTranslated("launcher.bar.options.advanced"), KeyEvent.VK_A, KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK), "check" };
+			items2[1] = new Object[] { LanguageUtils.getTranslated("launcher.bar.options.forceUpdate"), KeyEvent.VK_L, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK), "check" };
+			items2[2] = new Object[] { "separator" };
+			items2[3] = new Object[] { LanguageUtils.getTranslated("launcher.bar.options.advanced"), KeyEvent.VK_A, KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK), "check" };
 		}
 		else
 		{
 			items2 = new Object[3][];
-		    items2[0] = new Object[] {  LanguageUtils.getTranslated("launcher.bar.options.forceUpdate"), KeyEvent.VK_L, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK), "check" };
-		    items2[1] = new Object[] { "separator" };
-		    items2[2] = new Object[] { LanguageUtils.getTranslated("launcher.bar.options.advanced"), KeyEvent.VK_A, KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK), "check" };
-		
+			items2[0] = new Object[] { LanguageUtils.getTranslated("launcher.bar.options.forceUpdate"), KeyEvent.VK_L, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK), "check" };
+			items2[1] = new Object[] { "separator" };
+			items2[2] = new Object[] { LanguageUtils.getTranslated("launcher.bar.options.advanced"), KeyEvent.VK_A, KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK), "check" };
+
 		}
 
 		menuItemCreation(menu2, items2);
 
 		menu2.setMnemonic(KeyEvent.VK_O);
 
-		if(Settings.activateConsole)
+		if (Settings.activateConsole)
 		{
 			menu2.getItem(0).addActionListener(new ActionListener()
 			{
@@ -246,11 +245,11 @@ public class LauncherFrame extends CustomJFrame
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				if(Settings.activateConsole)
+				if (Settings.activateConsole)
 				{
 					((JCheckBoxMenuItem) menu2.getItem(0)).setSelected(Launcher.isConsoleOpened());
 				}
-				
+
 				((JCheckBoxMenuItem) menu2.getItem(Settings.activateConsole ? 1 : 0)).setSelected(Launcher.forceUpdate);
 				((JCheckBoxMenuItem) menu2.getItem(Settings.activateConsole ? 4 : 3)).setSelected(Launcher.isAdvOptionsOpened());
 			}
@@ -307,7 +306,7 @@ public class LauncherFrame extends CustomJFrame
 				DesktopUtils.openWebPage(Settings.websiteLink);
 			}
 		});
-		
+
 		menu3.getItem(1).addActionListener(new ActionListener()
 		{
 
@@ -373,6 +372,7 @@ public class LauncherFrame extends CustomJFrame
 			}
 		}
 	}
+
 
 	private JMenu menu1;
 	private JMenu menu2;

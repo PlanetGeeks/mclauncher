@@ -54,10 +54,10 @@ public class Settings
 	public static String newsLink1 = "http://mcupdate.tumblr.com/‎";
 
 	/** link news 2 **/
-	public static String newsLink2 = "http://www.google.it/";
+	public static String newsLink2 = "http://minecraftcube.tumblr.com/";
 
 	/** link news 3 **/
-	public static String newsLink3 = "http://www.youtube.com/PlanetGeeks/";
+	public static String newsLink3 = "https://minecraft.net/";
 
 	/** link per il label vicino al bottone di connessione **/
 	public static String websiteLink = "http://www.youtube.com/PlanetGeeks/";

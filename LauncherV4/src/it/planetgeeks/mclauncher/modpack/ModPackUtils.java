@@ -4,6 +4,7 @@ import it.planetgeeks.mclauncher.GameLauncher;
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.LauncherLogger;
 import it.planetgeeks.mclauncher.Settings;
+import it.planetgeeks.mclauncher.frames.panels.MainPanel;
 import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.DirUtils.OS;
 import it.planetgeeks.mclauncher.utils.FileUtils;
@@ -47,6 +48,7 @@ public class ModPackUtils
 
 	public static void startLoading()
 	{
+		
 		Thread thread = new Thread(new ThreadGetPacksInfo());
 		thread.start();
 	}
@@ -58,11 +60,11 @@ public class ModPackUtils
 		filterStr = null;
 		filteredList = new ArrayList<ModPack>();
 		selected = null;
-
+		
 		try
 		{
 			ArrayList<String> urls = getUrls();
-
+			
 			if (urls != null)
 			{
 

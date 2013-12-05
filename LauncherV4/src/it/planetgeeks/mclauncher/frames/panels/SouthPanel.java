@@ -92,10 +92,10 @@ public class SouthPanel extends CustomJPanel
 		currentLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		currentLbl.setForeground(new Color(Settings.southBarLabelsForeground));
 		currentLbl.setText("Scaricando - dwadwad wad.jar 53%");
-		;
 		stopLbl.setIcon(Launcher.getResources().getResource("stop.png"));
 		pauseLbl.setIcon(Launcher.getResources().getResource("pause.png"));
-
+		launchButton.setEnabled(false);
+		
 		stopLbl.addMouseListener(new MouseAdapter()
 		{
 			public void mousePressed(MouseEvent me)
@@ -359,7 +359,13 @@ public class SouthPanel extends CustomJPanel
 			}
 			else
 			{
-				this.currentLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.update.checking") + " - " + pathUrl);
+				String str = new String(pathUrl);
+
+				if (str.length() > 41)
+				{
+					str = pathUrl.substring(0, 19) + "..." + pathUrl.substring(pathUrl.length() - 19, pathUrl.length());
+				}
+				this.currentLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.update.checking") + " - " + str);
 				this.currentBar.setValue(100);
 				this.currentBar.setIndeterminate(true);
 			}
@@ -422,6 +428,11 @@ public class SouthPanel extends CustomJPanel
 		}
 
 		return false;
+	}
+	
+	public void setLaunchActive()
+	{
+         this.launchButton.setEnabled(true);		
 	}
 
 	private CustomJPanel controlsPanel;
