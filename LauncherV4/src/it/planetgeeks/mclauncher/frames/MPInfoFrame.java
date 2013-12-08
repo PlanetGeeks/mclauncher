@@ -28,7 +28,7 @@ import javax.swing.WindowConstants;
 
 /**
  * @author PlanetGeeks
- *
+ * 
  */
 
 public class MPInfoFrame extends JFrame
@@ -36,7 +36,7 @@ public class MPInfoFrame extends JFrame
 
 	private static final long serialVersionUID = 1L;
 	private ModPack modpack;
-	
+
 	public MPInfoFrame(ModPack modpack)
 	{
 		this.modpack = modpack;
@@ -50,12 +50,11 @@ public class MPInfoFrame extends JFrame
 		CustomJPanel panel = new CustomJPanel(true, "bg.png");
 		panel.setOpaque(false);
 		setContentPane(panel);
-	
-		this.setTitle(LanguageUtils.getTranslated("launcher.modpacks.infoframe.title"));
+
 		this.setResizable(false);
-		
+
 		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
-		
+
 		detailsPanel = new JPanel();
 		mpnameLbl = new JLabel();
 		nameField = new JTextField();
@@ -73,45 +72,37 @@ public class MPInfoFrame extends JFrame
 
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
-		detailsPanel.setBorder(BorderFactory.createTitledBorder(LanguageUtils.getTranslated("launcher.modpacks.infoframe.details")));
 		detailsPanel.setOpaque(false);
 
 		mpnameLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		mpnameLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.infoframe.name") + " :");
 
 		mpversionLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		mpversionLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.infoframe.version") + " :");
 
 		mpownerLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		mpownerLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.infoframe.owner") + " :");
 
-		hasServer.setText(LanguageUtils.getTranslated("launcher.modpacks.infoframe.hasserver"));
 		hasServer.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 		hasServer.setHorizontalAlignment(SwingConstants.CENTER);
 
 		mpversionmcLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		mpversionmcLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.infoframe.versionmc"));
 
 		GroupLayout detailsPanelLayout = new GroupLayout(detailsPanel);
 		detailsPanel.setLayout(detailsPanelLayout);
 		detailsPanelLayout.setHorizontalGroup(detailsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(detailsPanelLayout.createSequentialGroup().addContainerGap().addGroup(detailsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(hasServer, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(detailsPanelLayout.createSequentialGroup().addGroup(detailsPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING).addComponent(mpversionmcLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(detailsPanelLayout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addGroup(detailsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpownerLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpversionLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpnameLbl, GroupLayout.PREFERRED_SIZE, 116, GroupLayout.PREFERRED_SIZE)))).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(detailsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(versionField).addComponent(ownerField, GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE).addComponent(versionmcField).addComponent(nameField)))).addContainerGap()));
 		detailsPanelLayout.setVerticalGroup(detailsPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(detailsPanelLayout.createSequentialGroup().addContainerGap().addGroup(detailsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpnameLbl).addComponent(nameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(12, 12, 12).addGroup(detailsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpversionLbl).addComponent(versionField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(12, 12, 12).addGroup(detailsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpownerLbl).addComponent(ownerField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(12, 12, 12).addGroup(detailsPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpversionmcLbl).addComponent(versionmcField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)).addGap(12, 12, 12).addComponent(hasServer).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
-		modsPanel.setBorder(BorderFactory.createTitledBorder(LanguageUtils.getTranslated("launcher.modpacks.infoframe.mods")));
-
 		final String[] mods = new String[modpack.modList.size()];
-		
-		for(int i = 0; i < modpack.modList.size(); i++)
+
+		for (int i = 0; i < modpack.modList.size(); i++)
 		{
 			mods[i] = modpack.modList.get(i);
 		}
-		
+
 		modList.setModel(new AbstractListModel<String>()
 		{
 			private static final long serialVersionUID = 1L;
-			
+
 			String[] strings = mods;
-			
+
 			public int getSize()
 			{
 				return strings.length;
@@ -122,7 +113,7 @@ public class MPInfoFrame extends JFrame
 				return strings[i];
 			}
 		});
-		
+
 		nameField.setText(modpack.packName);
 		nameField.setEditable(false);
 		versionmcField.setText(modpack.mcVersion);
@@ -132,30 +123,31 @@ public class MPInfoFrame extends JFrame
 		hasServer.setSelected(modpack.packServerLink != null && DesktopUtils.checkLink(modpack.packServerLink) ? true : false);
 		hasServer.setFocusable(false);
 		versionField.setEditable(false);
-		
+		versionField.setText(modpack.packVersion);
+
 		hasServer.addActionListener(new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				hasServer.setSelected(modpack.packServerLink != null && DesktopUtils.checkLink(modpack.packServerLink) ? true : false);	
-			}			
+				hasServer.setSelected(modpack.packServerLink != null && DesktopUtils.checkLink(modpack.packServerLink) ? true : false);
+			}
 		});
-		
-		
+
 		modList.setOpaque(false);
-		modList.setBackground(new Color(0,0,0,0));
+		modList.setBackground(new Color(0, 0, 0, 0));
 		modsPanel.setViewportView(modList);
-        modsPanel.getViewport().setOpaque(false);
-        modList.setBorder(null);
-        modsPanel.setOpaque(false);
-        modsPanel.setViewportBorder(null);
-        
-		logoPanel.setBorder(BorderFactory.createTitledBorder(LanguageUtils.getTranslated("launcher.modpacks.infoframe.logo")));
+		modsPanel.getViewport().setOpaque(false);
+		modList.setBorder(null);
+		modsPanel.setOpaque(false);
+		modsPanel.setViewportBorder(null);
+
 		logoPanel.setOpaque(false);
 
 		logo.setBackground(new java.awt.Color(204, 204, 204));
 
+		loadTranslations();
+		
 		GroupLayout logoLayout = new GroupLayout(logo);
 		logo.setLayout(logoLayout);
 		logoLayout.setHorizontalGroup(logoLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGap(0, 245, Short.MAX_VALUE));
@@ -172,6 +164,21 @@ public class MPInfoFrame extends JFrame
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false).addComponent(modsPanel).addGroup(layout.createSequentialGroup().addComponent(logoPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(11, 11, 11).addComponent(detailsPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))).addGap(6, 6, 6)));
 
 		pack();
+	}
+	
+	public void loadTranslations()
+	{
+		this.setTitle(LanguageUtils.getTranslated("launcher.modpacks.infoframe.title"));
+		detailsPanel.setBorder(BorderFactory.createTitledBorder(LanguageUtils.getTranslated("launcher.modpacks.infoframe.details")));
+		
+		mpnameLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.infoframe.name") + " :");
+		mpversionLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.infoframe.version") + " :");
+		mpownerLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.infoframe.owner") + " :");
+
+		hasServer.setText(LanguageUtils.getTranslated("launcher.modpacks.infoframe.hasserver"));
+		mpversionmcLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.infoframe.versionmc"));
+		modsPanel.setBorder(BorderFactory.createTitledBorder(LanguageUtils.getTranslated("launcher.modpacks.infoframe.mods")));
+		logoPanel.setBorder(BorderFactory.createTitledBorder(LanguageUtils.getTranslated("launcher.modpacks.infoframe.logo")));
 	}
 
 	private JCheckBox hasServer;

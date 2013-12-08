@@ -2,8 +2,8 @@ package it.planetgeeks.mclauncher.frames;
 
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.Settings;
-import it.planetgeeks.mclauncher.frames.panels.SouthPanel;
 import it.planetgeeks.mclauncher.frames.panels.MainPanel;
+import it.planetgeeks.mclauncher.frames.panels.SouthPanel;
 import it.planetgeeks.mclauncher.frames.utils.CustomJFrame;
 import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.frames.utils.CustomWindowListener;
@@ -13,6 +13,7 @@ import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -46,23 +47,24 @@ public class LauncherFrame extends CustomJFrame
 		initComponents();
 	}
 
-	private void initComponents()
+	public void loadTranslations()
 	{
 		setTitle(LanguageUtils.getTranslated("launcher.title"));
+		
+		setMenu();
+	}
+	
+	private void initComponents()
+	{
 		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
 
 		southPanel = new SouthPanel();
 		mainPanel = new MainPanel();
 		barPanel = new JPanel();
+		barPanel.setMinimumSize(new Dimension(0, 24));
 
 		menuBar = new JMenuBar();
-		menu1 = new JMenu();
-		menu1.setForeground(new Color(Settings.buttonsForeground));
-		menu2 = new JMenu();
-		menu2.setForeground(new Color(Settings.buttonsForeground));
-		menu3 = new JMenu();
-		menu3.setForeground(new Color(Settings.buttonsForeground));
-
+		
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		this.addWindowListener(new CustomWindowListener()
@@ -74,14 +76,10 @@ public class LauncherFrame extends CustomJFrame
 			}
 		});
 
-		menuBar.add(menu1);
-		menuBar.add(menu2);
-		menuBar.add(menu3);
-
 		barPanel.setLayout(new BorderLayout());
 		barPanel.add(menuBar, BorderLayout.NORTH);
 
-		setMenu();
+		loadTranslations();
 
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -89,11 +87,23 @@ public class LauncherFrame extends CustomJFrame
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(barPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addGap(0, 0, 0).addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(southPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)));
 
 		pack();
-
 	}
 
 	private void setMenu()
 	{
+		menuBar.removeAll();
+		
+		menu1 = new JMenu();
+		menu1.setForeground(new Color(Settings.buttonsForeground));
+		menu2 = new JMenu();
+		menu2.setForeground(new Color(Settings.buttonsForeground));
+		menu3 = new JMenu();
+		menu3.setForeground(new Color(Settings.buttonsForeground));
+		
+		menuBar.add(menu1);
+		menuBar.add(menu2);
+		menuBar.add(menu3);
+		
 		menu1.setText(LanguageUtils.getTranslated("launcher.bar.file"));
 		menu2.setText(LanguageUtils.getTranslated("launcher.bar.options"));
 		menu3.setText(LanguageUtils.getTranslated("launcher.bar.info"));
@@ -268,23 +278,23 @@ public class LauncherFrame extends CustomJFrame
 		}
 
 		JMenu menuLanguage = new JMenu(LanguageUtils.getTranslated("launcher.bar.options.language"));
-
+        
 		menuLanguage.setMnemonic(KeyEvent.VK_L);
 
 		menuItemCreation(menuLanguage, items);
-
-		for (int i = 0; i < langs.length; i++)
+		
+		for(int i = 0; i < langs.length; i++)
 		{
-			temp = i;
-			menuLanguage.getItem(i).addActionListener(new ActionListener()
+		    final JMenuItem item =	menuLanguage.getItem(i);
+		    item.addActionListener(new ActionListener()
 			{
 				@Override
-				public void actionPerformed(ActionEvent arg0)
+				public void actionPerformed(ActionEvent e)
 				{
-					LanguageUtils.setLanguage(temp);
+					LanguageUtils.setLanguage(LanguageUtils.getLangIndex(item.getText()));
 				}
 			});
-			temp = 0;
+			
 		}
 
 		menuLanguage.getItem(LanguageUtils.getCurrentLangIndex()).setSelected(true);
@@ -381,5 +391,4 @@ public class LauncherFrame extends CustomJFrame
 	public MainPanel mainPanel;
 	public SouthPanel southPanel;
 	private JPanel barPanel;
-	private int temp;
 }

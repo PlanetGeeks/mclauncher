@@ -40,6 +40,12 @@ public class LinkLabel extends JLabel
 		super.setText("<html><font color=\"#" + Integer.toHexString(Settings.colorHyperLinks) + "\"><u>" + text + "</u></font></html>");
 		this.text = text;
 	}
+	
+	public void setTextLink(String text, String url)
+	{
+		this.url = url;
+		this.setText(text);
+	}
 
 	public String getNormalText()
 	{

@@ -44,6 +44,7 @@ public class LauncherProperties
 		necessary.add( new String[] { "language", "" });
 		necessary.add( new String[] { "automaticLogs", "5" });
 		necessary.add( new String[] { "openLauncherAfterExit", "false" });
+		necessary.add( new String[] { "hideofflinemessage", "false" });
 	
         Set<String> keys = properties.keySet();
         for(String key : keys)

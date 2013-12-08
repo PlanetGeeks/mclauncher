@@ -274,18 +274,42 @@ public class MainPanel extends JPanel
 	{
 		tabbedPanel = new DraggableTabbedPane();
 
-        for(int i = 0; i < 3; i++)
-        {
-        	JPanel p = new JPanel();
-        	p.setLayout(new GridBagLayout());
-        	JLabel tempLoad = new JLabel();
-        	tempLoad.setSize(45, 45);
-        	tempLoad.setIcon(Launcher.getResources().getResource("newsLoad.gif"));
-		    p.add(tempLoad);
-        	jfxScrollPanels[i].setViewportView(p);
-        	
-        	tabbedPanel.addTab(LanguageUtils.getTranslated("launcher.newstab" + (i+1) + ".title"), jfxScrollPanels[i]);
-        }
+		for (int i = 0; i < 3; i++)
+		{
+			JPanel p = new JPanel();
+			p.setLayout(new GridBagLayout());
+			JLabel tempLoad = new JLabel();
+			tempLoad.setSize(45, 45);
+			tempLoad.setIcon(Launcher.getResources().getResource("newsLoad.gif"));
+			p.add(tempLoad);
+			jfxScrollPanels[i].setViewportView(p);
+
+			tabbedPanel.addTab(LanguageUtils.getTranslated("launcher.newstab" + (i + 1) + ".title"), jfxScrollPanels[i]);
+		}
+	}
+
+	public void loadTranslations()
+	{
+		if (tabbedPanel != null)
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				String key = LanguageUtils.getKey(tabbedPanel.getTitleAt(i), LanguageUtils.getLatest());
+				tabbedPanel.setTitleAt(i, LanguageUtils.getTranslated(key));
+			}
+		}
+
+		if (mpBtn1 != null)
+			mpBtn1.setText(LanguageUtils.getTranslated("launcher.modpacks.downloadserver"));
+
+		if (mpBtn2 != null)
+			mpBtn2.setText(LanguageUtils.getTranslated("launcher.modpacks.showinfo"));
+
+		if (mpFilterBtn != null)
+			mpFilterBtn.setText(LanguageUtils.getTranslated("launcher.modpacks.filter.settings"));
+
+		if (mpFilterLbl != null)
+			mpFilterLbl.setText(getModPacksFilter());
 	}
 
 	private void loadNewsComponents()
@@ -293,13 +317,13 @@ public class MainPanel extends JPanel
 		newsPanel = new JPanel();
 		newsPanel.setLayout(new BorderLayout());
 		JPanel p = new JPanel();
-    	p.setLayout(new GridBagLayout());
-    	JLabel tempLoad = new JLabel();
-    	tempLoad.setSize(45, 45);
-    	tempLoad.setIcon(Launcher.getResources().getResource("newsLoad.gif"));
-	    p.add(tempLoad);
-    	jfxScrollPanels[0].setViewportView(p);
-    	newsPanel.add(jfxScrollPanels[0]);
+		p.setLayout(new GridBagLayout());
+		JLabel tempLoad = new JLabel();
+		tempLoad.setSize(45, 45);
+		tempLoad.setIcon(Launcher.getResources().getResource("newsLoad.gif"));
+		p.add(tempLoad);
+		jfxScrollPanels[0].setViewportView(p);
+		newsPanel.add(jfxScrollPanels[0]);
 	}
 
 	private void loadBgComponents()
@@ -446,7 +470,6 @@ public class MainPanel extends JPanel
 			}
 		});
 
-
 	}
 
 	public void updateSkin()
@@ -510,13 +533,13 @@ public class MainPanel extends JPanel
 				{
 					if (skinPoligon[i] != null)
 					{
-						remove(skinPoligon[i]);
+						skinPoligon[i].setVisible(false);
 					}
 				}
 
 				if (ProfilesUtils.getSelectedProfile() != null)
 				{
-					SkinsManager.startLoadingThread(this, null, "", null, skinXY[0], skinXY[1], skinPoligon, mode, false);
+					SkinsManager.startLoadingThread(this, null, "", null, skinXY[0], skinXY[1], new JButton[7], mode, false);
 				}
 			}
 		}
@@ -526,19 +549,36 @@ public class MainPanel extends JPanel
 	{
 		for (int i = 0; i < skinPoligon.length; i++)
 		{
-			if (skinPoligon[i] != null)
+			
+			if(skinPoligon[i] == null)
 			{
-				remove(skinPoligon[i]);
+				skinPoligon[i] = new JButton();
 			}
-		}
-
-		for (int i = 0; i < skinPoligon.length; i++)
-		{
-			skinPoligon[i] = buttons[i];
-			if (skinPoligon[i] != null)
+			
+			if(buttons[i] != null)
+			{
+				skinPoligon[i].setIcon(buttons[i].getIcon());
+				skinPoligon[i].setSelectedIcon(buttons[i].getIcon());
+				skinPoligon[i].setDisabledIcon(buttons[i].getPressedIcon());
+				skinPoligon[i].setPressedIcon(buttons[i].getIcon());
+				skinPoligon[i].setOpaque(false);
+				skinPoligon[i].setFocusable(false);
+				skinPoligon[i].setContentAreaFilled(false);
+				skinPoligon[i].setBorderPainted(false);
+				skinPoligon[i].setRolloverEnabled(false);
+				skinPoligon[i].setBounds(buttons[i].getBounds());
+				skinPoligon[i].setVisible(true);
+			}
+			else
+			{
+				skinPoligon[i].setVisible(false);
+			}
+			
+			if(skinPoligon[i].getParent() == null)
 			{
 				add(skinPoligon[i]);
 			}
+		
 		}
 
 		revalidate();
@@ -637,10 +677,10 @@ public class MainPanel extends JPanel
 
 		return "NULL";
 	}
-	
+
 	public void updateNews()
 	{
-		if(tabbedPanel != null)
+		if (tabbedPanel != null)
 		{
 			for (int i = 0; i < 3; i++)
 			{
@@ -649,10 +689,10 @@ public class MainPanel extends JPanel
 		}
 		else
 		{
-			 newsPanel.removeAll();
-			 newsPanel.add(jfxScrollPanels[0]);
-			 newsPanel.repaint();
-			 newsPanel.revalidate();
+			newsPanel.removeAll();
+			newsPanel.add(jfxScrollPanels[0]);
+			newsPanel.repaint();
+			newsPanel.revalidate();
 		}
 	}
 

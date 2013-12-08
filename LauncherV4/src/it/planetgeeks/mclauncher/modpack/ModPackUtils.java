@@ -4,7 +4,6 @@ import it.planetgeeks.mclauncher.GameLauncher;
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.LauncherLogger;
 import it.planetgeeks.mclauncher.Settings;
-import it.planetgeeks.mclauncher.frames.panels.MainPanel;
 import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.DirUtils.OS;
 import it.planetgeeks.mclauncher.utils.FileUtils;
@@ -128,7 +127,9 @@ public class ModPackUtils
 		boolean serverLinkDirect = false;
 		String packBgLink = null;
 		String modsListLink = null;
-
+		String packVersion = null;
+		String mainClass = null;
+		String tweakClass = null;
 	    File modpack = null;
 	    if(local)
 	    {
@@ -170,6 +171,10 @@ public class ModPackUtils
 					else if (readed.startsWith("owner="))
 					{
 						packOwner = readed.substring(6);
+					}
+					else if (readed.startsWith("version="))
+					{
+						packVersion = readed.substring(8);
 					}
 					else if (readed.startsWith("mcVersion="))
 					{
@@ -242,7 +247,15 @@ public class ModPackUtils
 					{
 						serverLinkDirect = (readed.substring(18).trim()).equals("true") ? true : false;
 					}
-
+					else if (readed.startsWith("mainClass="))
+					{
+						mainClass = readed.substring(10);
+					}
+					else if (readed.startsWith("tweakClass="))
+					{
+						tweakClass = readed.substring(11);
+					}
+					
 					readed = br.readLine();
 				}
 				br.close();
@@ -250,9 +263,11 @@ public class ModPackUtils
 			catch (IOException e)
 			{
 				LauncherLogger.log(LauncherLogger.GRAVE, "Error on reading modpack info!");
+				if(!local)
 				modpack.delete();
 				return null;
 			}
+			if(!local)
 			modpack.delete();
 		}
 		else
@@ -271,6 +286,9 @@ public class ModPackUtils
 		returned.setModPackLink(url);
 		returned.setPackBgLink(packBgLink);
 		returned.setModsListLink(modsListLink);
+		returned.setMainClass(mainClass);
+		returned.setTweakClass(tweakClass);
+		returned.setPackVersion(packVersion);
 
 		return returned;
 	}
@@ -300,14 +318,14 @@ public class ModPackUtils
 			catch (IOException e)
 			{
 				LauncherLogger.log(LauncherLogger.GRAVE, "Error on reading file content '" + url + "' !");
-				if (local)
+				if (!local)
 				{
 					file.delete();
 				}
 				return null;
 			}
 
-			if (local)
+			if (!local)
 			{
 				file.delete();
 			}

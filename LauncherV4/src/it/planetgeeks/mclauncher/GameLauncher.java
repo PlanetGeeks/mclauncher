@@ -1,147 +1,116 @@
 package it.planetgeeks.mclauncher;
 
+import it.planetgeeks.mclauncher.modpack.ModPack;
 import it.planetgeeks.mclauncher.modpack.ModPackUtils;
 import it.planetgeeks.mclauncher.utils.DirUtils;
-import it.planetgeeks.mclauncher.utils.DirUtils.OS;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
+import it.planetgeeks.mclauncher.utils.Profile;
 import it.planetgeeks.mclauncher.utils.ProfilesUtils;
+import it.planetgeeks.mclauncher.utils.process.JavaProcess;
+import it.planetgeeks.mclauncher.utils.process.JavaProcessLauncher;
+import it.planetgeeks.mclauncher.utils.process.JavaProcessRunnable;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GameLauncher
 {
 	public static void launchGame()
 	{
+		String os = "win";
+
+		if (DirUtils.getPlatform() == DirUtils.OS.windows)
+			os = "win";
+		if (DirUtils.getPlatform() == DirUtils.OS.linux)
+			os = "linux";
+		if (DirUtils.getPlatform() == DirUtils.OS.macos)
+			os = "mac";
+
+		ModPack modpack = ModPackUtils.selected;
+
+		File gameDirectory = new File(modpack.getModPackDir() + File.separator + "files");
+
+		File nativeDir = new File(gameDirectory, "natives-" + os);
+
+		JavaProcessLauncher processLauncher = new JavaProcessLauncher(DirUtils.getJavaDir(), new String[0]);
+
+		processLauncher.directory(gameDirectory);
+
+		File assetsDirectory = new File(gameDirectory, "assets");
+
+		if (DirUtils.getPlatform() == DirUtils.OS.macos)
+		{
+			processLauncher.addCommands(new String[] { "-Xdock:icon=" + new File(assetsDirectory, "icons/minecraft.icns").getAbsolutePath(), "-Xdock:name=" + modpack.packName });
+		}
+
+		String defaultArgument = "-Xmx" + MemoryUtils.getMem(ProfilesUtils.getSelectedProfile().ram).size + "m";
+		processLauncher.addSplitCommands(defaultArgument);
+
+		processLauncher.addCommands(new String[] { "-Djava.library.path=" + nativeDir.getAbsolutePath() });
+		processLauncher.addCommands(new String[] { "-cp", constructClassPath(new File(gameDirectory, "bin"),new File(gameDirectory, "libraries")) });
+		processLauncher.addCommands(new String[] { modpack.mainClass });
+
+		Profile profile = ProfilesUtils.getSelectedProfile();
+			
+		ArrayList<String> parameters = new ArrayList<String>();
+		parameters.add("--username " + (profile.minecraftName != null ? profile.minecraftName : profile.username));
+		parameters.add(" --session " +  (profile.sessionID != null ? profile.sessionID.trim() : "noSessionID"));
+		parameters.add(" --version " + modpack.mcVersion);
+		parameters.add(" --gameDir " + gameDirectory.getAbsolutePath());
+		parameters.add(" --assetsDir " + assetsDirectory.getAbsolutePath());
+		if(!modpack.tweakClass.equals("null"))
+			parameters.add(" --tweakClass " + modpack.tweakClass);
+		
+		String strParams = "";
+		
+		for(int i = 0; i < parameters.size(); i++)
+		{
+			strParams += parameters.get(i);
+		}
+		
+		System.out.println(strParams);
+		
+		processLauncher.addSplitCommands(strParams);
+
 		try
 		{
-			String pathToJar;
-			File jar = new File(GameLauncher.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-			pathToJar = jar.getAbsolutePath();
-			ArrayList<String> params = new ArrayList<String>();
-			OS os = DirUtils.getPlatform();
-			if (os == OS.windows)
+			List<String> parts = processLauncher.getFullCommands();
+			StringBuilder full = new StringBuilder();
+			boolean first = true;
+
+			for (String part : parts)
 			{
-				params.add("javaw");
+				if (!first)
+					full.append(" ");
+				full.append(part);
+				first = false;
 			}
-			else if (os == OS.macos)
-			{
-				params.add("java");
-				params.add("-Xdock:name=" + Settings.launcherName);
-			}
-			else
-			{
-				params.add("java");
-			}
-			params.add("-Xmx" + MemoryUtils.getMem(ProfilesUtils.getSelectedProfile().ram).size + "m");
-			if(Launcher.getOptions() != null)
-			{
-				String addParams[] = Launcher.getOptions().getAddParams();
-				if(addParams != null)
+
+            JavaProcess p =	processLauncher.start();
+        	Launcher.hideOrShowWindows(true);
+            p.setExitRunnable(new JavaProcessRunnable()
+            {
+				@Override
+				public void onJavaProcessEnded(JavaProcess paramJavaProcess)
 				{
-					for(int i = 0; i < addParams.length; i++)
+					if(LauncherProperties.getProperty("openLauncherAfterExit").equals("true"))
 					{
-						params.add(addParams[i]);
+						Launcher.hideOrShowWindows(false);
+					}
+					else
+					{
+						Launcher.closeLauncher();
 					}
 				}
-			}
-			params.add("-classpath");
-			params.add(pathToJar);
-			params.add(GameLauncher.class.getName());
-			params.add(ModPackUtils.selected.packName);
-			params.add("--username");
-			params.add(ProfilesUtils.getSelectedProfile().username);
-			params.add("--session");
-			params.add(ProfilesUtils.getSelectedProfile().sessionID != null ? ProfilesUtils.getSelectedProfile().sessionID : "0");
-			params.add("--version");
-			params.add(ModPackUtils.selected.mcVersion);
-			params.add("--gameDir");
-			params.add((new File(ModPackUtils.selected.getModPackDir() + File.separator + "files")).getAbsolutePath());
-			
-			ProcessBuilder pb = new ProcessBuilder();
-			pb.command(params);
-			final Process process = pb.start();
-			if (process == null)
-				throw new Exception("!");
-			Launcher.hideOrShowWindows(true);
-			loadConsoleListeners(process);
+            });
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
 			e.printStackTrace();
+			return;
 		}
-	}
-
-	private static void onGameClosed()
-	{
-		if (LauncherProperties.getProperty("openLauncherAfterExit").equals("true"))
-		{
-			Launcher.hideOrShowWindows(false);
-		}
-		else
-		{
-			Launcher.closeLauncher();
-		}
-	}
-
-	private static void loadConsoleListeners(final Process process)
-	{
-		Runnable error = new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				try
-				{
-					String errorLine;
-					BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-					while ((errorLine = error.readLine()) != null)
-					{
-						System.out.println("[MINECRAFT]" + errorLine);
-					}
-					error.close();
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		};
-		Runnable input = new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				try
-				{
-					String inputLine;
-					BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-					while ((inputLine = input.readLine()) != null)
-					{
-						System.out.println("[MINECRAFT]" + inputLine);
-					}
-					input.close();
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-
-				}
-				onGameClosed();
-			}
-		};
-		Thread tr0 = new Thread(error);
-		tr0.start();
-		Thread tr1 = new Thread(input);
-		tr1.start();
 	}
 
 	private static ArrayList<String> getJars(File dir)
@@ -170,86 +139,31 @@ public class GameLauncher
 		return paths;
 	}
 
-	public static void main(String[] args)
+	private static String constructClassPath(File binDirs, File libsDir)
 	{
-		if(args.length > 0)
-		{
-			File file = new File(DirUtils.getWorkingDirectory() + File.separator + args[0] + File.separator + "files");
+		ArrayList<String> libsPaths = getJars(libsDir);
+		StringBuilder result = new StringBuilder();
 
-			System.setProperty("org.lwjgl.librarypath", new File(file + File.separator + "natives-win").getAbsolutePath());
-
-			File lib = new File(file + File.separator + "libraries");
-
-			ArrayList<String> libs = getJars(lib);
-
-			File bin = new File(file + File.separator + "bin");
-
-			ArrayList<String> bins = getJars(bin);
-
-			for (int i = 0; i < bins.size(); i++)
-			{
-				libs.add(bins.get(i));
-			}
-
-			URL[] urls = new URL[libs.size()];
-			for (int i = 0; i < libs.size(); i++)
-			{
-				File f = new File(libs.get(i));
-				try
-				{
-					urls[i] = f.toURI().toURL();
-				}
-				catch (MalformedURLException e)
-				{
-					e.printStackTrace();
-				}
-			}
-
-			@SuppressWarnings("resource")
-			URLClassLoader urlcl = new URLClassLoader(urls);
-			Class<?> classS;
-			try
-			{
-				classS = urlcl.loadClass("net.minecraft.client.main.Main");
-				Method method = classS.getMethod("main", String[].class);
-
-				String[] par = new String[args.length - 1];
-				for(int i = 1; i < args.length; i++)
-				{
-					par[i - 1] = args[i];
-				}
-				method.invoke(null, (Object) par);
-			}
-			catch (ClassNotFoundException e)
-			{
-				e.printStackTrace();
-			}
-			catch (NoSuchMethodException e)
-			{
-				e.printStackTrace();
-			}
-			catch (SecurityException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IllegalArgumentException e)
-			{
-				e.printStackTrace();
-			}
-			catch (InvocationTargetException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			System.out.println("Parameters required!");
-		}
+		ArrayList<String> binPaths = getJars(binDirs);
 		
+		for(int i = 0; i < binPaths.size(); i++)
+		{
+			libsPaths.add(binPaths.get(i));
+		}
+
+		String separator = System.getProperty("path.separator");
+
+		for (String s : libsPaths)
+		{
+			File file = new File(s);
+			if (!file.isFile())
+				throw new RuntimeException("Classpath file not found: " + file);
+			if (result.length() > 0)
+				result.append(separator);
+			result.append(file.getAbsolutePath());
+		}
+
+		return result.toString();
 	}
 
 }

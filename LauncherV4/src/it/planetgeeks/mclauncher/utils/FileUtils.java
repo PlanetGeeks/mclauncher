@@ -75,6 +75,8 @@ public class FileUtils
 		{
 			URL url = new URL(pathUrl);
 			HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+			if(connection.getInputStream() == null)
+			   return false;
 			connection.disconnect();
 			return true;
 		}

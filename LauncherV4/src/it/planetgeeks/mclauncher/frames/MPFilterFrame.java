@@ -26,7 +26,7 @@ import javax.swing.WindowConstants;
 
 /**
  * @author PlanetGeeks
- *
+ * 
  */
 
 public class MPFilterFrame extends JFrame
@@ -55,10 +55,8 @@ public class MPFilterFrame extends JFrame
 		setContentPane(panel);
 
 		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
-		
-		this.setResizable(false);
 
-		setTitle(LanguageUtils.getTranslated("launcher.modpacks.filter.settings"));
+		this.setResizable(false);
 
 		typeLbl = new JLabel();
 		comboBoxType = new JComboBox<String>();
@@ -70,26 +68,8 @@ public class MPFilterFrame extends JFrame
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
 		typeLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		typeLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.filterframe.type") + " :");
-
-		String values[] = new String[EnumFilterType.values().length];
-
-		for (int i = 0; i < values.length; i++)
-		{
-			values[i] = LanguageUtils.getTranslated(EnumFilterType.values()[i].str);
-		}
-
-		comboBoxType.setModel(new DefaultComboBoxModel<String>(values));
-
-		comboBoxType.setSelectedItem(LanguageUtils.getTranslated(currentFilter.str));
 
 		valueLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		valueLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.filterframe.value") + " :");
-
-		discardBtn.setText(LanguageUtils.getTranslated("launcher.modpacks.filterframe.discard"));
-
-		applyBtn.setText(LanguageUtils.getTranslated("launcher.modpacks.filterframe.apply"));
 
 		discardBtn.setForeground(new Color(Settings.buttonsForeground));
 
@@ -109,7 +89,7 @@ public class MPFilterFrame extends JFrame
 		{
 			textField.setText(currentValue);
 		}
-		
+
 		applyBtn.addActionListener(new ActionListener()
 		{
 			@Override
@@ -118,7 +98,7 @@ public class MPFilterFrame extends JFrame
 				close(true);
 			}
 		});
-		
+
 		discardBtn.addActionListener(new ActionListener()
 		{
 			@Override
@@ -127,7 +107,8 @@ public class MPFilterFrame extends JFrame
 				close(false);
 			}
 		});
-		
+
+		loadTranslations();
 
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -152,17 +133,41 @@ public class MPFilterFrame extends JFrame
 			textField.setEnabled(true);
 		}
 	}
-	
+
 	private void close(boolean apply)
 	{
-		if(apply)
+		if (apply)
 		{
-		    ModPackUtils.filter = currentFilter;
-		    ModPackUtils.filterStr = textField.getText();
-		    Launcher.getLauncherFrame().mainPanel.updateModPacks(ModPackUtils.getAllPacks(), Launcher.getLauncherFrame().mainPanel.loadingModPack);
-			
+			ModPackUtils.filter = currentFilter;
+			ModPackUtils.filterStr = textField.getText();
+			Launcher.getLauncherFrame().mainPanel.updateModPacks(ModPackUtils.getAllPacks(), Launcher.getLauncherFrame().mainPanel.loadingModPack);
+
 		}
 		Launcher.openOrCloseFilterFrame();
+	}
+
+	public void loadTranslations()
+	{
+		setTitle(LanguageUtils.getTranslated("launcher.modpacks.filter.settings"));
+		
+		typeLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.filterframe.type") + " :");
+
+		String values[] = new String[EnumFilterType.values().length];
+
+		for (int i = 0; i < values.length; i++)
+		{
+			values[i] = LanguageUtils.getTranslated(EnumFilterType.values()[i].str);
+		}
+
+		comboBoxType.setModel(new DefaultComboBoxModel<String>(values));
+
+		comboBoxType.setSelectedItem(LanguageUtils.getTranslated(currentFilter.str));
+
+		valueLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.filterframe.value") + " :");
+
+		discardBtn.setText(LanguageUtils.getTranslated("launcher.modpacks.filterframe.discard"));
+
+		applyBtn.setText(LanguageUtils.getTranslated("launcher.modpacks.filterframe.apply"));
 	}
 
 	private JButton discardBtn;

@@ -65,6 +65,7 @@ public class MPServerFrame extends JFrame
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		lbl1.setHorizontalAlignment(SwingConstants.CENTER);
+		setTitle(LanguageUtils.getTranslated("launcher.modpacks.downloadserver"));
 		lbl1.setText(LanguageUtils.getTranslated("launcher.modpacks.downloadserver.startingdownload"));
 
 		lbl2.setHorizontalAlignment(SwingConstants.CENTER);
@@ -79,12 +80,20 @@ public class MPServerFrame extends JFrame
 	    
 	    lbl2.setText(str);
 	    
-		GroupLayout layout = new GroupLayout(getContentPane());
+	    loadTranslations();
+		
+	    GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(14, 14, 14).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE).addComponent(lbl1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(lbl2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addContainerGap(14, Short.MAX_VALUE)));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(14, 14, 14).addComponent(lbl1).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE).addComponent(lbl2).addGap(14, 14, 14).addComponent(progressBar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE).addGap(14, 14, 14)));
 
 		pack();
+	}
+	
+	public void loadTranslations()
+	{
+		setTitle(LanguageUtils.getTranslated("launcher.modpacks.downloadserver"));
+		lbl1.setText(LanguageUtils.getTranslated("launcher.modpacks.downloadserver.startingdownload"));
 	}
 
 	public void startDownload()

@@ -6,7 +6,7 @@ import java.io.File;
 
 /**
  * @author PlanetGeeks
- *
+ * 
  */
 
 public class DirUtils
@@ -78,17 +78,30 @@ public class DirUtils
 			return OS.linux;
 		return OS.unknown;
 	}
-	
+
 	public static OS getPlatform(String str)
 	{
-		if(str.toLowerCase().contains("win"))
+		if (str.toLowerCase().contains("win"))
 			return OS.windows;
-		if(str.toLowerCase().contains("lin"))
+		if (str.toLowerCase().contains("lin"))
 			return OS.linux;
-		if(str.toLowerCase().contains("mac"))
+		if (str.toLowerCase().contains("mac"))
 			return OS.macos;
-		
+
 		return OS.unknown;
+	}
+
+	public static String getJavaDir()
+	{
+		String separator = System.getProperty("file.separator");
+		String path = System.getProperty("java.home") + separator + "bin" + separator;
+
+		if ((getPlatform() == OS.windows) && (new File(path + "javaw.exe").isFile()))
+		{
+			return path + "javaw.exe";
+		}
+
+		return path + "java";
 	}
 
 	public static enum OS

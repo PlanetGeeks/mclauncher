@@ -28,8 +28,6 @@ public class MemoryUtils
 
 		if (list == null || list.size() == 0)
 		{
-			createCustom("258 MB", "258");
-			createCustom("512 MB", "512");
 			createCustom("768 MB", "768");
 			createCustom("1 GB", "1024");
 			createCustom("1.5 GB", "1536");

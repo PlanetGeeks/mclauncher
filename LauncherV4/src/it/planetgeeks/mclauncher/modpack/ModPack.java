@@ -29,6 +29,8 @@ public class ModPack
 	public String modpackLink;
 	public String packBgLink;
 	public String modsListLink;
+	public String mainClass;
+	public String tweakClass;
 
     public ModPack(String mcVersion, String packName, String packOwner, String packServerLink)
     {
@@ -141,5 +143,19 @@ public class ModPack
     {
     	this.modsListLink = url;
     }
+    
+    public void setMainClass(String mainClass)
+    {
+    	this.mainClass = mainClass;
+    }
+    
+    public void setTweakClass(String tweakClass)
+    {
+    	this.tweakClass = tweakClass;
+    }
 
+    public void setPackVersion(String packVersion)
+    {
+    	this.packVersion = packVersion;
+    }
 }

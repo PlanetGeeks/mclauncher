@@ -3,6 +3,7 @@ package it.planetgeeks.mclauncher.frames.panels;
 import it.planetgeeks.mclauncher.GameLauncher;
 import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.LauncherLogger;
+import it.planetgeeks.mclauncher.LauncherProperties;
 import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
 import it.planetgeeks.mclauncher.frames.utils.LinkLabel;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -52,6 +54,15 @@ public class SouthPanel extends CustomJPanel
 	{
 		super(true, "southBar.png");
 		initComponents();
+	}
+
+	public void loadTranslations()
+	{
+		((LinkLabel) linkLbl).setTextLink(LanguageUtils.getTranslated("launcher.websitelink"), Settings.websiteLink);
+		launchButton.setText(LanguageUtils.getTranslated("launcher.connectbtn"));
+		profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals("<" + LanguageUtils.getTranslated("launcher.profile.combobox.create") + ">") ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
+		profileLbl.setText(LanguageUtils.getTranslated("launcher.profilelbl") + " :");
+	    setComboboxProfiles(ProfilesUtils.getSelectedProfile() != null ? ProfilesUtils.getSelectedProfile().profileName : null);
 	}
 
 	public void initComponents()
@@ -78,7 +89,6 @@ public class SouthPanel extends CustomJPanel
 		controlsPanel.setOpaque(false);
 		profileLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		profileLbl.setForeground(new Color(Settings.southBarLabelsForeground));
-		launchButton.setText(LanguageUtils.getTranslated("launcher.connectbtn"));
 		linkLbl.setHorizontalAlignment(SwingConstants.RIGHT);
 		totalBar = new JProgressBar();
 		totalLbl = new JLabel();
@@ -87,15 +97,15 @@ public class SouthPanel extends CustomJPanel
 		stopLbl = new JLabel();
 		pauseLbl = new JLabel();
 		totalLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		totalLbl.setText("Progresso totale - 50 %");
+		totalLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.update.downloadingMap"));
 		totalLbl.setForeground(new Color(Settings.southBarLabelsForeground));
 		currentLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		currentLbl.setForeground(new Color(Settings.southBarLabelsForeground));
-		currentLbl.setText("Scaricando - dwadwad wad.jar 53%");
+		currentLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.update.downloadingMap"));
 		stopLbl.setIcon(Launcher.getResources().getResource("stop.png"));
 		pauseLbl.setIcon(Launcher.getResources().getResource("pause.png"));
 		launchButton.setEnabled(false);
-		
+		launchButton.setText(LanguageUtils.getTranslated("launcher.connectbtn"));
 		stopLbl.addMouseListener(new MouseAdapter()
 		{
 			public void mousePressed(MouseEvent me)
@@ -204,7 +214,7 @@ public class SouthPanel extends CustomJPanel
 				}
 			}
 		});
-
+	
 		profileLbl.setText(LanguageUtils.getTranslated("launcher.profilelbl") + " :");
 
 		GroupLayout controlsPanelLayout = new GroupLayout(controlsPanel);
@@ -220,10 +230,10 @@ public class SouthPanel extends CustomJPanel
 		this.removeAll();
 		if (update)
 		{
-			javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
-			layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(totalBar, javax.swing.GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE).addComponent(totalLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addComponent(pauseLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(stopLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))).addContainerGap()));
-			layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(stopLbl).addComponent(pauseLbl)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentLbl).addGap(0, 0, 0).addComponent(currentBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(totalLbl).addGap(0, 0, 0).addComponent(totalBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap()));
+			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(totalBar, GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE).addComponent(totalLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addComponent(pauseLbl, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(stopLbl, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))).addContainerGap()));
+			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(stopLbl).addComponent(pauseLbl)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentLbl).addGap(0, 0, 0).addComponent(currentBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(totalLbl).addGap(0, 0, 0).addComponent(totalBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addContainerGap()));
 		}
 		else
 		{
@@ -280,12 +290,14 @@ public class SouthPanel extends CustomJPanel
 
 		if (profile.rememberPsw)
 		{
-			String result = LoginUtils.login(profile.username, profile.password);
+			String result = LoginUtils.login(profile.email != null && !profile.email.equals("") ? profile.email : profile.username, profile.password);
 
 			if (result.contains(":"))
 			{
 				playOffline = false;
-				profile.sessionID = result.split(":")[3].trim();
+				String[] spt = result.split(":");
+				profile.minecraftName = spt[0];
+				profile.sessionID = "token:" + spt[1] + ":" + spt[2];
 			}
 			else
 			{
@@ -306,14 +318,22 @@ public class SouthPanel extends CustomJPanel
 			}
 		}
 
-		if (playOffline)
+		if (playOffline && LauncherProperties.getProperty("hideofflinemessage").equals("false"))
 		{
-			int result = JOptionPane.showConfirmDialog(null, error + LanguageUtils.getTranslated("launcher.login.playoffline"), LanguageUtils.getTranslated("launcher.login.title"), JOptionPane.YES_NO_OPTION);
+			JCheckBox checkbox = new JCheckBox(LanguageUtils.getTranslated("launcher.login.playofflinebox"));
+			Object[] m = new Object[] { error + LanguageUtils.getTranslated("launcher.login.playoffline"), checkbox };
+			int result = JOptionPane.showConfirmDialog(null, m, LanguageUtils.getTranslated("launcher.login.title"), JOptionPane.YES_NO_OPTION);
+			if (checkbox.isSelected())
+			{
+				LauncherProperties.modifyProperty("hideofflinemessage", "true");
+			}
 			if (result == JOptionPane.CANCEL_OPTION || result == JOptionPane.NO_OPTION)
+			{
 				return;
+			}
+
 		}
 
-		
 		ModPack selected = ModPackUtils.selected;
 
 		if (selected != null)
@@ -324,7 +344,7 @@ public class SouthPanel extends CustomJPanel
 			}
 			else
 			{
-				if(selected.getModPackDir().exists())
+				if (selected.getModPackDir().exists())
 				{
 					GameLauncher.launchGame();
 				}
@@ -429,10 +449,10 @@ public class SouthPanel extends CustomJPanel
 
 		return false;
 	}
-	
+
 	public void setLaunchActive()
 	{
-         this.launchButton.setEnabled(true);		
+		this.launchButton.setEnabled(true);
 	}
 
 	private CustomJPanel controlsPanel;

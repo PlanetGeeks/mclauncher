@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 /**
  * @author PlanetGeeks
- *
+ * 
  */
 
 public class LanguageUtils
@@ -21,12 +21,13 @@ public class LanguageUtils
 
 	private static ArrayList<LanguagePack> langs = new ArrayList<LanguagePack>();
 	private static LanguagePack currentPack;
+	private static LanguagePack latest = null;
 
 	public static void loadLanguages()
 	{
 		currentPack = null;
 		langs = new ArrayList<LanguagePack>();
-		
+
 		try
 		{
 			InputStream input = Launcher.getResources().getInputStream("languages/languages.list");
@@ -69,22 +70,23 @@ public class LanguageUtils
 							break;
 						}
 					}
-					
+
 					if (currentPack == null && langs.size() > 0)
 					{
 						currentPack = langs.get(0);
 					}
-					
+
 					LauncherProperties.modifyProperty("language", currentPack.packName);
 				}
 
-				
+				input.close();
+
 			}
 			else
 			{
 				LauncherLogger.log(LauncherLogger.SEVERE, "Error on loading languages list! Does languages.list file exist in launcher.jar?");
 			}
-			input.close();
+
 		}
 		catch (IOException e)
 		{
@@ -142,16 +144,21 @@ public class LanguageUtils
 		return key;
 	}
 
-	public static String getKey(String translated)
+	public static LanguagePack getLatest()
+	{
+		return latest;
+	}
+
+	public static String getKey(String translated, LanguagePack pack)
 	{
 
-		if (currentPack != null && currentPack.translations != null && currentPack.translations.containsValue(translated))
+		if (pack != null && pack.translations != null && pack.translations.containsValue(translated))
 		{
-			Iterator<String> it = currentPack.translations.keySet().iterator();
+			Iterator<String> it = pack.translations.keySet().iterator();
 			while (it.hasNext())
 			{
 				String key = it.next();
-				if (currentPack.translations.get(key).equals(translated))
+				if (pack.translations.get(key).equals(translated))
 				{
 					return key;
 				}
@@ -174,7 +181,23 @@ public class LanguageUtils
 
 	public static void setLanguage(int index)
 	{
+		latest = currentPack;
 		currentPack = langs.get(index) != null ? langs.get(index) : currentPack;
+	    Launcher.languageChanged();
+	    LauncherProperties.modifyProperty("language", currentPack.packName);
+	}
+
+	public static int getLangIndex(String str)
+	{
+		String langs[] = LanguageUtils.getNames();
+		
+		for(int i = 0; i < langs.length; i++)
+		{
+			if(str.equals(langs[i]))
+				return i;
+		}
+			
+		return 0;
 	}
 
 	public static int getCurrentLangIndex()

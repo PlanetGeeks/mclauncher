@@ -90,7 +90,8 @@ public class LoginUtils
 			}
 
 			String splitted[] = result.split(":");
-			return splitted[2] + ":" + splitted[3];
+			
+			return splitted[2] + ":" + splitted[3] + ":" + splitted[4];
 		}
 		catch (Exception e)
 		{

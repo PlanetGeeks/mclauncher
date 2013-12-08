@@ -21,12 +21,7 @@ import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.EventQueue;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
@@ -34,9 +29,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.parser.ParserDelegator;
 
 /**
  * @author PlanetGeeks
@@ -78,7 +70,6 @@ public class Launcher
 					launcherFrame.setVisible(true);
 				}
 			});
-
 			ModPackUtils.startLoading();
 			loadNews();
 		}
@@ -331,7 +322,17 @@ public class Launcher
 					if (i == 2)
 						link = Settings.newsLink3;
 
-					JEditorPane pane = new JEditorPane();
+					JEditorPane pane = null;
+					try
+					{
+						pane = new JEditorPane(link);
+					}
+					catch (IOException e)
+					{
+						pane = new JEditorPane();
+						if (pane != null)
+							pane.setText(LanguageUtils.getTranslated("launcher.newsError"));
+					}
 					pane.setContentType("text/html");
 					pane.setEditable(false);
 					pane.setBackground(Color.BLACK);
@@ -354,26 +355,7 @@ public class Launcher
 							}
 						}
 					});
-
-					try
-					{
-						URL url = new URL(link);
-						URLConnection connection = url.openConnection();
-						InputStream is = connection.getInputStream();
-						InputStreamReader isr = new InputStreamReader(is);
-						BufferedReader br = new BufferedReader(isr);
-						HTMLEditorKit htmlKit = new HTMLEditorKit();
-						HTMLDocument htmlDoc = (HTMLDocument) htmlKit.createDefaultDocument();
-						HTMLEditorKit.Parser parser = new ParserDelegator();
-						HTMLEditorKit.ParserCallback callback = htmlDoc.getReader(0);
-						parser.parse(br, callback, true);
-						pane.setDocument(htmlDoc);
-						panels[i] = pane;
-					}
-					catch (IOException e)
-					{
-						pane.setText(LanguageUtils.getTranslated("launcher.newsError"));
-					}
+					panels[i] = pane;
 				}
 
 				for (int i = 0; i < panels.length; i++)
@@ -401,6 +383,30 @@ public class Launcher
 		};
 
 		th.start();
+	}
+
+	public static void languageChanged()
+	{
+		if (launcherFrame != null)
+	    	launcherFrame.loadTranslations();
+		if (launcherFrame.mainPanel != null)
+			launcherFrame.mainPanel.loadTranslations();
+		if (launcherFrame.southPanel != null)
+			launcherFrame.southPanel.loadTranslations();
+		if (profileFrame != null)
+			profileFrame.loadTranslations();
+		if (memoryFrame != null)
+			memoryFrame.loadTranslations();
+		if (infoFrame != null)
+			infoFrame.loadTranslations();
+		if (consoleFrame != null)
+			consoleFrame.loadTranslations();
+		if (optionsFrame != null)
+			optionsFrame.loadTranslations();
+	    if (filterFrame != null)
+	    	filterFrame.loadTranslations();
+	    if (mpinfoframe != null)
+	    	mpinfoframe.loadTranslations();
 	}
 
 	public static void closeLauncher()

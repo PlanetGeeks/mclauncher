@@ -114,12 +114,17 @@ public class ConsoleFrame extends JFrame
 		pack();
 	}
 
-	public void updateComponents()
+	public void loadTranslations()
 	{
 		saveLogBtn.setText(LanguageUtils.getTranslated("launcher.console.savelog"));
 		clearBtn.setText(LanguageUtils.getTranslated("launcher.console.clear"));
 		consoleTypeBox.setModel(new DefaultComboBoxModel<Object>(new String[] { LanguageUtils.getTranslated("launcher.console.box.all"), LanguageUtils.getTranslated("launcher.console.box.launcher"), LanguageUtils.getTranslated("launcher.console.box.minecraft") }));
 		setTitle(LanguageUtils.getTranslated("launcher.console.title"));
+	}
+	
+	public void updateComponents()
+	{
+		loadTranslations();
 	}
 	
 	public void updateTextArea()

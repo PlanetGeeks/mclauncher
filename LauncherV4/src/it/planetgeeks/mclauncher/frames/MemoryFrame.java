@@ -34,7 +34,7 @@ import javax.swing.WindowConstants;
 
 /**
  * @author PlanetGeeks
- *
+ * 
  */
 
 public class MemoryFrame extends JFrame
@@ -67,7 +67,7 @@ public class MemoryFrame extends JFrame
 		setContentPane(panel);
 
 		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
-		
+
 		textField = new JTextField();
 		nameLbl = new JLabel();
 		sizeLbl = new JLabel();
@@ -83,7 +83,6 @@ public class MemoryFrame extends JFrame
 		scrollpane = new JScrollPane();
 		list = new JList<Object>();
 		separator = new JSeparator();
-		this.setTitle(LanguageUtils.getTranslated("launcher.memory.title"));
 
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 
@@ -97,14 +96,8 @@ public class MemoryFrame extends JFrame
 		});
 
 		nameLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		nameLbl.setText(LanguageUtils.getTranslated("launcher.memory.namelbl") + " :");
 
 		sizeLbl.setHorizontalAlignment(SwingConstants.RIGHT);
-		sizeLbl.setText(LanguageUtils.getTranslated("launcher.memory.dimensionlbl") + " :");
-
-		btn1.setText(LanguageUtils.getTranslated("launcher.memory.createbtn"));
-
-		btn2.setText(LanguageUtils.getTranslated("launcher.memory.deletebtn"));
 
 		char ch = 8657;
 		upBtn.setText(String.valueOf(ch));
@@ -146,7 +139,7 @@ public class MemoryFrame extends JFrame
 				}
 				else
 				{
-					if(!textField.getText().trim().equals(""))
+					if (!textField.getText().trim().equals(""))
 					{
 						MemoryUtils.createCustom(textField.getText().trim(), String.valueOf(spinnerSize.getValue()));
 						updateComponents(2);
@@ -199,6 +192,8 @@ public class MemoryFrame extends JFrame
 
 		btn2.setEnabled(false);
 
+		loadTranslations();
+		
 		this.setLayout(null);
 
 		btn1.setBounds(15, this.ySize - 15 - 50, 100, 30);
@@ -288,7 +283,7 @@ public class MemoryFrame extends JFrame
 			setList();
 		}
 	}
-	
+
 	public void close()
 	{
 		if (parentFrame == 1)
@@ -296,6 +291,15 @@ public class MemoryFrame extends JFrame
 			Launcher.openProfileEditor((Profile) extra);
 		}
 		setVisible(false);
+	}
+
+	public void loadTranslations()
+	{
+		this.setTitle(LanguageUtils.getTranslated("launcher.memory.title"));
+		nameLbl.setText(LanguageUtils.getTranslated("launcher.memory.namelbl") + " :");
+		sizeLbl.setText(LanguageUtils.getTranslated("launcher.memory.dimensionlbl") + " :");
+		btn1.setText(LanguageUtils.getTranslated("launcher.memory.createbtn"));
+		btn2.setText(LanguageUtils.getTranslated("launcher.memory.deletebtn"));
 	}
 
 	private JButton btn1;

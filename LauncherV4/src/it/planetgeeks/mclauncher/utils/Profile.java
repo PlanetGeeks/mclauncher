@@ -22,6 +22,8 @@ public class Profile
     public String ram;
     public String sessionID;
     public BufferedImage skin;
+    public String minecraftName;
+    public String email;
     
     public Profile(String username, String password, String ram, String profileName, boolean rememberPsw)
     {

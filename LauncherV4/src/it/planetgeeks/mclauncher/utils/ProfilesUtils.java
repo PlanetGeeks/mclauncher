@@ -85,6 +85,14 @@ public class ProfilesUtils
 						
 						prof.password = prof.password != "" ? EncrypterUtils.decrypt(prof.password, getResourcemap()) : "";
 					}
+					if (readed.startsWith("email") && readed.contains(":"))
+					{
+						for (int a = 1; a < readed.split(":").length; a++)
+						{
+							prof.email = "";
+							prof.email += readed.split(":")[a];
+						}
+					}
 					if (readed.startsWith("rememberPsw") && readed.contains(":"))
 					{
 						prof.rememberPsw = readed.split(":")[1].equals("true") ? true : false;
@@ -207,6 +215,8 @@ public class ProfilesUtils
 			bw.write("password:" + (profile.password != null && !profile.password.equals("") ? EncrypterUtils.encrypt(profile.password, getResourcemap()) : ""));
 			bw.newLine();
 			bw.write("ram:" + profile.ram);
+			bw.newLine();
+			bw.write("email:" + profile.email);
 			bw.newLine();
 			bw.write("rememberPsw:" + (profile.rememberPsw ? "true" : "false"));
 			bw.close();

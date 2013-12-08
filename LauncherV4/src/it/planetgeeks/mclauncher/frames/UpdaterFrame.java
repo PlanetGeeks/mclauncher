@@ -53,7 +53,7 @@ public class UpdaterFrame extends JFrame
 
 		setIconImage(Launcher.getResources().getResource("icon.png").getImage());
 		
-		setTitle(LanguageUtils.getTranslated("updater.dialogTitle"));
+		
 		
 		progressBar = new JProgressBar();
 		lbl1 = new JLabel();
@@ -64,7 +64,7 @@ public class UpdaterFrame extends JFrame
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		lbl1.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl1.setText(LanguageUtils.getTranslated("updater.startingDownload"));
+		
 
 		lbl2.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -77,6 +77,8 @@ public class UpdaterFrame extends JFrame
 	    }
 	    
 	    lbl2.setText(str);
+	    
+	    loadTranslations();
 	    
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -164,6 +166,12 @@ public class UpdaterFrame extends JFrame
 			}
 			this.setVisible(false);
 		}
+	}
+	
+	public void loadTranslations()
+	{
+		setTitle(LanguageUtils.getTranslated("updater.dialogTitle"));
+		lbl1.setText(LanguageUtils.getTranslated("updater.startingDownload"));
 	}
 
 	private JLabel lbl1;
