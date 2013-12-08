@@ -62,7 +62,7 @@ public class SouthPanel extends CustomJPanel
 		launchButton.setText(LanguageUtils.getTranslated("launcher.connectbtn"));
 		profileButton.setText(String.valueOf(profileComboBox.getSelectedItem()).equals("<" + LanguageUtils.getTranslated("launcher.profile.combobox.create") + ">") ? LanguageUtils.getTranslated("launcher.createprofilebtn") : LanguageUtils.getTranslated("launcher.modifyprofilebtn"));
 		profileLbl.setText(LanguageUtils.getTranslated("launcher.profilelbl") + " :");
-	    setComboboxProfiles(ProfilesUtils.getSelectedProfile() != null ? ProfilesUtils.getSelectedProfile().profileName : null);
+		setComboboxProfiles(ProfilesUtils.getSelectedProfile() != null ? ProfilesUtils.getSelectedProfile().profileName : null);
 	}
 
 	public void initComponents()
@@ -214,7 +214,7 @@ public class SouthPanel extends CustomJPanel
 				}
 			}
 		});
-	
+
 		profileLbl.setText(LanguageUtils.getTranslated("launcher.profilelbl") + " :");
 
 		GroupLayout controlsPanelLayout = new GroupLayout(controlsPanel);
@@ -231,7 +231,7 @@ public class SouthPanel extends CustomJPanel
 		if (update)
 		{
 			GroupLayout layout = new GroupLayout(this);
-			this.setLayout(layout);
+			setLayout(layout);
 			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(totalBar, GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE).addComponent(totalLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addComponent(pauseLbl, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(stopLbl, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))).addContainerGap()));
 			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(stopLbl).addComponent(pauseLbl)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentLbl).addGap(0, 0, 0).addComponent(currentBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(totalLbl).addGap(0, 0, 0).addComponent(totalBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addContainerGap()));
 		}
@@ -239,7 +239,7 @@ public class SouthPanel extends CustomJPanel
 		{
 			GroupLayout footerPanelLayout = new GroupLayout(this);
 			setLayout(footerPanelLayout);
-			footerPanelLayout.setHorizontalGroup(footerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(footerPanelLayout.createSequentialGroup().addContainerGap().addComponent(logo, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(controlsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+			footerPanelLayout.setHorizontalGroup(footerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, footerPanelLayout.createSequentialGroup().addContainerGap().addComponent(logo, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(controlsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 			footerPanelLayout.setVerticalGroup(footerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, footerPanelLayout.createSequentialGroup().addContainerGap().addComponent(logo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addContainerGap()).addComponent(controlsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE));
 		}
 

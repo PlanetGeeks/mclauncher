@@ -326,35 +326,34 @@ public class Launcher
 					try
 					{
 						pane = new JEditorPane(link);
+						pane.setContentType("text/html");
+						pane.addHyperlinkListener(new HyperlinkListener()
+						{
+							public void hyperlinkUpdate(HyperlinkEvent he)
+							{
+								if (he.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
+								{
+									try
+
+									{
+										Desktop.getDesktop().browse(he.getURL().toURI());
+									}
+									catch (Exception e)
+									{
+										e.printStackTrace();
+									}
+								}
+							}
+						});
 					}
 					catch (IOException e)
 					{
 						pane = new JEditorPane();
-						if (pane != null)
-							pane.setText(LanguageUtils.getTranslated("launcher.newsError"));
+						pane.setText(LanguageUtils.getTranslated("launcher.newsError"));
 					}
-					pane.setContentType("text/html");
 					pane.setEditable(false);
 					pane.setBackground(Color.BLACK);
 					pane.setBorder(null);
-					pane.addHyperlinkListener(new HyperlinkListener()
-					{
-						public void hyperlinkUpdate(HyperlinkEvent he)
-						{
-							if (he.getEventType() == HyperlinkEvent.EventType.ACTIVATED)
-							{
-								try
-
-								{
-									Desktop.getDesktop().browse(he.getURL().toURI());
-								}
-								catch (Exception e)
-								{
-									e.printStackTrace();
-								}
-							}
-						}
-					});
 					panels[i] = pane;
 				}
 
@@ -388,7 +387,7 @@ public class Launcher
 	public static void languageChanged()
 	{
 		if (launcherFrame != null)
-	    	launcherFrame.loadTranslations();
+			launcherFrame.loadTranslations();
 		if (launcherFrame.mainPanel != null)
 			launcherFrame.mainPanel.loadTranslations();
 		if (launcherFrame.southPanel != null)
@@ -403,10 +402,10 @@ public class Launcher
 			consoleFrame.loadTranslations();
 		if (optionsFrame != null)
 			optionsFrame.loadTranslations();
-	    if (filterFrame != null)
-	    	filterFrame.loadTranslations();
-	    if (mpinfoframe != null)
-	    	mpinfoframe.loadTranslations();
+		if (filterFrame != null)
+			filterFrame.loadTranslations();
+		if (mpinfoframe != null)
+			mpinfoframe.loadTranslations();
 	}
 
 	public static void closeLauncher()
