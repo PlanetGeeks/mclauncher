@@ -56,7 +56,7 @@ public class GameLauncher
 
 		processLauncher.directory(gameDirectory);
 		
-		if(isNewFormat(modpack.mcVersion))
+		if(!isNewFormat(modpack.mcVersion))
 		{
 			if (DirUtils.getPlatform() == DirUtils.OS.macos)
 			{
@@ -83,6 +83,8 @@ public class GameLauncher
 				processLauncher.addCommands(new String[] { "-Xdock:icon=" + new File(assetsDirectory, "icons/minecraft.icns").getAbsolutePath(), "-Xdock:name=" + modpack.packName });
 			}
 
+			//processLauncher.addCommands(new String[] { "-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump" });
+			 
 			String defaultArgument = "-Xmx" + MemoryUtils.getMem(ProfilesUtils.getSelectedProfile().ram).size + "m";
 			processLauncher.addSplitCommands(defaultArgument);
 
@@ -93,23 +95,31 @@ public class GameLauncher
 			Profile profile = ProfilesUtils.getSelectedProfile();
 				
 			ArrayList<String> parameters = new ArrayList<String>();
-			parameters.add("--username " + (profile.minecraftName != null ? profile.minecraftName : profile.username));
-			parameters.add(" --session " +  (profile.sessionID != null ? profile.sessionID.trim() : "noSessionID"));
-			parameters.add(" --version " + modpack.mcVersion);
-			parameters.add(" --gameDir " + gameDirectory.getAbsolutePath());
-			parameters.add(" --assetsDir " + assetsDirectory.getAbsolutePath());
+			parameters.add("--username");
+			parameters.add(profile.minecraftName != null ? profile.minecraftName : profile.username);
+			parameters.add("--session");
+			parameters.add(profile.sessionID != null ? profile.sessionID.trim() : "noSessionID");
+			parameters.add("--version");
+			parameters.add(modpack.mcVersion);
+			parameters.add("--gameDir");
+			parameters.add("\"" + gameDirectory.getAbsolutePath() + "\"");
+			parameters.add("--assetsDir");
+			parameters.add("\"" + assetsDirectory.getAbsolutePath() + "\"");
 			if(!modpack.tweakClass.equals("null"))
-				parameters.add(" --tweakClass " + modpack.tweakClass);
-			
-			String strParams = "";
+			{
+				parameters.add("--tweakClass");
+				parameters.add(modpack.tweakClass);
+			}
+				
+			String[] strParams = new String[parameters.size()];
 			
 			for(int i = 0; i < parameters.size(); i++)
 			{
-				strParams += parameters.get(i);
+				strParams[i] = parameters.get(i);
 			}
 			
-			processLauncher.addSplitCommands(strParams);
-        }
+			processLauncher.addCommands(strParams);
+		}
 		
 		try
 		{
@@ -125,13 +135,15 @@ public class GameLauncher
 				first = false;
 			}
 
-            JavaProcess p =	processLauncher.start();
+            final JavaProcess p =	processLauncher.start();
+           
         	Launcher.hideOrShowWindows(true);
             p.setExitRunnable(new JavaProcessRunnable()
             {
 				@Override
 				public void onJavaProcessEnded(JavaProcess paramJavaProcess)
 				{
+				//	 p.getRawProcess().exitValue();
 					if(LauncherProperties.getProperty("openLauncherAfterExit").equals("true"))
 					{
 						Launcher.hideOrShowWindows(false);
