@@ -1,5 +1,6 @@
 package it.planetgeeks.mclauncher.updater;
 
+import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.UpdaterFrame;
 import it.planetgeeks.mclauncher.utils.DirUtils;
@@ -10,11 +11,17 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 
 import javax.swing.JOptionPane;
+
+/**
+ * @author PlanetGeeks
+ * 
+ */
 
 public class LauncherUpdater
 {
@@ -60,10 +67,23 @@ public class LauncherUpdater
 		else
 		{
 			File source = new File(LauncherUpdater.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-			
-			FileUtils.copyFile(source, launcher);
-			
-			startCheck();
+
+			if (source.getName().endsWith(".jar"))
+			{
+				FileUtils.copyFile(source, launcher);
+				startCheck();
+			}
+			else
+			{
+				if (getLauncherCheckFile())
+				{
+					startUpdate();
+				}
+				else
+				{
+					openLocal("ERROR0");
+				}
+			}
 		}
 	}
 
@@ -90,6 +110,11 @@ public class LauncherUpdater
 		}
 	}
 
+	private static void openLocal(String err)
+	{
+		Launcher.main(new String[] { "start", err });
+	}
+
 	public static void openLauncher(String err)
 	{
 		try
@@ -97,9 +122,36 @@ public class LauncherUpdater
 			URL url = new File(DirUtils.getLauncherDirectory() + File.separator + "launcher.jar").toURI().toURL();
 			@SuppressWarnings("resource")
 			URLClassLoader classLoader = new URLClassLoader(new URL[] { url }, new LauncherUpdater().getClass().getClassLoader());
-			Class<?> myMainClass = classLoader.loadClass("it.planetgeeks.mclauncher.Launcher");
+			final Class<?> myMainClass = classLoader.loadClass("it.planetgeeks.mclauncher.Launcher");
 			Method main = myMainClass.getMethod("main", String[].class);
-			if(err != null)
+
+			if(Settings.splashScreen)
+			{
+				new Thread()
+				{
+					@Override
+					public void run()
+					{
+						try
+						{
+							boolean b = false;
+							while (!b)
+							{
+								Field f = myMainClass.getDeclaredField("loaded");
+								b = f.getBoolean(f);
+								Thread.sleep(10);
+							}
+							Launcher.splash.setVisible(false);
+						}
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+				}.start();
+			}
+			
+			if (err != null)
 			{
 				main.invoke(null, new Object[] { new String[] { "start", err } });
 			}
@@ -107,7 +159,6 @@ public class LauncherUpdater
 			{
 				main.invoke(null, new Object[] { new String[] { "start" } });
 			}
-			
 		}
 		catch (Exception e)
 		{

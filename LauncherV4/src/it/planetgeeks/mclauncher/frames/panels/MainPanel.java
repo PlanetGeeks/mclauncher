@@ -4,12 +4,14 @@ import it.planetgeeks.mclauncher.Launcher;
 import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.EnumLayouts;
 import it.planetgeeks.mclauncher.frames.MPServerFrame;
+import it.planetgeeks.mclauncher.frames.utils.BgPanel;
 import it.planetgeeks.mclauncher.frames.utils.CustomComponentListener;
 import it.planetgeeks.mclauncher.frames.utils.CustomMouseListener;
 import it.planetgeeks.mclauncher.frames.utils.DraggableTabbedPane;
 import it.planetgeeks.mclauncher.modpack.EnumFilterType;
 import it.planetgeeks.mclauncher.modpack.ModPack;
 import it.planetgeeks.mclauncher.modpack.ModPackUtils;
+import it.planetgeeks.mclauncher.resources.ResourcesUtils;
 import it.planetgeeks.mclauncher.utils.DesktopUtils;
 import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.FileUtils;
@@ -19,17 +21,21 @@ import it.planetgeeks.mclauncher.utils.SkinsManager;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -40,13 +46,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
+import javax.swing.Timer;
 
 /**
  * @author PlanetGeeks
  * 
  */
 
-public class MainPanel extends JPanel
+public class MainPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 
@@ -101,8 +108,8 @@ public class MainPanel extends JPanel
 
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
-			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(26, 26, 26).addComponent(bgPanel, GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addGap(0, 0, Short.MAX_VALUE)).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpBtn2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))).addContainerGap()));
-			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpBtn1).addComponent(mpFilterBtn)).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(3, 3, 3).addComponent(mpBtn2)).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl).addGap(1, 1, 1)))).addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)).addGap(11, 11, 11).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(leftSkin).addComponent(rightSkin)).addContainerGap()).addComponent(bgPanel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))));
+			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(26, 26, 26).addComponent(bgPanel, GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addGap(0, 0, Short.MAX_VALUE)).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpBtn2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))).addContainerGap()));
+			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpBtn1).addComponent(mpFilterBtn)).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(3, 3, 3).addComponent(mpBtn2)).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl).addGap(1, 1, 1)))).addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)).addGap(11, 11, 11).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(rightSkin).addComponent(leftSkin)).addContainerGap()).addComponent(bgPanel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))));
 		}
 		else if (current == EnumLayouts.NEWS)
 		{
@@ -328,7 +335,90 @@ public class MainPanel extends JPanel
 
 	private void loadBgComponents()
 	{
-		bgPanel = new JPanel();
+		bgPanel = new BgPanel(Launcher.getCurrentBg());
+
+		final JLabel arrowLeft = new JLabel();
+		final JLabel arrowRight = new JLabel();
+
+		if (Launcher.getBgLength() > 1)
+		{
+			ResourcesUtils res = Launcher.getResources();
+			ImageIcon icon = res.getCroppedResorce("arrows.png", 0, 0, 55, 55);
+			BufferedImage buf = res.getFromIcon(icon);
+
+			arrowLeft.setIcon(icon);
+			arrowRight.setIcon(new ImageIcon(Launcher.getResources().getReflectedResource(buf, -1.0D, 1.0D)));
+
+			final MainPanel panel = this;
+
+			arrowLeft.addMouseListener(new MouseAdapter()
+			{
+				public void mousePressed(MouseEvent me)
+				{
+					Launcher.changeBg(false);
+					bgPanel.setBg(Launcher.getCurrentBg());
+					bgPanel.repaint();
+					timer.stop();
+					timer = new Timer(1000 * Settings.bgTimer + 5000, panel);
+					timer.start();
+				}
+
+				public void mouseEntered(MouseEvent me)
+				{
+					ResourcesUtils res = Launcher.getResources();
+					ImageIcon icon = res.getCroppedResorce("arrows.png", 55, 0, 55, 55);
+					arrowLeft.setIcon(icon);
+					setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				}
+
+				public void mouseExited(MouseEvent me)
+				{
+					ResourcesUtils res = Launcher.getResources();
+					ImageIcon icon = res.getCroppedResorce("arrows.png", 0, 0, 55, 55);
+					arrowLeft.setIcon(icon);
+					setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				}
+			});
+
+			arrowRight.addMouseListener(new MouseAdapter()
+			{
+				public void mousePressed(MouseEvent me)
+				{
+					Launcher.changeBg(true);
+					bgPanel.setBg(Launcher.getCurrentBg());
+					bgPanel.repaint();
+					timer.stop();
+					timer = new Timer(1000 * Settings.bgTimer + 5000, panel);
+					timer.start();
+				}
+
+				public void mouseEntered(MouseEvent me)
+				{
+					ResourcesUtils res = Launcher.getResources();
+					ImageIcon icon = res.getCroppedResorce("arrows.png", 55, 0, 55, 55);
+					BufferedImage buf = res.getFromIcon(icon);
+					arrowRight.setIcon(new ImageIcon(Launcher.getResources().getReflectedResource(buf, -1.0D, 1.0D)));
+					setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				}
+
+				public void mouseExited(MouseEvent me)
+				{
+					ResourcesUtils res = Launcher.getResources();
+					ImageIcon icon = res.getCroppedResorce("arrows.png", 0, 0, 55, 55);
+					BufferedImage buf = res.getFromIcon(icon);
+					arrowRight.setIcon(new ImageIcon(Launcher.getResources().getReflectedResource(buf, -1.0D, 1.0D)));
+
+					setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				}
+			});
+		}
+
+		actionPerformed(null);
+
+		GroupLayout layout = new GroupLayout(bgPanel);
+		bgPanel.setLayout(layout);
+		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(arrowLeft, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 643, Short.MAX_VALUE).addComponent(arrowRight, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE).addContainerGap()));
+		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap(210, Short.MAX_VALUE).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(arrowLeft, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE).addComponent(arrowRight, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)).addContainerGap(210, Short.MAX_VALUE)));
 	}
 
 	private void loadModPackComponents()
@@ -549,13 +639,13 @@ public class MainPanel extends JPanel
 	{
 		for (int i = 0; i < skinPoligon.length; i++)
 		{
-			
-			if(skinPoligon[i] == null)
+
+			if (skinPoligon[i] == null)
 			{
 				skinPoligon[i] = new JButton();
 			}
-			
-			if(buttons[i] != null)
+
+			if (buttons[i] != null)
 			{
 				skinPoligon[i].setIcon(buttons[i].getIcon());
 				skinPoligon[i].setSelectedIcon(buttons[i].getIcon());
@@ -573,12 +663,12 @@ public class MainPanel extends JPanel
 			{
 				skinPoligon[i].setVisible(false);
 			}
-			
-			if(skinPoligon[i].getParent() == null)
+
+			if (skinPoligon[i].getParent() == null)
 			{
 				add(skinPoligon[i]);
 			}
-		
+
 		}
 
 		revalidate();
@@ -711,9 +801,26 @@ public class MainPanel extends JPanel
 	public DraggableTabbedPane tabbedPanel;
 	public JScrollPane jfxScrollPanels[] = { new JScrollPane(), new JScrollPane(), new JScrollPane() };
 	public JPanel newsPanel;
-	private JPanel bgPanel;
+	private BgPanel bgPanel;
 	private JLabel loadSkin;
 	private JLabel animLoadSkin;
 	public boolean loadingModPack = true;
 	public boolean skinLayout = false;
+	private Timer timer;
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (timer != null)
+		{
+			timer.stop();
+			Launcher.changeBg(true);
+			bgPanel.setBg(Launcher.getCurrentBg());
+			bgPanel.repaint();
+		}
+
+		timer = new Timer(1000 * Settings.bgTimer, this);
+		timer.start();
+
+	}
 }

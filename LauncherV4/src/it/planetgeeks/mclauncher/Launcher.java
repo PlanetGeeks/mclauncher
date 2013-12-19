@@ -9,10 +9,13 @@ import it.planetgeeks.mclauncher.frames.MPInfoFrame;
 import it.planetgeeks.mclauncher.frames.MemoryFrame;
 import it.planetgeeks.mclauncher.frames.OptionsFrame;
 import it.planetgeeks.mclauncher.frames.ProfileFrame;
+import it.planetgeeks.mclauncher.frames.SplashFrame;
 import it.planetgeeks.mclauncher.modpack.ModPack;
 import it.planetgeeks.mclauncher.modpack.ModPackUtils;
 import it.planetgeeks.mclauncher.resources.ResourcesUtils;
 import it.planetgeeks.mclauncher.updater.LauncherUpdater;
+import it.planetgeeks.mclauncher.utils.EnumBgPos;
+import it.planetgeeks.mclauncher.utils.ImageBg;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
 import it.planetgeeks.mclauncher.utils.Profile;
@@ -22,6 +25,7 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
@@ -47,6 +51,10 @@ public class Launcher
 	private static MPInfoFrame mpinfoframe;
 	private static ResourcesUtils resources = new ResourcesUtils();
 	public static boolean forceUpdate = false;
+	private static ArrayList<ImageBg> listBgs = new ArrayList<ImageBg>();
+	public static int currentBg = 0;
+	public static boolean loaded = false;
+	public static SplashFrame splash;
 
 	public static void main(String[] args)
 	{
@@ -62,25 +70,71 @@ public class Launcher
 			consoleFrame.updateComponents();
 			ProfilesUtils.loadProfiles();
 			MemoryUtils.loadMemories();
+			Settings.initializeBackgrounds();
 			EventQueue.invokeLater(new Runnable()
 			{
 				public void run()
 				{
 					launcherFrame = new LauncherFrame();
 					launcherFrame.setVisible(true);
+					loaded = true;
 				}
 			});
 			ModPackUtils.startLoading();
-			loadNews();
+			if (isNewsLayout())
+				loadNews();
+			if(splash != null)
+               splash.setVisible(false);
 		}
 		else
 		{
+			if (Settings.splashScreen)
+				displaySplash();
 			loadLookAndFeel();
 			LauncherProperties.loadProperties();
 			LanguageUtils.loadLanguages();
 			LauncherUpdater.startCheck();
 		}
 
+	}
+	
+	public static void displaySplash()
+	{
+		Launcher.splash = new SplashFrame();
+		Launcher.splash.setVisible(true);
+	}
+
+	
+
+	private static boolean isNewsLayout()
+	{
+		EnumLayouts l = Settings.layoutMode;
+
+		if (l != EnumLayouts.BG && l != EnumLayouts.BG_MODPACK && l != EnumLayouts.BG_SKIN && l != EnumLayouts.BG_SKIN_MODPACK)
+		{
+			return true;
+		}
+
+		else
+			return false;
+	}
+
+	/**
+	 * @param img
+	 *            la path dell'immagine
+	 * @param bg
+	 *            posizione dell'immagine
+	 * @param resizable
+	 *            Ridimensionare immagine ?
+	 **/
+	public static void registerBg(String img, EnumBgPos bg, boolean resizable)
+	{
+		listBgs.add(new ImageBg(img, bg, resizable));
+	}
+
+	public static void setBgDesc(String desc)
+	{
+		listBgs.get(listBgs.size() - 1).setDesc(desc);
 	}
 
 	private static void loadLookAndFeel()
@@ -91,7 +145,9 @@ public class Launcher
 			{
 				if ("Nimbus".equals(info.getName()))
 				{
+
 					UIManager.setLookAndFeel(info.getClassName());
+					UIManager.getLookAndFeelDefaults().put("nimbusOrange", (new Color(Settings.progressBarColor)));
 					UIManager.put("nimbusBlueGrey", (new Color(Settings.buttonsBackground)));
 					UIManager.put("nimbusBase", (new Color(Settings.colorBase)));
 					UIManager.put("control", (new Color(Settings.control)));
@@ -382,6 +438,46 @@ public class Launcher
 		};
 
 		th.start();
+	}
+
+	public static void changeBg(boolean right)
+	{
+		if (right)
+		{
+			if (currentBg == listBgs.size() - 1)
+			{
+				currentBg = 0;
+				return;
+			}
+			else
+			{
+				currentBg++;
+				return;
+			}
+		}
+		else
+		{
+			if (currentBg == 0)
+			{
+				currentBg = listBgs.size() - 1;
+				return;
+			}
+			else
+			{
+				currentBg--;
+				return;
+			}
+		}
+	}
+
+	public static ImageBg getCurrentBg()
+	{
+		return listBgs.get(currentBg);
+	}
+
+	public static int getBgLength()
+	{
+		return listBgs.size();
 	}
 
 	public static void languageChanged()

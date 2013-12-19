@@ -5,6 +5,11 @@ import java.awt.event.FocusListener;
 
 import javax.swing.JTextField;
 
+/**
+ * @author PlanetGeeks
+ * 
+ */
+
 public class HintTextField extends JTextField implements FocusListener
 {
 

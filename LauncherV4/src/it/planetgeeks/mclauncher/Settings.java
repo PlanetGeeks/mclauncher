@@ -1,6 +1,7 @@
 package it.planetgeeks.mclauncher;
 
 import it.planetgeeks.mclauncher.frames.EnumLayouts;
+import it.planetgeeks.mclauncher.utils.EnumBgPos;
 
 /**
  * @author PlanetGeeks
@@ -10,14 +11,20 @@ import it.planetgeeks.mclauncher.frames.EnumLayouts;
 public class Settings
 {
 	/**
-	 * Questo è un launcher di minecraft opensource! Il codice è stato scritto
-	 * interamente da Flood del team di PlanetGeeks Visita il canale YT :
-	 * http://www.youtube.com/PlanetGeeks/ Visita il sito Web :
+	 * Questo è un launcher di minecraft opensource!
+	 * 
+	 *  Il codice è stato scritto interamente da Flood del team di PlanetGeeks 
+	 *  ( a eccezione del package ..uncher.utils.process preso dal launcher originale) 
+	 * 
+	 * Visita il canale YT :
+	 * http://www.youtube.com/PlanetGeeks/ 
+	 * 
+	 * Visita il sito Web :
 	 * http://www.planetgeeks.org/
 	 * 
 	 * Spero che il launcher risponda alle vostre richieste! Questo è un lavoro
 	 * fatto per passione quindi nulla esclude che ci possano essere bugs! In
-	 * ogni caso , se li trovate , segnalateli !
+	 * ogni caso , se li trovate , segnalateli!
 	 */
 
 	/** IMPOSTAZIONI LAUNCHER UPDATER **/
@@ -26,7 +33,7 @@ public class Settings
 	 * Link per il controllo della versione del launcher ( che contiene link
 	 * download - md5 - size )
 	 **/
-	public static String launcherLink = "null";
+	public static String launcherLink = "https://dl.dropboxusercontent.com/u/88221856/launcherv4test/launcher.settings";
 
 	/**
 	 * Se c'è un update del launcher fa apparire il box per la conferma
@@ -80,17 +87,37 @@ public class Settings
 	/** IMPOSTAZIONI GRAFICHE **/
 
 	/**
-	 * Launcher Frame layout mode Questo parametro permette di scegliere un
-	 * layout ( disposizione dei componenti ) per il launcher, Qui la lista dei
-	 * layout - BG -> backgroud - BG_SKIN -> background + skin - BG_MODPACK ->
-	 * background + modpack - BG_SKIN_MODPACK -> background + skin + modpack -
-	 * NEWS, -> News - NEWS_SKIN, -> News + Skin - MULTI_NEWS, -> 3 News -
-	 * MULTI_NEWS_SKIN, -> 3 News + Skin - NEWS_MODPACK, -> News + Modpack -
-	 * NEWS_SKIN_MODPACK, -> News + Skin + Modpack - MULTI_NEWS_MODPACK, -> 3
-	 * News + Modpack //bugged - MULTI_NEWS_SKIN_MODPACK; -> 3 News + Skin +
-	 * Modpack
+	 * Launcher Frame layout mode 
+	 * Questo parametro permette di scegliere un layout ( disposizione dei componenti ) per il launcher
+	 * Qui la lista dei layout : 
+	 * - BG -> backgroud 
+	 * - BG_SKIN -> background + skin 
+	 * - BG_MODPACK -> background + modpack 
+	 * - BG_SKIN_MODPACK -> background + skin + modpack 
+	 * - NEWS -> News 
+	 * - NEWS_SKIN -> News + Skin 
+	 * - MULTI_NEWS -> 3 News 
+	 * - MULTI_NEWS_SKIN -> 3 News + Skin 
+	 * - NEWS_MODPACK -> News + Modpack 
+	 * - NEWS_SKIN_MODPACK -> News + Skin + Modpack 
+	 * - MULTI_NEWS_MODPACK -> 3 News + Modpack 
+	 * - MULTI_NEWS_SKIN_MODPACK -> 3 News + Skin + Modpack
 	 **/
-	public static EnumLayouts layoutMode = EnumLayouts.MULTI_NEWS_SKIN_MODPACK;
+	
+	public static EnumLayouts layoutMode = EnumLayouts.BG_SKIN_MODPACK;
+	
+	/** carica i background del layout BG .. **/
+    public static void initializeBackgrounds()
+    {
+    	Launcher.registerBg("img1.png", EnumBgPos.CENTERED, true);
+    	Launcher.setBgDesc("Questo e' lo slideshow del launcher v4! Un'anteprima a solo scopo dimostrativo! E' possibile cambiare questa scritta dal file Settings.java");
+    	Launcher.registerBg("img2.png", EnumBgPos.CENTERED, true);
+    	Launcher.registerBg("img3.png", EnumBgPos.CENTERED, true);
+    	Launcher.setBgDesc("La descrizione non e' obbligatoria! Puo essere omessa e questo rettangolo non apparira'");
+    }
+    
+    /** tempo in secondi tra un background e il successivo **/
+    public static int bgTimer = 6;
 
 	/** Per usare bordi della finestra personalizzati **/
 	public static boolean customBorder = false;
@@ -100,6 +127,9 @@ public class Settings
 	 * finestra sullo schermo )
 	 **/
 	public static int barHeight = 28;
+	
+	/** Mostra lo splash Screen (l'immagine da cambiare è splash.png)**/
+	public static boolean splashScreen = true;
 
 	/** Colore titolo finestra solo per bordo personalizzato **/
 	public static int titleColor = 0xFFFFFF;
@@ -141,5 +171,8 @@ public class Settings
 
 	/** Colore delle scritte della console **/
 	public static int consoleForeground = 0xFFFFFF;
+	
+	/** Colore delle progress bar **/
+	public static int progressBarColor = 0x9198FF;
 
 }

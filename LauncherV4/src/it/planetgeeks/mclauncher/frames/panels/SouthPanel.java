@@ -67,9 +67,8 @@ public class SouthPanel extends CustomJPanel
 
 	public void initComponents()
 	{
-		logo = new JLabel();
-		logo.setIcon(Launcher.getResources().getResource("logo.png"));
-
+		setLogo();
+		setLayout(this.layout);
 		controlsPanel = new CustomJPanel(false, "controlsBg.png");
 		controlsPanel.setRightAlign();
 		profileButton = new JButton();
@@ -81,9 +80,6 @@ public class SouthPanel extends CustomJPanel
 		launchButton.setForeground(new Color(Settings.buttonsForeground));
 		linkLbl = new LinkLabel(LanguageUtils.getTranslated("launcher.websitelink"), Settings.websiteLink);
 		linkLbl.setForeground(new Color(Settings.southBarLabelsForeground));
-		logo.setBackground(new Color(0, 0, 0, 0));
-		logo.setHorizontalAlignment(SwingConstants.LEFT);
-		logo.setOpaque(false);
 		setBackground(new Color(153, 153, 153));
 		controlsPanel.setBackground(new Color(153, 153, 153, 0));
 		controlsPanel.setOpaque(false);
@@ -154,24 +150,6 @@ public class SouthPanel extends CustomJPanel
 			}
 		});
 
-		logo.addMouseListener(new MouseAdapter()
-		{
-			public void mousePressed(MouseEvent me)
-			{
-				DesktopUtils.openWebPage(Settings.websiteLink);
-			}
-
-			public void mouseEntered(MouseEvent me)
-			{
-				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			}
-
-			public void mouseExited(MouseEvent me)
-			{
-				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			}
-		});
-
 		profileComboBox.addActionListener(new ActionListener()
 		{
 			@Override
@@ -225,22 +203,46 @@ public class SouthPanel extends CustomJPanel
 		setUpdating(false);
 	}
 
+	private void setLogo()
+	{
+		logo = new JLabel();
+		logo.setIcon(Launcher.getResources().getResource("logo.png"));
+		logo.setBackground(new Color(0, 0, 0, 0));
+		logo.setHorizontalAlignment(SwingConstants.LEFT);
+		logo.setOpaque(false);
+
+		logo.addMouseListener(new MouseAdapter()
+		{
+			public void mousePressed(MouseEvent me)
+			{
+				DesktopUtils.openWebPage(Settings.websiteLink);
+			}
+
+			public void mouseEntered(MouseEvent me)
+			{
+				setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
+
+			public void mouseExited(MouseEvent me)
+			{
+				setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			}
+		});
+	}
+
 	public void setUpdating(boolean update)
 	{
 		this.removeAll();
+
 		if (update)
 		{
-			GroupLayout layout = new GroupLayout(this);
-			setLayout(layout);
 			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(totalBar, GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE).addComponent(totalLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentBar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE).addComponent(pauseLbl, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(stopLbl, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))).addContainerGap()));
 			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(stopLbl).addComponent(pauseLbl)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(currentLbl).addGap(0, 0, 0).addComponent(currentBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(totalLbl).addGap(0, 0, 0).addComponent(totalBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addContainerGap()));
 		}
 		else
 		{
-			GroupLayout footerPanelLayout = new GroupLayout(this);
-			setLayout(footerPanelLayout);
-			footerPanelLayout.setHorizontalGroup(footerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, footerPanelLayout.createSequentialGroup().addContainerGap().addComponent(logo, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(controlsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-			footerPanelLayout.setVerticalGroup(footerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, footerPanelLayout.createSequentialGroup().addContainerGap().addComponent(logo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addContainerGap()).addComponent(controlsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE));
+			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addComponent(this.logo, GroupLayout.PREFERRED_SIZE, 490, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(this.controlsPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)));
+			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(this.controlsPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(this.logo, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE));
 		}
 
 	}
@@ -468,4 +470,5 @@ public class SouthPanel extends CustomJPanel
 	private JLabel pauseLbl;
 	private JProgressBar totalBar;
 	private JProgressBar currentBar;
+	private GroupLayout layout = new GroupLayout(this);
 }

@@ -16,11 +16,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author PlanetGeeks
+ * 
+ */
+
 public class GameLauncher
 {
 	private static boolean isNewFormat(String version)
 	{
-	    String withoutDot = version.replaceAll(".", "");
+	    String withoutDot = version.replace(".", "");
 	    if(withoutDot.length() > 3)
 	    	withoutDot = withoutDot.substring(0,3);
 	    if(withoutDot.length() == 1)
@@ -72,7 +77,7 @@ public class GameLauncher
 		
 			Profile profile = ProfilesUtils.getSelectedProfile();
 			
-			processLauncher.addSplitCommands((profile.minecraftName != null ? profile.minecraftName : profile.username) + " " + (profile.sessionID != null ? profile.sessionID.trim().split(":")[1] : "noSessionID"));
+			processLauncher.addSplitCommands((profile.minecraftName != null ? profile.minecraftName : profile.username) + " " + (profile.sessionID != null ? profile.sessionID.trim() : "noSessionID"));
 		}
 		else
 		{
@@ -83,11 +88,9 @@ public class GameLauncher
 				processLauncher.addCommands(new String[] { "-Xdock:icon=" + new File(assetsDirectory, "icons/minecraft.icns").getAbsolutePath(), "-Xdock:name=" + modpack.packName });
 			}
 
-			//processLauncher.addCommands(new String[] { "-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump" });
-			 
-			String defaultArgument = "-Xmx" + MemoryUtils.getMem(ProfilesUtils.getSelectedProfile().ram).size + "m";
+		    String defaultArgument = "-Xmx" + MemoryUtils.getMem(ProfilesUtils.getSelectedProfile().ram).size + "m";
 			processLauncher.addSplitCommands(defaultArgument);
-
+			
 			processLauncher.addCommands(new String[] { "-Djava.library.path=" + nativeDir.getAbsolutePath() });
 			processLauncher.addCommands(new String[] { "-cp", constructClassPath(new File(gameDirectory, "bin"),new File(gameDirectory, "libraries")) });
 			processLauncher.addCommands(new String[] { modpack.mainClass });
@@ -143,7 +146,6 @@ public class GameLauncher
 				@Override
 				public void onJavaProcessEnded(JavaProcess paramJavaProcess)
 				{
-				//	 p.getRawProcess().exitValue();
 					if(LauncherProperties.getProperty("openLauncherAfterExit").equals("true"))
 					{
 						Launcher.hideOrShowWindows(false);
@@ -166,21 +168,25 @@ public class GameLauncher
 	{
 		File[] list = dir.listFiles();
 		ArrayList<String> paths = new ArrayList<String>();
-		for (File f : list)
+		
+		if(list != null)
 		{
-			if (f.isDirectory())
+			for (File f : list)
 			{
-				ArrayList<String> ret = getJars(f);
-				for (String r : ret)
+				if (f.isDirectory())
 				{
-					paths.add(r);
+					ArrayList<String> ret = getJars(f);
+					for (String r : ret)
+					{
+						paths.add(r);
+					}
 				}
-			}
-			else
-			{
-				if (f.getName().endsWith(".jar") || f.getName().endsWith(".zip"))
+				else
 				{
-					paths.add(f.getAbsolutePath());
+					if (f.getName().endsWith(".jar") || f.getName().endsWith(".zip"))
+					{
+						paths.add(f.getAbsolutePath());
+					}
 				}
 			}
 		}

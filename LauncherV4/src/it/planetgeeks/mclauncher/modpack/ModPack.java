@@ -25,7 +25,6 @@ public class ModPack
 	public ArrayList<ModPackFile> setup = new ArrayList<ModPackFile>();
 	public String setupIndex;
 	public String setupLink;
-	public boolean useForge;
 	public String modpackLink;
 	public String packBgLink;
 	public String modsListLink;
@@ -112,11 +111,6 @@ public class ModPack
     public void setSetupIndex(String link)
     {
     	setupIndex = link;
-    }
-    
-    public void setUseForge(boolean useForge)
-    {
-    	this.useForge = useForge;
     }
     
     public void setServerLinkDirect(boolean direct)

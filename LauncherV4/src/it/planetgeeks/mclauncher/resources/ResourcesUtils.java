@@ -1,5 +1,8 @@
 package it.planetgeeks.mclauncher.resources;
 
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +41,18 @@ public class ResourcesUtils
 		returned.getGraphics().drawImage(icon.getImage(), 0, 0, returned.getWidth(), returned.getHeight(), null);
 		return returned;
 	}
+	
+	public BufferedImage getScaledImage(BufferedImage icon, float scale, int type)
+	{
+		AffineTransform at = new AffineTransform();
+
+		at.scale(scale, scale);
+
+		AffineTransformOp op = new AffineTransformOp(at, type);
+		icon = op.filter(icon, null);
+
+		return icon;
+	}
 
 	public ImageIcon getCroppedResorce(String img, int startX, int startY, int width, int height)
 	{
@@ -53,6 +68,34 @@ public class ResourcesUtils
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	
+	public BufferedImage getFromIcon(ImageIcon img)
+	{
+		BufferedImage ret = new BufferedImage(img.getIconWidth(), img.getIconHeight(), 2);
+		
+		Graphics2D g = ret.createGraphics();
+		
+		g.drawImage(img.getImage(), 0, 0, ret.getWidth(), ret.getHeight(), null);
+		
+		g.dispose();
+		
+		return ret;
+	}
+	
+	public BufferedImage getReflectedResource(BufferedImage icon, double scaleX, double scaleY)
+	{
+		AffineTransform at = new AffineTransform();
+
+		at.translate(icon.getWidth() - (icon.getWidth() + scaleX * icon.getWidth()), 0);
+
+		at.scale(scaleX, scaleY);
+
+		AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+		icon = op.filter(icon, null);
+
+		return icon;
 	}
 	
 	public ImageIcon getMergedResource(ImageIcon image0, ImageIcon image1)

@@ -47,7 +47,7 @@ public class ModPackUtils
 
 	public static void startLoading()
 	{
-		
+
 		Thread thread = new Thread(new ThreadGetPacksInfo());
 		thread.start();
 	}
@@ -59,11 +59,11 @@ public class ModPackUtils
 		filterStr = null;
 		filteredList = new ArrayList<ModPack>();
 		selected = null;
-		
+
 		try
 		{
 			ArrayList<String> urls = getUrls();
-			
+
 			if (urls != null)
 			{
 
@@ -123,35 +123,34 @@ public class ModPackUtils
 		ArrayList<String> mods = new ArrayList<String>();
 		String setup = new String();
 		String setupIndex = null;
-		boolean useForge = false;
 		boolean serverLinkDirect = false;
 		String packBgLink = null;
 		String modsListLink = null;
 		String packVersion = null;
 		String mainClass = null;
 		String tweakClass = null;
-	    File modpack = null;
-	    if(local)
-	    {
-	    	File[] list = (new File(url)).listFiles();
-	    	for(int i = 0 ; i < list.length; i++)
-	    	{
-	    		if(list[i].getName().endsWith(".modpack"))
-	    		{
-	    			modpack = list[i];
-	    			break;
-	    		}
-	    	}
-	    	if(modpack == null)
-	    	{
-	    		return null;
-	    	}
-	    }
-	    else
-	    {
-	    	modpack = new File(local ? url : DirUtils.getLauncherDirectory() + File.separator + "temp");
-	    }
-	    
+		File modpack = null;
+		if (local)
+		{
+			File[] list = (new File(url)).listFiles();
+			for (int i = 0; i < list.length; i++)
+			{
+				if (list[i].getName().endsWith(".modpack"))
+				{
+					modpack = list[i];
+					break;
+				}
+			}
+			if (modpack == null)
+			{
+				return null;
+			}
+		}
+		else
+		{
+			modpack = new File(local ? url : DirUtils.getLauncherDirectory() + File.separator + "temp");
+		}
+
 		if (modpack.exists() && !local)
 		{
 			modpack.delete();
@@ -189,15 +188,15 @@ public class ModPackUtils
 						if (local)
 						{
 							File[] list = modpack.getParentFile().listFiles();
-                            for(int a = 0; a < list.length; a++)
-                            {
-                            	if(list[a].getName().endsWith(".list"))
-                            	{
-                            		modsListLink = readed.substring(5);
-                            		mods = readFileContent(true, list[a].getAbsolutePath());
-                            		break;
-                            	}
-                            }
+							for (int a = 0; a < list.length; a++)
+							{
+								if (list[a].getName().endsWith(".list"))
+								{
+									modsListLink = readed.substring(5);
+									mods = readFileContent(true, list[a].getAbsolutePath());
+									break;
+								}
+							}
 						}
 						else
 						{
@@ -209,23 +208,23 @@ public class ModPackUtils
 					{
 						packBgLink = readed.substring(6);
 						Image image = null;
-						if(local)
+						if (local)
 						{
 							File[] list = modpack.getParentFile().listFiles();
-                            for(int a = 0; a < list.length; a++)
-                            {
-                            	if(list[a].getName().endsWith(".png"))
-                            	{
-                            		image = ImageIO.read(list[a]);
-                            		break;
-                            	}
-                            }
+							for (int a = 0; a < list.length; a++)
+							{
+								if (list[a].getName().endsWith(".png"))
+								{
+									image = ImageIO.read(list[a]);
+									break;
+								}
+							}
 						}
 						else
 						{
 							image = ImageIO.read(new URL(packBgLink));
 						}
-					 
+
 						if (image != null)
 						{
 							imgIcon = new ImageIcon(image);
@@ -239,10 +238,6 @@ public class ModPackUtils
 					{
 						setupIndex = readed.substring(12);
 					}
-					else if (readed.startsWith("useForge="))
-					{
-						useForge = readed.substring(9).trim().equals("true") ? true : false;
-					}
 					else if (readed.startsWith("serverLink-direct="))
 					{
 						serverLinkDirect = (readed.substring(18).trim()).equals("true") ? true : false;
@@ -255,7 +250,7 @@ public class ModPackUtils
 					{
 						tweakClass = readed.substring(11);
 					}
-					
+
 					readed = br.readLine();
 				}
 				br.close();
@@ -263,12 +258,12 @@ public class ModPackUtils
 			catch (IOException e)
 			{
 				LauncherLogger.log(LauncherLogger.GRAVE, "Error on reading modpack info!");
-				if(!local)
-				modpack.delete();
+				if (!local)
+					modpack.delete();
 				return null;
 			}
-			if(!local)
-			modpack.delete();
+			if (!local)
+				modpack.delete();
 		}
 		else
 		{
@@ -281,7 +276,6 @@ public class ModPackUtils
 		returned.setPackImage(imgIcon);
 		returned.setSetupLink(setup);
 		returned.setSetupIndex(setupIndex);
-		returned.setUseForge(useForge);
 		returned.setServerLinkDirect(serverLinkDirect);
 		returned.setModPackLink(url);
 		returned.setPackBgLink(packBgLink);
@@ -369,7 +363,7 @@ public class ModPackUtils
 		else
 		{
 			LauncherLogger.log(LauncherLogger.GRAVE, "Error on downloading modpack list! URL : '" + Settings.modpacks + "'");
-		    return null;
+			return null;
 		}
 		return urls;
 	}
@@ -441,6 +435,55 @@ public class ModPackUtils
 		return modPacks;
 	}
 
+	private static void loadLatestSetup(ModPack modpack)
+	{
+		File f = new File(modpack.getModPackDir() + File.separator + "setup.settings");
+
+		if (f != null && f.isFile())
+		{
+			ArrayList<String> lines = ModPackUtils.readFileContent(true, f.getAbsolutePath());
+
+			ArrayList<String> onlySavePaths = new ArrayList<String>();
+
+			for (String l : lines)
+			{
+				l = l.split(":")[1] != null ? l.split(":")[1] : "null";
+
+				String[] str = l.split("/");
+
+				String path = modpack.getModPackDir().getAbsolutePath() + File.separator + "files";
+
+				for (int i = 0; i < str.length; i++)
+				{
+					path += File.separator + str[i];
+				}
+
+				onlySavePaths.add(path);
+			}
+
+			for (String l : onlySavePaths)
+			{
+				boolean exists = false;
+				for (ModPackFile s : modpack.setup)
+				{
+					if (l.equals(s.getSaveFile().getAbsolutePath()))
+					{
+						exists = true;
+						break;
+					}
+				}
+				if (!exists)
+				{
+					File fi = new File(l);
+					if (fi.exists())
+					{
+						fi.delete();
+					}
+				}
+			}
+		}
+	}
+
 	public static void setupModPack(final ModPack modpack)
 	{
 		Launcher.setUpdatingModPack(true);
@@ -452,6 +495,8 @@ public class ModPackUtils
 			{
 				Launcher.getLauncherFrame().southPanel.updateStatus(-1, "", 100, 100, 100);
 				modpack.setSetup(readFileContent(false, modpack.setupLink));
+				loadLatestSetup(modpack);
+				FileUtils.downloadFile(modpack.setupLink, new File(modpack.getModPackDir() + File.separator + "setup.settings"));
 				if (ModPackUtils.updateStopped)
 				{
 					updateStopped = false;
@@ -535,7 +580,7 @@ public class ModPackUtils
 					FileUtils.downloadFile(modpack.modpackLink, new File(modpack.getModPackDir() + File.separator + modpack.packName + ".modpack"));
 					FileUtils.downloadFile(modpack.packBgLink, new File(modpack.getModPackDir() + File.separator + "packBg.png"));
 					FileUtils.downloadFile(modpack.modsListLink, new File(modpack.getModPackDir() + File.separator + "mods.list"));
-					Launcher.setUpdatingModPack(false);
+				    Launcher.setUpdatingModPack(false);
 					GameLauncher.launchGame();
 				}
 				else
