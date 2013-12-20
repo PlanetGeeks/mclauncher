@@ -161,6 +161,7 @@ public class Settings
 	 **/
 	public static int lightBackground = 0xC1C0C3;
 
+	/** Colore di sfondo dei pannelli **/
 	public static int control = 0xD0CFD2;
 
 	/** Colore di base dei componenti **/
