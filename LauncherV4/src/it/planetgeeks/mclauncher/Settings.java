@@ -13,7 +13,7 @@ public class Settings
 	/**
 	 * Questo è un launcher di minecraft opensource!
 	 * 
-	 *  Il codice è stato scritto interamente da Flood del team di PlanetGeeks 
+	 *  Il codice e' stato scritto interamente da Flood del team di PlanetGeeks 
 	 *  ( a eccezione del package ..uncher.utils.process preso dal launcher originale) 
 	 * 
 	 * Visita il canale YT :
@@ -22,7 +22,7 @@ public class Settings
 	 * Visita il sito Web :
 	 * http://www.planetgeeks.org/
 	 * 
-	 * Spero che il launcher risponda alle vostre richieste! Questo è un lavoro
+	 * Spero che il launcher risponda alle vostre richieste! Questo e' un lavoro
 	 * fatto per passione quindi nulla esclude che ci possano essere bugs! In
 	 * ogni caso , se li trovate , segnalateli!
 	 */
@@ -36,7 +36,7 @@ public class Settings
 	public static String launcherLink = "https://dl.dropboxusercontent.com/u/88221856/launcherv4test/launcher.settings";
 
 	/**
-	 * Se c'è un update del launcher fa apparire il box per la conferma
+	 * Se c'e' un update del launcher fa apparire il box per la conferma
 	 * altrimenti procede forzatamente
 	 **/
 	public static boolean showUpdateConfirm = true;
@@ -118,6 +118,12 @@ public class Settings
     
     /** tempo in secondi tra un background e il successivo **/
     public static int bgTimer = 6;
+    
+    /** colore del testo di descrizione **/
+    public static int descTextColor = 0xDADADA;
+    
+    /** colore dello sfondo della descrizione **/
+    public static int descBgColor = 0x000000;
 
 	/** Per usare bordi della finestra personalizzati **/
 	public static boolean customBorder = false;
