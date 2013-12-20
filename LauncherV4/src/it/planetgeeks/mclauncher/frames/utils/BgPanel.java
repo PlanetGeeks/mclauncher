@@ -1,6 +1,7 @@
 package it.planetgeeks.mclauncher.frames.utils;
 
 import it.planetgeeks.mclauncher.Launcher;
+import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.utils.EnumBgPos;
 import it.planetgeeks.mclauncher.utils.ImageBg;
 
@@ -63,15 +64,15 @@ public class BgPanel extends JPanel implements ActionListener
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-			    int x = e.getPoint().x;
-			    int y = e.getPoint().y;
-			    if(!(x >= 0 && x <= instance.getWidth() && y >= 0 && y <= instance.getHeight()))
-			    {
-			    	if(timer[2] != null)
-			    		timer[2].stop();
-			    	timer[2] = new Timer(1000, instance);
+				int x = e.getPoint().x;
+				int y = e.getPoint().y;
+				if (!(x >= 0 && x <= instance.getWidth() && y >= 0 && y <= instance.getHeight()))
+				{
+					if (timer[2] != null)
+						timer[2].stop();
+					timer[2] = new Timer(1000, instance);
 					timer[2].start();
-			    }
+				}
 			}
 		});
 	}
@@ -126,7 +127,7 @@ public class BgPanel extends JPanel implements ActionListener
 
 					int posX = i == 0 ? posX_0 : posX_1;
 
-					((Graphics2D) g).setColor(new Color(0, 0, 0));
+					((Graphics2D) g).setColor(new Color(Settings.descBgColor));
 					((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (i == 0 ? 0.5F : 0.0F) + fade / 2));
 					((Graphics2D) g).fillRect(0, 0, this.getWidth(), 20);
 
@@ -138,7 +139,7 @@ public class BgPanel extends JPanel implements ActionListener
 					{
 						((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (i == 0 ? 1.0F : 0.0F) + fade));
 					}
-					((Graphics2D) g).setColor(new Color(218, 218, 218));
+					((Graphics2D) g).setColor(new Color(Settings.descTextColor));
 					((Graphics2D) g).setFont(new Font("arial", Font.PLAIN, 12));
 
 					double width = ((Graphics2D) g).getFontMetrics().getStringBounds(current.desc, g).getWidth();
@@ -156,8 +157,6 @@ public class BgPanel extends JPanel implements ActionListener
 					}
 				}
 			}
-			
-			
 
 			((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha_1));
 		}
