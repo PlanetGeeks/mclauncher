@@ -176,7 +176,7 @@ public class ProfileFrame extends JFrame
 			usernameField.setText(profile.username);
 			passwordField.setText(profile.password);
 			if (profile.email != null && !profile.email.equals(""))
-				emailField.setText(profile.email);
+				emailField.setText(profile.email.equals("null") ? "" : profile.email);
 			profileNameField.setText(profile.profileName);
 			comboBoxRam.setSelectedItem(profile.ram);
 			if (!comboBoxRam.getSelectedItem().equals(profile.ram))

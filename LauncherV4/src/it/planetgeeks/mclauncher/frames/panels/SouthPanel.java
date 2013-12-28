@@ -2,7 +2,6 @@ package it.planetgeeks.mclauncher.frames.panels;
 
 import it.planetgeeks.mclauncher.GameLauncher;
 import it.planetgeeks.mclauncher.Launcher;
-import it.planetgeeks.mclauncher.LauncherLogger;
 import it.planetgeeks.mclauncher.LauncherProperties;
 import it.planetgeeks.mclauncher.Settings;
 import it.planetgeeks.mclauncher.frames.utils.CustomJPanel;
@@ -22,12 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -283,11 +276,12 @@ public class SouthPanel extends CustomJPanel
 
 			return;
 		}
-
+		
 		Profile profile = ProfilesUtils.getSelectedProfile();
 
 		String error = "";
 
+		
 		boolean playOffline = true;
 
 		if (profile.rememberPsw)
@@ -335,7 +329,7 @@ public class SouthPanel extends CustomJPanel
 			}
 
 		}
-
+		
 		ModPack selected = ModPackUtils.selected;
 
 		if (selected != null)
@@ -369,14 +363,8 @@ public class SouthPanel extends CustomJPanel
 		{
 			if (status == 1)
 			{
-				String str = new String(pathUrl);
-
-				if (str.length() > 41)
-				{
-					str = pathUrl.substring(0, 19) + "..." + pathUrl.substring(pathUrl.length() - 19, pathUrl.length());
-				}
-				this.currentLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.update.downloading") + " - " + str + " - " + current + "%");
-				this.currentBar.setValue(current);
+				this.currentLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.update.downloading") + " " + index + "/" + max);
+				this.currentBar.setValue((index * 100) / max);
 				this.currentBar.setIndeterminate(false);
 			}
 			else
@@ -388,13 +376,13 @@ public class SouthPanel extends CustomJPanel
 					str = pathUrl.substring(0, 19) + "..." + pathUrl.substring(pathUrl.length() - 19, pathUrl.length());
 				}
 				this.currentLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.update.checking") + " - " + str);
-				this.currentBar.setValue(100);
-				this.currentBar.setIndeterminate(true);
+				this.currentBar.setValue((index*100)/max);
+				this.currentBar.setIndeterminate(false);
 			}
 
-			this.totalLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.update.total") + " - " + (index * 100) / max + "%");
-			this.totalBar.setValue((index * 100) / max);
-			this.totalBar.setIndeterminate(false);
+			this.totalLbl.setText(LanguageUtils.getTranslated("launcher.modpacks.update.total") + (current != -1 ? " - " + current + "%" : ""));
+			this.totalBar.setValue(current == -1 ? 100 : current);
+			this.totalBar.setIndeterminate(current == -1 ? true : false);
 		}
 		else
 		{
@@ -402,54 +390,6 @@ public class SouthPanel extends CustomJPanel
 			this.totalBar.setValue(100);
 			this.totalBar.setIndeterminate(true);
 		}
-	}
-
-	public boolean setDownloadingFile(String pathUrl, File dest, int index, int max)
-	{
-		try
-		{
-			dest.getParentFile().mkdirs();
-			dest.createNewFile();
-			dest.setWritable(true);
-			URL url = new URL(pathUrl);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-			float totalDataRead = 0;
-			BufferedInputStream in = new java.io.BufferedInputStream(connection.getInputStream());
-			FileOutputStream fos = new FileOutputStream(dest);
-			BufferedOutputStream bout = new BufferedOutputStream(fos, 1024);
-			byte[] data = new byte[1024];
-			int i = 0;
-			int filesize = connection.getContentLength();
-			boolean notBreaked = true;
-
-			while ((i = in.read(data, 0, 1024)) >= 0)
-			{
-				totalDataRead = totalDataRead + i;
-				bout.write(data, 0, i);
-				float perc = (totalDataRead * 100) / filesize;
-				updateStatus(1, pathUrl, (int) perc, index, max);
-				Thread.sleep(1);
-				if (ModPackUtils.updateStopped || ModPackUtils.updatePaused)
-				{
-					notBreaked = false;
-					break;
-				}
-			}
-			bout.close();
-			fos.close();
-			in.close();
-			connection.disconnect();
-
-			return notBreaked;
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			LauncherLogger.log(LauncherLogger.GRAVE, "Error on downloading file " + pathUrl);
-		}
-
-		return false;
 	}
 
 	public void setLaunchActive()

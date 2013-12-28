@@ -29,36 +29,40 @@ import javax.swing.Timer;
 public class BgPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
+	private ImageBg[] imgs;
 	public ImageBg img;
 	public ImageBg newest;
 	private float alpha = 0f;
 	private float alpha_1 = 1f;
 	private int posX_0 = 0;
 	private int posX_1 = 0;
-	private Timer timer[] = new Timer[4];
-	private boolean drawing = true;
+	private Timer timer;
+	private boolean fades[] = new boolean[4];
+	private int nextFade = Settings.bgTimer * 25;
+	private int ticks = 0;
+	private boolean right = true;
+	private int currentBg = 0;
 
-	public BgPanel(ImageBg img)
+	public BgPanel(ImageBg[] imgs)
 	{
 		super();
-		this.img = img;
+		this.imgs = imgs;
+		this.img = this.imgs[currentBg];
+		this.timer = new Timer(40, this);
+		this.timer.start();
 		final BgPanel instance = this;
-		timer[2] = new Timer(1000, instance);
-		timer[2].start();
-		timer[1] = new Timer(35, this);
-		timer[1].start();
 		this.addMouseListener(new CustomMouseListener()
 		{
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				drawing = true;
-				if (timer[2] != null)
+				int x = e.getPoint().x;
+				int y = e.getPoint().y;
+				if (x >= 0 && x <= instance.getWidth() && y >= 0 && y <= instance.getHeight())
 				{
-					timer[2].stop();
+					fades[0] = true;
+					fades[1] = false;
 				}
-				timer[3] = new Timer(50, instance);
-				timer[3].start();
 			}
 
 			@Override
@@ -68,29 +72,34 @@ public class BgPanel extends JPanel implements ActionListener
 				int y = e.getPoint().y;
 				if (!(x >= 0 && x <= instance.getWidth() && y >= 0 && y <= instance.getHeight()))
 				{
-					if (timer[2] != null)
-						timer[2].stop();
-					timer[2] = new Timer(1000, instance);
-					timer[2].start();
+					fades[0] = false;
+					fades[1] = true;
 				}
 			}
 		});
 	}
 
-	public void setBg(ImageBg img)
+	public void setBg(boolean right)
 	{
-		if (!(timer[0] != null && timer[0].isRunning()))
+		fades[3] = true;
+		this.ticks = 0;
+		this.nextFade = Settings.bgTimer * 25 + 100;
+		this.right = right;
+		changeBg();
+		this.newest = this.imgs[currentBg];
+	}
+	
+	private void changeBg()
+	{
+		if(this.right)
 		{
-			timer[0] = new Timer(50, this);
-			timer[0].start();
-			timer[1] = new Timer(35, this);
-			timer[1].start();
+			currentBg = currentBg == this.imgs.length - 1 ? 0 : currentBg + 1;
 		}
 		else
 		{
-			this.img = newest;
+			currentBg = currentBg == 0 ? this.imgs.length - 1 : currentBg - 1;
 		}
-		this.newest = img;
+	
 	}
 
 	public void paintComponent(Graphics g)
@@ -232,44 +241,53 @@ public class BgPanel extends JPanel implements ActionListener
 	{
 		if (e.getSource() instanceof Timer)
 		{
-			if ((Timer) e.getSource() == timer[0])
+			if ((Timer) e.getSource() == timer)
 			{
-				alpha += 0.050f;
-
-				if (alpha >= 1)
+				if (!fades[3])
 				{
-					alpha = 0;
-					timer[0].stop();
-					img = getCopy(newest);
-					newest = null;
-					posX_0 = posX_1;
-					posX_1 = 0;
+					if (ticks == nextFade)
+					{
+						ticks = 0;
+						nextFade = Settings.bgTimer * 25;
+						fades[3] = true;
+						changeBg();
+						newest = this.imgs[currentBg];
+					}
+					else
+					{
+						ticks++;
+					}
 				}
-			}
-			else if ((Timer) e.getSource() == timer[1])
-			{
+				else
+				{
+					alpha += 0.050f;
+
+					if (alpha >= 1)
+					{
+						alpha = 0;
+						fades[3] = false;
+						img = getCopy(newest);
+						newest = null;
+						posX_0 = posX_1;
+						posX_1 = 0;
+					}
+				}
+
 				if (newest != null)
 				{
 					posX_1 -= 1;
 				}
 				posX_0 -= 1;
-			}
-			else if ((Timer) e.getSource() == timer[2])
-			{
-				timer[2].stop();
-				if (timer[3] != null)
-					timer[3].stop();
-				drawing = false;
-				timer[3] = new Timer(50, this);
-				timer[3].start();
-			}
-			else if ((Timer) e.getSource() == timer[3])
-			{
-				alpha_1 = drawing ? alpha_1 + 0.1f : alpha_1 - 0.1f;
-				if (alpha_1 > 1 || alpha_1 < 0)
+
+				if (fades[0] || fades[1])
 				{
-					alpha_1 = alpha_1 > 1 ? 1.0F : 0.0F;
-					timer[3].stop();
+					alpha_1 = fades[0] ? alpha_1 + 0.1f : alpha_1 - 0.1f;
+					if (alpha_1 > 1 || alpha_1 < 0)
+					{
+						alpha_1 = alpha_1 > 1 ? 1.0F : 0.0F;
+						fades[0] = false;
+						fades[1] = false;
+					}
 				}
 			}
 		}

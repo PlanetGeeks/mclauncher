@@ -46,14 +46,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle;
 import javax.swing.ListSelectionModel;
-import javax.swing.Timer;
 
 /**
  * @author PlanetGeeks
  * 
  */
 
-public class MainPanel extends JPanel implements ActionListener
+public class MainPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -171,8 +170,8 @@ public class MainPanel extends JPanel implements ActionListener
 
 			GroupLayout layout = new GroupLayout(this);
 			this.setLayout(layout);
-			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(26, 26, 26).addComponent(newsPanel, GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addGap(0, 0, Short.MAX_VALUE)).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpBtn2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))).addContainerGap()));
-			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpBtn1).addComponent(mpFilterBtn)).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(3, 3, 3).addComponent(mpBtn2)).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl).addGap(1, 1, 1)))).addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)).addGap(11, 11, 11).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(leftSkin).addComponent(rightSkin)).addContainerGap()).addComponent(newsPanel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))));
+			layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(leftSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(138, 138, 138).addComponent(rightSkin, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE).addGap(26, 26, 26).addComponent(newsPanel, GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 274, GroupLayout.PREFERRED_SIZE).addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(mpFilterBtn, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE).addGap(0, 0, Short.MAX_VALUE)).addComponent(mpFilterLbl, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false).addComponent(mpBtn2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addComponent(mpBtn1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))).addContainerGap()));
+			layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING).addGroup(layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(mpBtn1).addComponent(mpFilterBtn)).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addGap(3, 3, 3).addComponent(mpBtn2)).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(mpFilterLbl).addGap(1, 1, 1)))).addComponent(mpCombobox, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)).addGap(11, 11, 11).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(rightSkin).addComponent(leftSkin)).addContainerGap()).addComponent(newsPanel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))));
 		}
 		else if (current == EnumLayouts.NEWS_MODPACK)
 		{
@@ -335,7 +334,7 @@ public class MainPanel extends JPanel implements ActionListener
 
 	private void loadBgComponents()
 	{
-		bgPanel = new BgPanel(Launcher.getCurrentBg());
+		bgPanel = new BgPanel(Launcher.getBgArray());
 
 		final JLabel arrowLeft = new JLabel();
 		final JLabel arrowRight = new JLabel();
@@ -349,18 +348,13 @@ public class MainPanel extends JPanel implements ActionListener
 			arrowLeft.setIcon(icon);
 			arrowRight.setIcon(new ImageIcon(Launcher.getResources().getReflectedResource(buf, -1.0D, 1.0D)));
 
-			final MainPanel panel = this;
-
 			arrowLeft.addMouseListener(new MouseAdapter()
 			{
 				public void mousePressed(MouseEvent me)
 				{
 					Launcher.changeBg(false);
-					bgPanel.setBg(Launcher.getCurrentBg());
+					bgPanel.setBg(false);
 					bgPanel.repaint();
-					timer.stop();
-					timer = new Timer(1000 * Settings.bgTimer + 5000, panel);
-					timer.start();
 				}
 
 				public void mouseEntered(MouseEvent me)
@@ -385,11 +379,8 @@ public class MainPanel extends JPanel implements ActionListener
 				public void mousePressed(MouseEvent me)
 				{
 					Launcher.changeBg(true);
-					bgPanel.setBg(Launcher.getCurrentBg());
+					bgPanel.setBg(true);
 					bgPanel.repaint();
-					timer.stop();
-					timer = new Timer(1000 * Settings.bgTimer + 5000, panel);
-					timer.start();
 				}
 
 				public void mouseEntered(MouseEvent me)
@@ -412,8 +403,6 @@ public class MainPanel extends JPanel implements ActionListener
 				}
 			});
 		}
-
-		actionPerformed(null);
 
 		GroupLayout layout = new GroupLayout(bgPanel);
 		bgPanel.setLayout(layout);
@@ -458,13 +447,32 @@ public class MainPanel extends JPanel implements ActionListener
 				@Override
 				public void mousePressed(MouseEvent e)
 				{
-					ModPackUtils.selected = ModPackUtils.filteredList.get(mpList.getSelectedIndex());
-					if (ModPackUtils.selected.packServerLink != null && DesktopUtils.checkLink(ModPackUtils.selected.packServerLink))
+					
+					if (mpList.getSelectedIndex() >= 0 && mpList.getSelectedIndex() < ModPackUtils.filteredList.size())
 					{
-						mpBtn1.setEnabled(true);
+						ModPackUtils.selected = ModPackUtils.filteredList.get(mpList.getSelectedIndex());
 					}
 					else
 					{
+						ModPackUtils.selected = null;
+					}
+
+					if (ModPackUtils.selected != null)
+					{
+						mpBtn2.setEnabled(true);
+						if (ModPackUtils.selected.packServerLink != null && DesktopUtils.checkLink(ModPackUtils.selected.packServerLink))
+						{
+							mpBtn1.setEnabled(true);
+						}
+						else
+						{
+							mpBtn1.setEnabled(false);
+
+						}
+					}
+					else
+					{
+						mpBtn2.setEnabled(false);
 						mpBtn1.setEnabled(false);
 					}
 				}
@@ -480,13 +488,33 @@ public class MainPanel extends JPanel implements ActionListener
 				@Override
 				public void actionPerformed(ActionEvent arg0)
 				{
-					ModPackUtils.selected = ModPackUtils.filteredList.get(mpCombobox.getSelectedIndex());
-					if (ModPackUtils.selected.packServerLink != null && DesktopUtils.checkLink(ModPackUtils.selected.packServerLink))
+					if (mpCombobox.getSelectedIndex() >= 0 && mpCombobox.getSelectedIndex() < ModPackUtils.filteredList.size())
 					{
-						mpBtn1.setEnabled(true);
+						ModPackUtils.selected = ModPackUtils.filteredList.get(mpCombobox.getSelectedIndex());
 					}
 					else
 					{
+						ModPackUtils.selected = null;
+						mpCombobox.setSelectedIndex(-1);
+
+					}
+
+					if (ModPackUtils.selected != null)
+					{
+						mpBtn2.setEnabled(true);
+						if (ModPackUtils.selected.packServerLink != null && DesktopUtils.checkLink(ModPackUtils.selected.packServerLink))
+						{
+							mpBtn1.setEnabled(true);
+						}
+						else
+						{
+							mpBtn1.setEnabled(false);
+
+						}
+					}
+					else
+					{
+						mpBtn2.setEnabled(false);
 						mpBtn1.setEnabled(false);
 					}
 				}
@@ -556,7 +584,10 @@ public class MainPanel extends JPanel implements ActionListener
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Launcher.openOrCloseMPInfoFrame(ModPackUtils.selected);
+				if (ModPackUtils.selected != null)
+				{
+					Launcher.openOrCloseMPInfoFrame(ModPackUtils.selected);
+				}
 			}
 		});
 
@@ -690,12 +721,21 @@ public class MainPanel extends JPanel implements ActionListener
 		if (ModPackUtils.selected != null && ModPackUtils.selected.packServerLink != null && DesktopUtils.checkLink(ModPackUtils.selected.packServerLink))
 		{
 			if (mpBtn1 != null)
+			{
 				mpBtn1.setEnabled(true);
+				mpBtn2.setEnabled(true);
+			}
 		}
 		else
 		{
 			if (mpBtn1 != null)
+			{
 				mpBtn1.setEnabled(false);
+			}
+			if (mpBtn2 != null)
+			{
+				mpBtn2.setEnabled(false);
+			}
 		}
 
 		String layoutType = getModPackLayoutType();
@@ -718,12 +758,26 @@ public class MainPanel extends JPanel implements ActionListener
 			if (layoutType.equals("COMBOBOX"))
 			{
 				if (mpCombobox != null)
+				{
+
 					mpCombobox.setModel(new DefaultComboBoxModel<Object>(obj));
+					if (obj.length == 0)
+					{
+						System.out.println("-1");
+						mpCombobox.setSelectedIndex(-1);
+					}
+				}
 			}
 			else
 			{
 				if (mpList != null)
+				{
 					mpList.setModel(new DefaultComboBoxModel<Object>(obj));
+					if (obj.length == 0)
+					{
+						mpList.setSelectedValue(null, false);
+					}
+				}
 			}
 
 			if (!completed)
@@ -806,21 +860,5 @@ public class MainPanel extends JPanel implements ActionListener
 	private JLabel animLoadSkin;
 	public boolean loadingModPack = true;
 	public boolean skinLayout = false;
-	private Timer timer;
 
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		if (timer != null)
-		{
-			timer.stop();
-			Launcher.changeBg(true);
-			bgPanel.setBg(Launcher.getCurrentBg());
-			bgPanel.repaint();
-		}
-
-		timer = new Timer(1000 * Settings.bgTimer, this);
-		timer.start();
-
-	}
 }

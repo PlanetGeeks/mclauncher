@@ -44,6 +44,10 @@ public class ModPackUtils
 	public static ModPack selected = null;
 	public static boolean updatePaused = false;
 	public static boolean updateStopped = false;
+	private static ArrayList<ModPackFile> downloadList;
+	private static int nextIndex = 0;
+	private static int downloaded = 0;
+	private static int threads = Settings.downloadThreads;
 
 	public static void startLoading()
 	{
@@ -193,7 +197,7 @@ public class ModPackUtils
 								if (list[a].getName().endsWith(".list"))
 								{
 									modsListLink = readed.substring(5);
-									mods = readFileContent(true, list[a].getAbsolutePath());
+									mods = FileUtils.readFileContent(true, list[a].getAbsolutePath());
 									break;
 								}
 							}
@@ -201,7 +205,7 @@ public class ModPackUtils
 						else
 						{
 							modsListLink = readed.substring(5);
-							mods = readFileContent(false, modsListLink);
+							mods = FileUtils.readFileContent(false, modsListLink);
 						}
 					}
 					else if (readed.startsWith("image="))
@@ -287,46 +291,7 @@ public class ModPackUtils
 		return returned;
 	}
 
-	private static ArrayList<String> readFileContent(boolean local, String url)
-	{
-		ArrayList<String> list = new ArrayList<String>();
-
-		File file = new File(local ? url : DirUtils.getLauncherDirectory() + File.separator + "tempread");
-		if (file.exists() && !local)
-		{
-			file.delete();
-		}
-		if (local || FileUtils.downloadFile(url, file))
-		{
-			try
-			{
-				BufferedReader br = new BufferedReader(new FileReader(file));
-				String readed = br.readLine();
-				while (readed != null)
-				{
-					list.add(readed);
-					readed = br.readLine();
-				}
-				br.close();
-			}
-			catch (IOException e)
-			{
-				LauncherLogger.log(LauncherLogger.GRAVE, "Error on reading file content '" + url + "' !");
-				if (!local)
-				{
-					file.delete();
-				}
-				return null;
-			}
-
-			if (!local)
-			{
-				file.delete();
-			}
-		}
-
-		return list;
-	}
+	
 
 	private static ArrayList<String> getUrls()
 	{
@@ -441,7 +406,7 @@ public class ModPackUtils
 
 		if (f != null && f.isFile())
 		{
-			ArrayList<String> lines = ModPackUtils.readFileContent(true, f.getAbsolutePath());
+			ArrayList<String> lines = FileUtils.readFileContent(true, f.getAbsolutePath());
 
 			ArrayList<String> onlySavePaths = new ArrayList<String>();
 
@@ -488,13 +453,13 @@ public class ModPackUtils
 	{
 		Launcher.setUpdatingModPack(true);
 
-		Runnable r = new Runnable()
+		new Thread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
 				Launcher.getLauncherFrame().southPanel.updateStatus(-1, "", 100, 100, 100);
-				modpack.setSetup(readFileContent(false, modpack.setupLink));
+				modpack.setSetup(FileUtils.readFileContent(false, modpack.setupLink));
 				loadLatestSetup(modpack);
 				FileUtils.downloadFile(modpack.setupLink, new File(modpack.getModPackDir() + File.separator + "setup.settings"));
 				if (ModPackUtils.updateStopped)
@@ -508,80 +473,117 @@ public class ModPackUtils
 					try
 					{
 						Thread.sleep(1000);
-					}
-					catch (InterruptedException e)
-					{
-						e.printStackTrace();
-					}
-					if (updateStopped)
-					{
-						updateStopped = false;
-						Launcher.setUpdatingModPack(false);
-						return;
-					}
-				}
-				if (modpack.setup != null)
-				{
-					boolean dim = false;
-					for (int i = 0; i < modpack.setup.size(); i++)
-					{
-						i = dim ? i - 1 : i;
-						dim = false;
 						if (updateStopped)
 						{
 							updateStopped = false;
 							Launcher.setUpdatingModPack(false);
 							return;
 						}
-						while (updatePaused)
+					}
+					catch (InterruptedException e)
+					{
+					}
+				}
+				boolean blocked = false;
+				if (modpack.setup != null)
+				{
+					downloadList = new ArrayList<ModPackFile>();
+
+					check: for (int i = 0; i < modpack.setup.size(); i++)
+					{
+
+						if (updateBlocked())
 						{
-							try
-							{
-								Thread.sleep(1000);
-							}
-							catch (InterruptedException e)
-							{
-								e.printStackTrace();
-							}
-							if (updateStopped)
-							{
-								updateStopped = false;
-								Launcher.setUpdatingModPack(false);
-								return;
-							}
+							downloadList.clear();
+							threads = 0;
+							blocked = true;
+							break check;
 						}
+
 						ModPackFile current = modpack.setup.get(i);
 
 						File currentFile = current.getSaveFile();
+
 						if (currentFile.exists())
 						{
-							Launcher.getLauncherFrame().southPanel.updateStatus(2, currentFile.getName(), 100, i + 1, modpack.setup.size());
+							Launcher.getLauncherFrame().southPanel.updateStatus(2, currentFile.getName(), -1, i + 1, modpack.setup.size());
 							if (Launcher.forceUpdate || (current.check() && !(current.getMD5().equals(FileUtils.generateBufferedHash(currentFile)) && current.getSize().equals(FileUtils.getFileSize(currentFile)))))
 							{
 								currentFile.delete();
-								if (!Launcher.getLauncherFrame().southPanel.setDownloadingFile(current.getDownloadURL(modpack.setupIndex), currentFile, i + 1, modpack.setup.size()))
-								{
-									dim = true;
-								}
+
+								downloadList.add(current);
 							}
 						}
 						else
 						{
 							if (current.getOs() == OS.unknown || current.getOs() == DirUtils.getPlatform())
 							{
-								if (!Launcher.getLauncherFrame().southPanel.setDownloadingFile(current.getDownloadURL(modpack.setupIndex), currentFile, i + 1, modpack.setup.size()))
-								{
-									dim = true;
-								}
+								downloadList.add(current);
 							}
 						}
 					}
 
-					FileUtils.downloadFile(modpack.modpackLink, new File(modpack.getModPackDir() + File.separator + modpack.packName + ".modpack"));
-					FileUtils.downloadFile(modpack.packBgLink, new File(modpack.getModPackDir() + File.separator + "packBg.png"));
-					FileUtils.downloadFile(modpack.modsListLink, new File(modpack.getModPackDir() + File.separator + "mods.list"));
-				    Launcher.setUpdatingModPack(false);
-					GameLauncher.launchGame();
+					threads: for (int i = 0; i < Settings.downloadThreads; i++)
+					{
+						if (downloadList.isEmpty())
+						{
+							threads = 0;
+							break threads;
+						}
+
+						new Thread(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								ModPackFile mpFile;
+
+								main: while ((mpFile = getNextToDownload()) != null)
+								{
+									if (updateBlocked())
+										break main;
+
+									if (!FileUtils.downloadFile(mpFile.getDownloadURL(modpack.setupIndex), mpFile.getSaveFile()))
+									{
+										LauncherLogger.log(LauncherLogger.SEVERE, "Error on downloading : " + mpFile.getDownloadURL(modpack.setupIndex));
+									}
+
+									downloaded++;
+
+									Launcher.getLauncherFrame().southPanel.updateStatus(1, "", getDownloadRate(), downloaded + 1, downloadList.size());
+								}
+
+								threads--;
+							}
+						}).start();
+					}
+
+					wait: while (true)
+					{
+						try
+						{
+							Thread.sleep(500);
+						}
+						catch (InterruptedException e)
+						{
+							e.printStackTrace();
+						}
+						if (threads <= 0)
+							break wait;
+					}
+
+					if (!blocked)
+					{
+						FileUtils.downloadFile(modpack.modpackLink, new File(modpack.getModPackDir() + File.separator + modpack.packName + ".modpack"));
+						FileUtils.downloadFile(modpack.packBgLink, new File(modpack.getModPackDir() + File.separator + "packBg.png"));
+						FileUtils.downloadFile(modpack.modsListLink, new File(modpack.getModPackDir() + File.separator + "mods.list"));
+						Launcher.setUpdatingModPack(false);
+						GameLauncher.launchGame();
+					}
+					else
+					{
+						Launcher.setUpdatingModPack(false);
+					}
 				}
 				else
 				{
@@ -591,10 +593,57 @@ public class ModPackUtils
 				}
 			}
 
-		};
-
-		Thread tr = new Thread(r);
-		tr.start();
+		}).start();
 	}
 
+	private static int getDownloadRate()
+	{
+		double totalLength = 0.0D;
+		double downloadedLength = 0.0D;
+		try
+		{
+
+			for (ModPackFile f : downloadList)
+			{
+				totalLength += Double.valueOf(f.getSize());
+			}
+
+			for (int i = 0; i < downloaded; i++)
+			{
+				downloadedLength += Double.valueOf(downloadList.get(i).getSize());
+			}
+		}
+		catch (NumberFormatException e)
+		{
+			return -1;
+		}
+		
+		return (int)((downloadedLength * 100)/totalLength);
+	}
+
+	private static boolean updateBlocked()
+	{
+		if (ModPackUtils.updateStopped)
+			return true;
+
+		while (ModPackUtils.updatePaused)
+		{
+			try
+			{
+				Thread.sleep(1000);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	private static synchronized ModPackFile getNextToDownload()
+	{
+		int index = nextIndex++;
+		return index >= downloadList.size() ? null : downloadList.get(index);
+	}
 }

@@ -14,7 +14,9 @@ import it.planetgeeks.mclauncher.modpack.ModPack;
 import it.planetgeeks.mclauncher.modpack.ModPackUtils;
 import it.planetgeeks.mclauncher.resources.ResourcesUtils;
 import it.planetgeeks.mclauncher.updater.LauncherUpdater;
+import it.planetgeeks.mclauncher.utils.DirUtils;
 import it.planetgeeks.mclauncher.utils.EnumBgPos;
+import it.planetgeeks.mclauncher.utils.FileUtils;
 import it.planetgeeks.mclauncher.utils.ImageBg;
 import it.planetgeeks.mclauncher.utils.LanguageUtils;
 import it.planetgeeks.mclauncher.utils.MemoryUtils;
@@ -23,12 +25,16 @@ import it.planetgeeks.mclauncher.utils.ProfilesUtils;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.HyperlinkEvent;
@@ -83,8 +89,8 @@ public class Launcher
 			ModPackUtils.startLoading();
 			if (isNewsLayout())
 				loadNews();
-			if(splash != null)
-               splash.setVisible(false);
+			if (splash != null)
+				splash.setVisible(false);
 		}
 		else
 		{
@@ -93,18 +99,69 @@ public class Launcher
 			loadLookAndFeel();
 			LauncherProperties.loadProperties();
 			LanguageUtils.loadLanguages();
+			checkForCodeUpdated();
 			LauncherUpdater.startCheck();
 		}
 
 	}
-	
+
+	private static void checkForCodeUpdated()
+	{
+		if(Settings.devMode)
+		{
+			File dev = new File(DirUtils.getLauncherDirectory() + File.separator + "dev");
+			
+		    String latestVersion = null;
+			
+			if(dev.exists())
+			{
+				ArrayList<String> readed = FileUtils.readFileContent(true, dev.getAbsolutePath());
+				
+				for(String line : readed)
+				{
+					if(line.contains("version="))
+					{
+				        latestVersion = line.split("=")[1];
+					}
+				}
+			}
+			
+			if(FileUtils.downloadFile("https://dl.dropboxusercontent.com/u/88221856/PlanetGeeks/launcherV4Utils/updates", dev))
+			{
+				ArrayList<String> update = FileUtils.readFileContent(true, dev.getAbsolutePath());
+		        
+				if(latestVersion != null)
+				{
+					for(String line : update)
+					{
+						if(line.contains("version="))
+						{
+					       String version = line.split("=")[1];
+					       
+					       if(!version.equals(latestVersion))
+					       {
+					    	   JScrollPane scroll = new JScrollPane();
+					    	   scroll.setPreferredSize(new Dimension(300, 200));
+					    	   JTextArea textArea = new JTextArea();  
+					    	   for(int i = 1; i < update.size(); i++)
+					    	   {
+					    		   textArea.append(update.get(i) + "\n");
+					    	   }
+					    	   scroll.setViewportView(textArea);
+					    	   JOptionPane.showMessageDialog(null, scroll);
+					       }
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public static void displaySplash()
 	{
 		Launcher.splash = new SplashFrame();
 		Launcher.splash.setVisible(true);
 	}
-
-	
 
 	private static boolean isNewsLayout()
 	{
@@ -364,11 +421,9 @@ public class Launcher
 			public void run()
 			{
 				EnumLayouts layout = Settings.layoutMode;
-				int max = 1;
-				if (layout == EnumLayouts.MULTI_NEWS || layout == EnumLayouts.MULTI_NEWS_MODPACK || layout == EnumLayouts.MULTI_NEWS_SKIN || layout == EnumLayouts.MULTI_NEWS_SKIN_MODPACK)
-					max = 3;
-				JEditorPane[] panels = new JEditorPane[max];
-				for (int i = 0; i < max; i++)
+
+				JEditorPane[] panels = new JEditorPane[3];
+				for (int i = 0; i < 3; i++)
 				{
 					String link = null;
 					if (i == 0)
@@ -413,7 +468,11 @@ public class Launcher
 					panels[i] = pane;
 				}
 
-				for (int i = 0; i < panels.length; i++)
+				int max = 1;
+				if (layout == EnumLayouts.MULTI_NEWS || layout == EnumLayouts.MULTI_NEWS_MODPACK || layout == EnumLayouts.MULTI_NEWS_SKIN || layout == EnumLayouts.MULTI_NEWS_SKIN_MODPACK)
+					max = 3;
+
+				for (int i = 0; i < max; i++)
 				{
 					try
 					{
@@ -470,9 +529,15 @@ public class Launcher
 		}
 	}
 
-	public static ImageBg getCurrentBg()
+	public static ImageBg[] getBgArray()
 	{
-		return listBgs.get(currentBg);
+		ImageBg[] imgs = new ImageBg[listBgs.size()];
+		for (int i = 0; i < imgs.length; i++)
+		{
+			imgs[i] = listBgs.get(i);
+		}
+
+		return imgs;
 	}
 
 	public static int getBgLength()

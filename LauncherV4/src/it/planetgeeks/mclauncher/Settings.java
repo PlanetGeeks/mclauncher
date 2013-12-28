@@ -11,7 +11,7 @@ import it.planetgeeks.mclauncher.utils.EnumBgPos;
 public class Settings
 {
 	/**
-	 * Questo è un launcher di minecraft opensource!
+	 * Questo e' un launcher di minecraft opensource!
 	 * 
 	 *  Il codice e' stato scritto interamente da Flood del team di PlanetGeeks 
 	 *  ( a eccezione del package ..uncher.utils.process preso dal launcher originale) 
@@ -33,7 +33,7 @@ public class Settings
 	 * Link per il controllo della versione del launcher ( che contiene link
 	 * download - md5 - size )
 	 **/
-	public static String launcherLink = "https://dl.dropboxusercontent.com/u/88221856/launcherv4test/launcher.settings";
+	public static String launcherLink = "https://dl.dropboxusercontent.com/u/88221856/launcherv4test/launcher.settingss";
 
 	/**
 	 * Se c'e' un update del launcher fa apparire il box per la conferma
@@ -58,7 +58,7 @@ public class Settings
 												// minecraft e del launcher
 
 	/** link news 1 **/
-	public static String newsLink1 = "http://mcupdate.tumblr.com/‎";
+	public static String newsLink1 = "http://mcupdate.tumblr.com/";
 
 	/** link news 2 **/
 	public static String newsLink2 = "http://mcupdate.tumblr.com/";
@@ -83,6 +83,15 @@ public class Settings
 
 	/** se impostato su true appare la funzione "Mostra Console" in Opzioni **/
 	public static boolean activateConsole = true;
+	
+	/** Thread dedicati al download dei file, per aumentare o diminuire la velocita' di download. Evitare valori superiori a 5 **/
+	public static int downloadThreads = 5;
+	
+	/** Da attivare solo per il proprietario del launcher. Serve ad avvisare in caso di aggiornamento del codice da parte di PlanetGeeks **/
+	public static boolean devMode = true;
+	
+	/** Questa linea di codice serve ad aggiungere dei parametri aggiuntivi alla Java VM.**/
+	public static String customParams = "-XX:PermSize=256M -XX:MaxPermSize=512M";
 
 	/** IMPOSTAZIONI GRAFICHE **/
 
